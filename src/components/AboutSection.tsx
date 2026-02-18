@@ -34,7 +34,7 @@ const AboutSection = () => {
               {[
                 { icon: MapPin, text: "R. Barata Ribeiro, 181 - loja J - Copacabana, RJ" },
                 { icon: Phone, text: "(21) 98546-4666" },
-                { icon: Clock, text: "Seg a Sáb: 10h às 20h" },
+                { icon: Clock, text: "Seg a Sex: 09h às 19h | Sáb: 09h às 16h" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-3 text-sm">
                   <Icon size={18} className="text-accent shrink-0" />

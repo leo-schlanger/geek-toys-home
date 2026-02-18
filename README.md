@@ -1,73 +1,47 @@
-# Welcome to your Lovable project
+# Geek & Toys
 
-## Project info
+Site institucional da loja Geek & Toys, localizada em Copacabana, Rio de Janeiro.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Sobre
 
-## How can I edit this code?
+Loja especializada em colecionáveis, action figures, Funko Pop, brinquedos e produtos geek.
 
-There are several ways of editing your application.
+**Endereço:** R. Barata Ribeiro, 181 - loja J - Copacabana, RJ
 
-**Use Lovable**
+**Horário de Funcionamento:**
+- Segunda a Sexta: 09h às 19h
+- Sábados: 09h às 16h
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+**Contato:** (21) 98546-4666
 
-Changes made via Lovable will be committed automatically to this repo.
+## Tecnologias
 
-**Use your preferred IDE**
+- React + TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Desenvolvimento
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+# Instalar dependências
+npm install
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Rodar servidor de desenvolvimento
 npm run dev
+
+# Build para produção
+npm run build
 ```
 
-**Edit a file directly in GitHub**
+## Imagens
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Para atualizar as imagens do site, substitua os arquivos em `src/assets/`:
 
-**Use GitHub Codespaces**
+| Arquivo | Descrição |
+|---------|-----------|
+| `hero-bg.jpg` | Banner principal (1920x1080px) |
+| `store-photo.jpg` | Foto da loja (800x600px) |
+| `gallery-1.jpg` a `gallery-6.jpg` | Galeria (800x600px cada) |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+A logo fica em `public/logo.jpg`.

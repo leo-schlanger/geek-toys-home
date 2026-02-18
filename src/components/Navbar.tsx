@@ -27,8 +27,8 @@ const Navbar = () => {
       }`}
     >
       <div className="container flex items-center justify-between h-16 md:h-20">
-        <a href="#inicio" className="font-heading text-xl md:text-2xl font-bold text-primary text-glow-primary">
-          Geek & Toys
+        <a href="#inicio" className="flex items-center">
+          <img src="/logo.jpg" alt="Geek & Toys" className="h-10 md:h-12 rounded" />
         </a>
 
         {/* Desktop */}

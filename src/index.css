@@ -13,8 +13,8 @@
     --popover: 240 33% 11.4%;
     --popover-foreground: 0 0% 96.1%;
 
-    --primary: 263 91% 66%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 45 85% 55%;
+    --primary-foreground: 0 0% 5%;
 
     --secondary: 240 33% 11.4%;
     --secondary-foreground: 0 0% 96.1%;
@@ -22,18 +22,18 @@
     --muted: 240 10% 20%;
     --muted-foreground: 240 10% 69%;
 
-    --accent: 191 100% 50%;
+    --accent: 45 100% 65%;
     --accent-foreground: 0 0% 5%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --cta: 18 100% 60%;
-    --cta-foreground: 0 0% 100%;
+    --cta: 45 90% 50%;
+    --cta-foreground: 0 0% 5%;
 
-    --border: 263 30% 25%;
-    --input: 263 20% 20%;
-    --ring: 263 91% 66%;
+    --border: 45 30% 25%;
+    --input: 45 20% 15%;
+    --ring: 45 85% 55%;
 
     --radius: 0.75rem;
 
@@ -41,12 +41,12 @@
 
     --sidebar-background: 0 0% 5.1%;
     --sidebar-foreground: 0 0% 96.1%;
-    --sidebar-primary: 263 91% 66%;
-    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary: 45 85% 55%;
+    --sidebar-primary-foreground: 0 0% 5%;
     --sidebar-accent: 240 33% 11.4%;
     --sidebar-accent-foreground: 0 0% 96.1%;
-    --sidebar-border: 263 30% 25%;
-    --sidebar-ring: 263 91% 66%;
+    --sidebar-border: 45 30% 25%;
+    --sidebar-ring: 45 85% 55%;
   }
 }
 
@@ -70,26 +70,26 @@
 
 @layer utilities {
   .text-glow-primary {
-    text-shadow: 0 0 20px hsl(263 91% 66% / 0.6), 0 0 40px hsl(263 91% 66% / 0.3);
+    text-shadow: 0 0 20px hsl(45 85% 55% / 0.6), 0 0 40px hsl(45 85% 55% / 0.3);
   }
 
   .text-glow-accent {
-    text-shadow: 0 0 20px hsl(191 100% 50% / 0.6), 0 0 40px hsl(191 100% 50% / 0.3);
+    text-shadow: 0 0 20px hsl(45 100% 65% / 0.6), 0 0 40px hsl(45 100% 65% / 0.3);
   }
 
   .border-glow-primary {
-    box-shadow: 0 0 15px hsl(263 91% 66% / 0.3), inset 0 0 15px hsl(263 91% 66% / 0.05);
+    box-shadow: 0 0 15px hsl(45 85% 55% / 0.3), inset 0 0 15px hsl(45 85% 55% / 0.05);
   }
 
   .border-glow-accent {
-    box-shadow: 0 0 15px hsl(191 100% 50% / 0.3);
+    box-shadow: 0 0 15px hsl(45 100% 65% / 0.3);
   }
 
   .hover-glow-primary {
     transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
   .hover-glow-primary:hover {
-    box-shadow: 0 0 25px hsl(263 91% 66% / 0.5), 0 0 50px hsl(263 91% 66% / 0.2);
+    box-shadow: 0 0 25px hsl(45 85% 55% / 0.5), 0 0 50px hsl(45 85% 55% / 0.2);
     transform: translateY(-2px);
   }
 

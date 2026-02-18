@@ -57,7 +57,7 @@ const LocationSection = () => {
               {
                 icon: Clock,
                 label: "Horário",
-                text: "Seg a Sáb: 10h às 20h",
+                text: "Seg a Sex: 09h às 19h | Sáb: 09h às 16h",
               },
             ].map(({ icon: Icon, label, text, href }) => (
               <div key={label} className="flex gap-4">

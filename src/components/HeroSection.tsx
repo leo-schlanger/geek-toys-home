@@ -35,18 +35,19 @@ const HeroSection = () => {
                 className="w-full max-w-[500px] h-auto drop-shadow-2xl"
               />
             </div>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-up" style={{ animationDelay: "0.15s" }}>
-              Há 15 anos trazendo o melhor do universo geek para o Brasil — Pioneiros do Funko Pop no país! Atacado e varejo para todo o Brasil.
+            <p className="text-lg md:text-xl text-muted-foreground mb-10 animate-fade-up max-w-2xl leading-relaxed" style={{ animationDelay: "0.15s" }}>
+              Há 15 anos trazendo o melhor do universo geek para o Brasil — <span className="text-foreground font-semibold">Pioneiros do Funko Pop no país!</span> Atacado e varejo para todo o Brasil.
             </p>
             <a
               href="https://wa.me/5521985464666"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-cta text-cta-foreground px-8 py-4 rounded-lg font-semibold text-lg hover:brightness-110 transition-all animate-fade-up"
+              className="inline-flex items-center gap-3 bg-[#25D366] text-white px-10 py-5 rounded-full font-bold text-xl hover:bg-[#20ba5a] hover:scale-105 transition-all shadow-lg shadow-[#25D366]/20 animate-fade-up relative group overflow-hidden"
               style={{ animationDelay: "0.3s" }}
             >
-              <MessageCircle size={22} />
-              Fale Conosco no WhatsApp
+              <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+              <MessageCircle size={26} className="relative z-10 animate-pulse" />
+              <span className="relative z-10">Fale Conosco no WhatsApp</span>
             </a>
           </div>
 

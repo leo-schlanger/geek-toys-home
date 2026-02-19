@@ -9,6 +9,7 @@ const socials = [
   { label: "Instagram", href: "https://www.instagram.com/geeketoys/", icon: "ig" },
   { label: "TikTok", href: "https://www.tiktok.com/@geeketoys", icon: "tt" },
   { label: "Shopee", href: "https://shopee.com.br/geeketoys", icon: "sh" },
+  { label: "Mercado Livre", href: "https://lista.mercadolivre.com.br/_CustId_1642214032?item_id=MLB6181959490&category_id=MLB1839&seller_id=1642214032&client=recoview-selleritems&recos_listing=true#origin=vip&component=sellerData&typeSeller=classic", icon: "ml" },
 ];
 
 const HeroSection = () => {

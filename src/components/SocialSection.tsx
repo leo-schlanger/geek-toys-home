@@ -41,6 +41,16 @@ const socials = [
       </svg>
     ),
   },
+  {
+    name: "Mercado Livre",
+    href: "https://lista.mercadolivre.com.br/_CustId_1642214032?item_id=MLB6181959490&category_id=MLB1839&seller_id=1642214032&client=recoview-selleritems&recos_listing=true#origin=vip&component=sellerData&typeSeller=classic",
+    color: "hover:border-[#FFE600] hover:shadow-[0_0_20px_rgba(255,230,0,0.4)]",
+    icon: (
+      <svg viewBox="0 0 32 32" fill="currentColor" className="w-8 h-8">
+        <path d="M26.4,8.5c-1.2,0-2.3,0.5-3.1,1.3l-8.3,8.3c-0.4,0.4-1.1,0.4-1.5,0l-2.6-2.6c-0.8-0.8-2.2-0.8-3.1,0l-5,5c-0.8,0.8-0.8,2.2,0,3.1l1.5,1.5c0.8,0.8,2.2,0.8,3.1,0l5-5c0.4-0.4,1.1-0.4,1.5,0l2.6,2.6c0.8,0.8,2.2,0.8,3.1,0l8.3-8.3c0.8-0.8,1.3-1.9,1.3-3.1C29.6,9.8,28.2,8.5,26.4,8.5z" />
+      </svg>
+    ),
+  },
 ];
 
 const SocialSection = () => {
@@ -67,7 +77,7 @@ const SocialSection = () => {
           Acompanhe nossas novidades e promoções!
         </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
           {socials.map((s) => (
             <a
               key={s.name}

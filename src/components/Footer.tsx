@@ -1,3 +1,5 @@
+import { SocialIcon } from "./SocialIcon";
+
 const footerLinks = [
   { label: "Quem Somos", href: "#quem-somos" },
   { label: "Galeria", href: "#galeria" },
@@ -26,20 +28,20 @@ const Footer = () => (
 
       <div className="flex justify-center gap-4 mb-8">
         {[
-          { href: "https://www.facebook.com/geeketoyscolection/", label: "Facebook" },
-          { href: "https://www.instagram.com/geeketoys/", label: "Instagram" },
-          { href: "https://www.tiktok.com/@geeketoys", label: "TikTok" },
-          { href: "https://shopee.com.br/geeketoys", label: "Shopee" },
+          { href: "https://www.facebook.com/geeketoyscolection/", label: "Facebook", icon: "fb" },
+          { href: "https://www.instagram.com/geeketoys/", label: "Instagram", icon: "ig" },
+          { href: "https://www.tiktok.com/@geeketoys", label: "TikTok", icon: "tt" },
+          { href: "https://shopee.com.br/geeketoys", label: "Shopee", icon: "sh" },
         ].map((s) => (
           <a
             key={s.label}
             href={s.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all text-xs font-bold"
+            className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all"
             aria-label={s.label}
           >
-            {s.label.substring(0, 2)}
+            <SocialIcon type={s.icon} className="w-5 h-5" />
           </a>
         ))}
       </div>

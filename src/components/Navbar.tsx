@@ -22,13 +22,12 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "glass border-b border-border" : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "glass border-b border-border" : "bg-transparent"
+        }`}
     >
       <div className="container flex items-center justify-between h-16 md:h-20">
         <a href="#inicio" className="flex items-center">
-          <img src="/logo.jpg" alt="Geek & Toys" className="h-10 md:h-12 rounded" />
+          <img src="/logo.jpg" alt="Geek & Toys" className="h-14 md:h-16 rounded" />
         </a>
 
         {/* Desktop */}

@@ -1,6 +1,7 @@
 import { MessageCircle } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import storePhoto from "@/assets/store-photo.jpg";
+import logoOfficial from "@/assets/logo-official.svg";
 import { SocialIcon } from "./SocialIcon";
 
 const socials = [
@@ -27,9 +28,13 @@ const HeroSection = () => {
       <div className="container relative z-10 pt-20 pb-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="max-w-3xl">
-            <h1 className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold text-primary text-glow-primary mb-6 animate-fade-up">
-              Geek & Toys Collection
-            </h1>
+            <div className="mb-6 animate-fade-up">
+              <img
+                src={logoOfficial}
+                alt="Geek & Toys Official Logo"
+                className="w-full max-w-[500px] h-auto drop-shadow-2xl"
+              />
+            </div>
             <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-up" style={{ animationDelay: "0.15s" }}>
               Há 15 anos trazendo o melhor do universo geek para o Brasil — Pioneiros do Funko Pop no país! Atacado e varejo para todo o Brasil.
             </p>

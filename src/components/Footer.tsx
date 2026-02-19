@@ -10,8 +10,8 @@ const footerLinks = [
 const Footer = () => (
   <footer className="bg-footer py-12 border-t border-border">
     <div className="container text-center">
-      <a href="#inicio" className="font-heading text-2xl font-bold text-primary text-glow-primary">
-        Geek & Toys
+      <a href="#inicio" className="inline-block hover:opacity-90 transition-opacity">
+        <img src="/logo.jpg" alt="Geek & Toys" className="h-24 mx-auto rounded shadow-lg shadow-primary/10" />
       </a>
 
       <nav className="flex flex-wrap justify-center gap-6 mt-6 mb-8">

@@ -59,7 +59,7 @@ const HeroSection = () => {
             Geek & Toys Collection
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-up" style={{ animationDelay: "0.15s" }}>
-            Sua loja geek em Copacabana — Colecionáveis, Brinquedos e muito mais!
+            Há 15 anos trazendo o melhor do universo geek para o Brasil — Pioneiros do Funko Pop no país! Atacado e varejo para todo o Brasil.
           </p>
           <a
             href="https://wa.me/5521985464666"

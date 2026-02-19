@@ -26,8 +26,14 @@ const AboutSection = () => {
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              <strong className="text-foreground">Há 15 anos no mercado geek</strong>, a Geek & Toys é pioneira e referência no segmento de colecionáveis no Brasil. Fomos a empresa responsável por <strong className="text-foreground">introduzir o Funko Pop no país</strong>, abrindo caminho para milhares de colecionadores brasileiros.
+            </p>
+            <p className="text-muted-foreground leading-relaxed mb-4">
+              Atuamos como <strong className="text-foreground">atacadistas e varejistas</strong>, sempre oferecendo o melhor mix de produtos na distribuição. De action figures a colecionáveis exclusivos, trabalhamos com marcas renomadas como Marvel, DC, Star Wars, anime e muito mais.
+            </p>
             <p className="text-muted-foreground leading-relaxed mb-8">
-              A Geek & Toys é uma loja especializada no universo geek, localizada no coração de Copacabana, Rio de Janeiro. Trabalhamos com brinquedos, colecionáveis, action figures, Funko Pops, eletrodomésticos e tudo que o mundo nerd e geek tem de melhor. Nossa missão é trazer alegria e nostalgia para nossos clientes, oferecendo produtos de qualidade com o atendimento que só uma loja de bairro pode ter.
+              <strong className="text-foreground">Vendemos online para todo o Brasil</strong>, levando a cultura geek a cada canto do país. Uma empresa sempre na vanguarda, que visa o futuro e acompanha as tendências do universo nerd e geek. Visite nossa loja física em Copacabana ou compre pelo nosso site!
             </p>
 
             <div className="grid gap-4">

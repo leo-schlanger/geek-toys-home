@@ -11,6 +11,8 @@ const footerLinks: FooterLink[] = [
   { label: "Galeria", href: "#galeria" },
   { label: "Produtos", href: "#produtos" },
   { label: "Contato", href: "#contato" },
+  { label: "Termos de Uso", href: "/termos" },
+  { label: "Privacidade", href: "/privacidade" },
   { label: "Clube de Vantagens", href: "https://club.geeketoys.com.br", external: true },
 ];
 
@@ -27,11 +29,10 @@ const Footer = () => (
             key={link.href}
             href={link.href}
             {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className={`text-sm transition-colors ${
-              link.external
+            className={`text-sm transition-colors ${link.external
                 ? "text-primary hover:text-primary/80 font-medium"
                 : "text-muted-foreground hover:text-primary"
-            }`}
+              }`}
           >
             {link.label}
           </a>

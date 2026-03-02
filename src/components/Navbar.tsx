@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
-const navLinks = [
+interface NavLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+const navLinks: NavLink[] = [
   { label: "Início", href: "#inicio" },
   { label: "Quem Somos", href: "#quem-somos" },
   { label: "Galeria", href: "#galeria" },
   { label: "Produtos", href: "#produtos" },
   { label: "Localização", href: "#localizacao" },
   { label: "Contato", href: "#contato" },
+  { label: "Clube", href: "https://club.geeketoys.com.br", external: true },
 ];
 
 const Navbar = () => {
@@ -36,7 +43,12 @@ const Navbar = () => {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
+                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                className={`text-sm font-medium transition-colors ${
+                  link.external
+                    ? "px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90"
+                    : "text-foreground/80 hover:text-primary"
+                }`}
               >
                 {link.label}
               </a>
@@ -62,7 +74,12 @@ const Navbar = () => {
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="block text-foreground/80 hover:text-primary transition-colors font-medium"
+                  {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  className={`block font-medium transition-colors ${
+                    link.external
+                      ? "text-center py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+                      : "text-foreground/80 hover:text-primary"
+                  }`}
                   onClick={() => setOpen(false)}
                 >
                   {link.label}

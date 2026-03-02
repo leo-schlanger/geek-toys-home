@@ -1,10 +1,17 @@
 import { SocialIcon } from "./SocialIcon";
 
-const footerLinks = [
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+const footerLinks: FooterLink[] = [
   { label: "Quem Somos", href: "#quem-somos" },
   { label: "Galeria", href: "#galeria" },
   { label: "Produtos", href: "#produtos" },
   { label: "Contato", href: "#contato" },
+  { label: "Clube de Vantagens", href: "https://club.geeketoys.com.br", external: true },
 ];
 
 const Footer = () => (
@@ -19,7 +26,12 @@ const Footer = () => (
           <a
             key={link.href}
             href={link.href}
-            className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+            className={`text-sm transition-colors ${
+              link.external
+                ? "text-primary hover:text-primary/80 font-medium"
+                : "text-muted-foreground hover:text-primary"
+            }`}
           >
             {link.label}
           </a>

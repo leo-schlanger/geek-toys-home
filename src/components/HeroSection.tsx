@@ -25,27 +25,27 @@ const HeroSection = () => {
       </div>
 
       <div className="container relative z-10 pt-20 pb-16">
-        <div className="flex flex-col items-center text-center lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center lg:text-left">
-          <div className="mb-8 lg:mb-0 animate-fade-up flex justify-center lg:justify-start">
+        <div className="flex flex-col items-center text-center lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center lg:text-left">
+          <div className="mb-8 lg:mb-0 animate-fade-up flex justify-center lg:justify-center">
             <img
               src="/logo.jpg"
               alt="Geek & Toys Official Logo"
-              className="w-full max-w-[300px] lg:max-w-[400px] h-auto drop-shadow-2xl rounded-2xl"
+              className="w-full max-w-[280px] lg:max-w-[340px] h-auto drop-shadow-2xl rounded-2xl"
             />
           </div>
-          <div>
-            <p className="text-lg md:text-xl text-muted-foreground mb-10 animate-fade-up max-w-2xl leading-relaxed" style={{ animationDelay: "0.15s" }}>
+          <div className="flex flex-col items-center lg:items-start">
+            <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-up max-w-lg leading-relaxed" style={{ animationDelay: "0.15s" }}>
               Há 15 anos trazendo o melhor do universo geek para o Brasil — <span className="text-foreground font-semibold">Pioneiros do Funko Pop no país!</span> Atacado e varejo para todo o Brasil.
             </p>
             <a
               href="https://wa.me/5521985464666"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 lg:px-10 lg:py-5 rounded-full font-bold text-lg lg:text-xl hover:bg-[#20ba5a] hover:scale-105 transition-all shadow-lg shadow-[#25D366]/20 animate-fade-up relative group overflow-hidden"
+              className="inline-flex items-center gap-3 bg-[#25D366] text-white px-6 py-4 rounded-full font-bold text-base lg:text-lg hover:bg-[#20ba5a] hover:scale-105 transition-all shadow-lg shadow-[#25D366]/20 animate-fade-up relative group overflow-hidden"
               style={{ animationDelay: "0.3s" }}
             >
               <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-              <MessageCircle size={24} className="relative z-10 animate-pulse" />
+              <MessageCircle size={22} className="relative z-10 animate-pulse" />
               <span className="relative z-10">Fale Conosco no WhatsApp</span>
             </a>
           </div>

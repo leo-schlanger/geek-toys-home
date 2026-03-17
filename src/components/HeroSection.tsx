@@ -28,7 +28,7 @@ const HeroSection = () => {
         <div className="flex flex-col items-center text-center lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center lg:text-left">
           <div className="mb-8 lg:mb-0 animate-fade-up flex justify-center lg:justify-center">
             <img
-              src="/logo.jpg"
+              src="/logo3d.jpg"
               alt="Geek & Toys Official Logo"
               className="w-full max-w-[280px] lg:max-w-[340px] h-auto drop-shadow-2xl rounded-2xl"
             />

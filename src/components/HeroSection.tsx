@@ -25,28 +25,30 @@ const HeroSection = () => {
       </div>
 
       <div className="container relative z-10 pt-20 pb-16">
-        <div className="flex flex-col items-center text-center">
-          <div className="mb-8 animate-fade-up">
+        <div className="flex flex-col items-center text-center lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center lg:text-left">
+          <div className="mb-8 lg:mb-0 animate-fade-up flex justify-center lg:justify-start">
             <img
               src="/logo.jpg"
               alt="Geek & Toys Official Logo"
-              className="w-full max-w-[400px] h-auto drop-shadow-2xl rounded-2xl"
+              className="w-full max-w-[300px] lg:max-w-[400px] h-auto drop-shadow-2xl rounded-2xl"
             />
           </div>
-          <p className="text-lg md:text-xl text-muted-foreground mb-10 animate-fade-up max-w-2xl leading-relaxed" style={{ animationDelay: "0.15s" }}>
-            Há 15 anos trazendo o melhor do universo geek para o Brasil — <span className="text-foreground font-semibold">Pioneiros do Funko Pop no país!</span> Atacado e varejo para todo o Brasil.
-          </p>
-          <a
-            href="https://wa.me/5521985464666"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-[#25D366] text-white px-10 py-5 rounded-full font-bold text-xl hover:bg-[#20ba5a] hover:scale-105 transition-all shadow-lg shadow-[#25D366]/20 animate-fade-up relative group overflow-hidden"
-            style={{ animationDelay: "0.3s" }}
-          >
-            <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-            <MessageCircle size={26} className="relative z-10 animate-pulse" />
-            <span className="relative z-10">Fale Conosco no WhatsApp</span>
-          </a>
+          <div>
+            <p className="text-lg md:text-xl text-muted-foreground mb-10 animate-fade-up max-w-2xl leading-relaxed" style={{ animationDelay: "0.15s" }}>
+              Há 15 anos trazendo o melhor do universo geek para o Brasil — <span className="text-foreground font-semibold">Pioneiros do Funko Pop no país!</span> Atacado e varejo para todo o Brasil.
+            </p>
+            <a
+              href="https://wa.me/5521985464666"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 lg:px-10 lg:py-5 rounded-full font-bold text-lg lg:text-xl hover:bg-[#20ba5a] hover:scale-105 transition-all shadow-lg shadow-[#25D366]/20 animate-fade-up relative group overflow-hidden"
+              style={{ animationDelay: "0.3s" }}
+            >
+              <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+              <MessageCircle size={24} className="relative z-10 animate-pulse" />
+              <span className="relative z-10">Fale Conosco no WhatsApp</span>
+            </a>
+          </div>
         </div>
       </div>
 

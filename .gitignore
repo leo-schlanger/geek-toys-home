@@ -1,3 +1,8 @@
+# Claude Code (local only, don't commit)
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+
 # Logs
 logs
 *.log

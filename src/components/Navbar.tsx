@@ -12,6 +12,7 @@ const navLinks: NavLink[] = [
   { label: "Quem Somos", href: "#quem-somos" },
   { label: "Galeria", href: "#galeria" },
   { label: "Produtos", href: "#produtos" },
+  { label: "Rádio", href: "#radio" },
   { label: "Localização", href: "#localizacao" },
   { label: "Contato", href: "#contato" },
   { label: "Clube", href: "https://club.geeketoys.com.br", external: true },

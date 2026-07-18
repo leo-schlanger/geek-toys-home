@@ -35,7 +35,7 @@ const Navbar = () => {
     >
       <div className="container flex items-center justify-between h-16 md:h-20">
         <a href="#inicio" className="flex items-center">
-          <img src="/logo.jpg" alt="Geek & Toys" className="h-14 md:h-16 rounded" />
+          <img src="/logo.jpg" alt="GeekPop & Toys" className="h-14 md:h-16 rounded" />
         </a>
 
         {/* Desktop */}

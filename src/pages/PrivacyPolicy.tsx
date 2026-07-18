@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
                     <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
                         <p className="text-sm"><strong>Última atualização:</strong> Março de 2026</p>
 
-                        <p>A <strong>Geek & Toys Collection</strong>, sediada em Copacabana, Rio de Janeiro - RJ, valoriza a sua privacidade. Esta política descreve como coletamos e usamos seus dados em conformidade com a Lei Geral de Proteção de Dados (LGPD).</p>
+                        <p>A <strong>GeekPop & Toys Collection</strong>, sediada em Copacabana, Rio de Janeiro - RJ, valoriza a sua privacidade. Esta política descreve como coletamos e usamos seus dados em conformidade com a Lei Geral de Proteção de Dados (LGPD).</p>
 
                         <section className="space-y-3">
                             <h2 className="text-2xl font-semibold text-foreground">1. Dados Coletados</h2>

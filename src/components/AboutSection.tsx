@@ -27,7 +27,7 @@ const AboutSection = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              <strong className="text-foreground">Há 15 anos no mercado geek</strong>, a Geek & Toys é pioneira e referência no segmento de colecionáveis no Brasil. Fomos a empresa responsável por <strong className="text-foreground">introduzir o Funko Pop no país</strong>, abrindo caminho para milhares de colecionadores brasileiros.
+              <strong className="text-foreground">Há 15 anos no mercado geek</strong>, a GeekPop & Toys é pioneira e referência no segmento de colecionáveis no Brasil. Fomos a empresa responsável por <strong className="text-foreground">introduzir o Funko Pop no país</strong>, abrindo caminho para milhares de colecionadores brasileiros.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               Atuamos como <strong className="text-foreground">atacadistas e varejistas</strong>, sempre oferecendo o melhor mix de produtos na distribuição. De action figures a colecionáveis exclusivos, trabalhamos com marcas renomadas como Marvel, DC, Star Wars, anime e muito mais.
@@ -53,7 +53,7 @@ const AboutSection = () => {
           <div className="rounded-xl overflow-hidden border border-border hover-glow-primary">
             <img
               src={storePhoto}
-              alt="Loja Geek & Toys em Copacabana"
+              alt="Loja GeekPop & Toys em Copacabana"
               className="w-full h-80 object-cover"
               loading="lazy"
             />

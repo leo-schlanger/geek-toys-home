@@ -162,7 +162,7 @@ const RadioSection = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 mb-4">
             <Radio className="w-3.5 h-3.5 text-primary" />
             <span className="text-[10px] font-bold uppercase tracking-widest text-primary">
-              Rádio Geek &amp; Toys
+              Rádio GeekPop &amp; Toys
             </span>
           </div>
           <h2 className="text-3xl md:text-5xl font-heading font-bold mb-3">
@@ -193,7 +193,7 @@ const RadioSection = () => {
               ref={audioRef}
               src={streamUrl}
               preload="none"
-              aria-label="Stream da Rádio Geek & Toys"
+              aria-label="Stream da Rádio GeekPop & Toys"
             />
 
             <div className="relative z-10 p-6 md:p-8">
@@ -265,7 +265,7 @@ const RadioSection = () => {
                   ) : isBuffering && isPlaying ? (
                     <>
                       <p className="font-heading font-bold text-lg truncate">
-                        Rádio Geek &amp; Toys
+                        Rádio GeekPop &amp; Toys
                       </p>
                       <p className="text-sm text-muted-foreground mt-1">Conectando…</p>
                     </>
@@ -295,7 +295,7 @@ const RadioSection = () => {
                   ) : (
                     <>
                       <p className="font-heading font-bold text-lg truncate">
-                        Rádio Geek &amp; Toys
+                        Rádio GeekPop &amp; Toys
                       </p>
                       <p className="text-sm text-muted-foreground mt-1">
                         {isPlaying ? "No ar" : "Clique para ouvir"}

@@ -11,7 +11,7 @@ const TermsOfUse = () => {
                     <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
                         <p className="text-sm"><strong>Última atualização:</strong> Março de 2026</p>
 
-                        <p>Ao utilizar os sites da <strong>Geek & Toys</strong> e o <strong>Clube de Vantagens</strong>, você concorda com os seguintes termos:</p>
+                        <p>Ao utilizar os sites da <strong>GeekPop & Toys</strong> e o <strong>Clube de Vantagens</strong>, você concorda com os seguintes termos:</p>
 
                         <section className="space-y-3">
                             <h2 className="text-2xl font-semibold text-foreground">1. O Clube de Vantagens</h2>
@@ -44,7 +44,7 @@ const TermsOfUse = () => {
 
                         <section className="space-y-3">
                             <h2 className="text-2xl font-semibold text-foreground">5. Propriedade Intelectual</h2>
-                            <p>Todo o conteúdo (logos, textos, imagens) é propriedade da Geek & Toys ou licenciadores parceiros.</p>
+                            <p>Todo o conteúdo (logos, textos, imagens) é propriedade da GeekPop & Toys ou licenciadores parceiros.</p>
                         </section>
 
                         <section className="space-y-3">

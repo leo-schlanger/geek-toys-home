@@ -20,7 +20,7 @@ const Footer = () => (
   <footer className="bg-footer py-12 border-t border-border">
     <div className="container text-center">
       <a href="#inicio" className="inline-block hover:opacity-90 transition-opacity">
-        <img src="/logo.jpg" alt="Geek & Toys" className="h-24 mx-auto rounded shadow-lg shadow-primary/10" />
+        <img src="/logo.jpg" alt="GeekPop & Toys" className="h-24 mx-auto rounded shadow-lg shadow-primary/10" />
       </a>
 
       <nav className="flex flex-wrap justify-center gap-6 mt-6 mb-8">
@@ -61,7 +61,7 @@ const Footer = () => (
       </div>
 
       <p className="text-sm text-muted-foreground">
-        © 2026 Geek & Toys Collection — Todos os direitos reservados
+        © 2026 GeekPop & Toys Collection — Todos os direitos reservados
       </p>
       <p className="text-xs text-muted-foreground/60 mt-1">
         Copacabana, Rio de Janeiro - RJ

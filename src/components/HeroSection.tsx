@@ -17,7 +17,7 @@ const HeroSection = () => {
       <div className="absolute inset-0">
         <img
           src={heroBg}
-          alt="Geek & Toys Collection store"
+          alt="GeekPop & Toys Collection store"
           className="w-full h-full object-cover opacity-30"
           loading="eager"
         />
@@ -29,7 +29,7 @@ const HeroSection = () => {
           <div className="mb-8 lg:mb-0 animate-fade-up flex justify-center lg:justify-center">
             <img
               src="/logo3d.jpg"
-              alt="Geek & Toys Official Logo"
+              alt="GeekPop & Toys Official Logo"
               className="w-full max-w-[280px] lg:max-w-[340px] h-auto drop-shadow-2xl rounded-2xl"
             />
           </div>

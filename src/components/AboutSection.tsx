@@ -43,7 +43,7 @@ const AboutSection = () => {
                 { icon: Clock, text: "Seg a Sex: 09h às 19h | Sáb: 09h às 16h" },
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-3 text-sm">
-                  <Icon size={18} className="text-accent shrink-0" />
+                  <Icon size={18} className="text-primary shrink-0" />
                   <span className="text-foreground/80">{text}</span>
                 </div>
               ))}

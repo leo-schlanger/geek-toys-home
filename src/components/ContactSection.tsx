@@ -24,7 +24,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contato" ref={ref} className="section-fade-in py-20 md:py-28 bg-card/30">
+    <section id="contato" ref={ref} className="section-fade-in py-20 md:py-28 bg-secondary/40">
       <div className="container">
         <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-12 text-center">
           Entre em Contato
@@ -38,7 +38,7 @@ const ContactSection = () => {
               required
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+              className="bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
             />
             <input
               type="email"
@@ -46,7 +46,7 @@ const ContactSection = () => {
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+              className="bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all"
             />
             <textarea
               placeholder="Mensagem"
@@ -54,7 +54,7 @@ const ContactSection = () => {
               rows={5}
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all resize-none"
+              className="bg-card border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all resize-none"
             />
             <button
               type="submit"

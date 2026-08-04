@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
             <main className="flex-grow pt-32 pb-20 px-6">
                 <div className="container max-w-4xl mx-auto glass p-8 md:p-12 rounded-2xl border border-border/50 shadow-2xl">
                     <h1 className="text-4xl font-heading font-bold mb-8 gradient-text">Política de Privacidade</h1>
-                    <div className="prose prose-invert max-w-none space-y-6 text-muted-foreground">
+                    <div className="prose max-w-none space-y-6 text-muted-foreground">
                         <p className="text-sm"><strong>Última atualização:</strong> Março de 2026</p>
 
                         <p>A <strong>GeekPop & Toys Collection</strong>, sediada em Copacabana, Rio de Janeiro - RJ, valoriza a sua privacidade. Esta política descreve como coletamos e usamos seus dados em conformidade com a Lei Geral de Proteção de Dados (LGPD).</p>

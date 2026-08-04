@@ -175,7 +175,7 @@ const RadioSection = () => {
 
         {/* Player card */}
         <div className="max-w-2xl mx-auto">
-          <div className="relative glass rounded-3xl border border-border overflow-hidden shadow-2xl">
+          <div className="relative glass rounded-3xl border border-border overflow-hidden shadow-xl shadow-primary/10">
             {/* Art background blur */}
             {song?.art && (
               <div className="absolute inset-0 pointer-events-none">
@@ -183,9 +183,9 @@ const RadioSection = () => {
                   src={song.art}
                   alt=""
                   aria-hidden
-                  className="w-full h-full object-cover scale-150 blur-3xl opacity-25"
+                  className="w-full h-full object-cover scale-150 blur-3xl opacity-15"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background/90" />
+                <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background/95" />
               </div>
             )}
 
@@ -199,9 +199,9 @@ const RadioSection = () => {
             <div className="relative z-10 p-6 md:p-8">
               {/* Top bar — status + ouvintes */}
               <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/15 border border-green-500/30">
-                  <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow shadow-green-400/60" />
-                  <span className="text-[10px] font-bold text-green-400 uppercase tracking-wide">
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/25">
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow shadow-green-500/50" />
+                  <span className="text-[10px] font-bold text-green-600 uppercase tracking-wide">
                     Ao Vivo
                   </span>
                 </div>
@@ -215,7 +215,7 @@ const RadioSection = () => {
               <div className="flex flex-col sm:flex-row items-center gap-6">
                 <div className="relative shrink-0">
                   <div
-                    className={`w-36 h-36 md:w-44 md:h-44 rounded-2xl overflow-hidden border-2 border-border shadow-2xl shadow-black/40 transition-transform duration-300 ${
+                    className={`w-36 h-36 md:w-44 md:h-44 rounded-2xl overflow-hidden border-2 border-border shadow-lg shadow-primary/15 transition-transform duration-300 ${
                       isPlaying ? "scale-100" : "scale-95"
                     }`}
                   >

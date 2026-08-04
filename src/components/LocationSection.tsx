@@ -35,7 +35,7 @@ const LocationSection = () => {
             />
           </div>
 
-          <div className="bg-card border border-border rounded-xl p-8 flex flex-col justify-center gap-6">
+          <div className="bg-card border border-border rounded-xl p-8 shadow-sm flex flex-col justify-center gap-6">
             {[
               {
                 icon: MapPin,
@@ -61,7 +61,7 @@ const LocationSection = () => {
               },
             ].map(({ icon: Icon, label, text, href }) => (
               <div key={label} className="flex gap-4">
-                <Icon size={20} className="text-accent shrink-0 mt-0.5" />
+                <Icon size={20} className="text-primary shrink-0 mt-0.5" />
                 <div>
                   <p className="font-heading font-semibold text-sm text-foreground">{label}</p>
                   {href ? (

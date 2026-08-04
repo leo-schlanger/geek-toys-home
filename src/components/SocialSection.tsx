@@ -68,7 +68,7 @@ const SocialSection = () => {
   }, []);
 
   return (
-    <section ref={ref} className="section-fade-in py-20 md:py-28 bg-card/30">
+    <section ref={ref} className="section-fade-in py-20 md:py-28 bg-secondary/40">
       <div className="container">
         <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2 text-center">
           Siga-nos nas Redes Sociais
@@ -84,7 +84,7 @@ const SocialSection = () => {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex flex-col items-center justify-center gap-3 bg-card border border-border rounded-xl p-8 transition-all duration-300 ${s.color}`}
+              className={`flex flex-col items-center justify-center gap-3 bg-card border border-border rounded-xl p-8 shadow-sm transition-all duration-300 ${s.color}`}
             >
               <span className="text-foreground">{s.icon}</span>
               <span className="font-heading font-semibold text-foreground">{s.name}</span>

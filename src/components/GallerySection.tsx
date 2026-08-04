@@ -26,7 +26,7 @@ const GallerySection = () => {
 
   return (
     <>
-      <section id="galeria" ref={ref} className="section-fade-in py-20 md:py-28 bg-card/30">
+      <section id="galeria" ref={ref} className="section-fade-in py-20 md:py-28 bg-secondary/40">
         <div className="container">
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-2 text-center">
             Nossa Loja
@@ -40,7 +40,7 @@ const GallerySection = () => {
               <button
                 key={i}
                 onClick={() => setLightbox(src)}
-                className="group rounded-xl overflow-hidden border border-border hover-glow-primary cursor-pointer"
+                className="group rounded-xl overflow-hidden border border-border shadow-sm hover-glow-primary cursor-pointer"
               >
                 <img
                   src={src}

@@ -32,8 +32,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 20% 12%;
 
-    /* Hot pink — brand primary (GeeKpop) */
-    --primary: 330 85% 55%;
+    /* Hot Pink — brand primary (GeekPop) #F04080 */
+    --primary: 340 85% 59%;
     --primary-foreground: 0 0% 100%;
 
     /* Soft pink surface for secondary blocks */
@@ -43,20 +43,20 @@
     --muted: 330 25% 95%;
     --muted-foreground: 240 8% 42%;
 
-    /* Sunny yellow — brand accent (Toys) */
-    --accent: 48 100% 50%;
+    /* Pop Yellow — brand accent (Toys) #FCBE04 */
+    --accent: 45 97% 50%;
     --accent-foreground: 240 20% 12%;
 
     --destructive: 0 84% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --cta: 330 85% 55%;
+    --cta: 340 85% 59%;
     --cta-foreground: 0 0% 100%;
 
     /* Soft pink borders like the ad frame */
-    --border: 330 45% 88%;
-    --input: 330 30% 94%;
-    --ring: 330 85% 55%;
+    --border: 340 45% 88%;
+    --input: 340 30% 94%;
+    --ring: 340 85% 59%;
 
     --radius: 0.75rem;
 
@@ -65,12 +65,12 @@
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 240 20% 12%;
-    --sidebar-primary: 330 85% 55%;
+    --sidebar-primary: 340 85% 59%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 330 55% 96%;
     --sidebar-accent-foreground: 240 20% 12%;
-    --sidebar-border: 330 45% 88%;
-    --sidebar-ring: 330 85% 55%;
+    --sidebar-border: 340 45% 88%;
+    --sidebar-ring: 340 85% 59%;
 
     /* Altura do banner de evento (0 quando oculto). Atualizado pelo EventAnnouncementBanner. */
     --event-banner-h: 0px;

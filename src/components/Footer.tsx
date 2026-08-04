@@ -7,16 +7,17 @@ interface FooterLink {
 }
 
 const footerLinks: FooterLink[] = [
+  { label: "Loja Online", href: "https://shop.geeketoys.com.br", external: true },
+  { label: "Clube GeekPop", href: "https://club.geeketoys.com.br/assinar", external: true },
   { label: "Evento", href: "#evento" },
-  { label: "Fotos do evento", href: "#fotos-evento" },
   { label: "Ingressos", href: "#ingressos" },
+  { label: "Fotos do evento", href: "#fotos-evento" },
   { label: "Quem Somos", href: "#quem-somos" },
   { label: "Galeria", href: "#galeria" },
   { label: "Produtos", href: "#produtos" },
   { label: "Contato", href: "#contato" },
   { label: "Termos de Uso", href: "/termos" },
   { label: "Privacidade", href: "/privacidade" },
-  { label: "Clube de Vantagens", href: "https://club.geeketoys.com.br", external: true },
 ];
 
 const Footer = () => (

@@ -1,6 +1,10 @@
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, ShoppingBag, Sparkles, Ticket } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import { SocialIcon } from "./SocialIcon";
+import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
+
+const SHOP_URL = "https://shop.geeketoys.com.br";
+const CLUB_URL = "https://club.geeketoys.com.br";
 
 const socials = [
   { label: "Facebook", href: "https://www.facebook.com/geeketoyscolection/", icon: "fb" },
@@ -11,13 +15,14 @@ const socials = [
 ];
 
 const HeroSection = () => {
+  const eventOn = isEventVisible(ACTIVE_EVENT);
+
   return (
     <section
       id="inicio"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{ paddingTop: "var(--event-banner-h, 0px)" }}
     >
-      {/* Soft pink/white wash over store photo */}
       <div className="absolute inset-0">
         <img
           src={heroBg}
@@ -38,26 +43,63 @@ const HeroSection = () => {
               className="w-full max-w-[280px] lg:max-w-[340px] h-auto drop-shadow-2xl rounded-2xl ring-4 ring-primary/15"
             />
           </div>
-          <div className="flex flex-col items-center lg:items-start">
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 animate-fade-up max-w-lg leading-relaxed" style={{ animationDelay: "0.15s" }}>
-              Há 15 anos trazendo o melhor do universo geek para o Brasil — <span className="text-foreground font-semibold">Pioneiros do Funko Pop no país!</span> Atacado e varejo para todo o Brasil.
+          <div className="flex flex-col items-center lg:items-start w-full">
+            <p
+              className="text-lg md:text-xl text-muted-foreground mb-6 animate-fade-up max-w-lg leading-relaxed"
+              style={{ animationDelay: "0.15s" }}
+            >
+              Há 15 anos trazendo o melhor do universo geek para o Brasil —{" "}
+              <span className="text-foreground font-semibold">Pioneiros do Funko Pop no país!</span>{" "}
+              Compre na loja online, entre no Clube e participe dos nossos eventos.
             </p>
+
+            <div
+              className="flex flex-col sm:flex-row flex-wrap gap-3 w-full sm:w-auto animate-fade-up"
+              style={{ animationDelay: "0.25s" }}
+            >
+              <a
+                href={SHOP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3.5 rounded-full font-bold text-sm md:text-base hover:brightness-110 transition-all shadow-lg shadow-primary/25"
+              >
+                <ShoppingBag size={20} />
+                Comprar na loja
+              </a>
+              <a
+                href={`${CLUB_URL}/assinar`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-accent text-accent-foreground px-6 py-3.5 rounded-full font-bold text-sm md:text-base hover:brightness-105 transition-all shadow-md shadow-accent/30"
+              >
+                <Sparkles size={20} />
+                Assinar o Clube
+              </a>
+              {eventOn && (
+                <a
+                  href="#ingressos"
+                  className="inline-flex items-center justify-center gap-2 border-2 border-primary text-primary bg-card px-6 py-3.5 rounded-full font-bold text-sm md:text-base hover:bg-primary/5 transition-all"
+                >
+                  <Ticket size={20} />
+                  Ingresso do evento
+                </a>
+              )}
+            </div>
+
             <a
               href="https://wa.me/5521985464666"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-[#25D366] text-white px-6 py-4 rounded-full font-bold text-base lg:text-lg hover:bg-[#20ba5a] hover:scale-105 transition-all shadow-lg shadow-[#25D366]/30 animate-fade-up relative group overflow-hidden"
-              style={{ animationDelay: "0.3s" }}
+              className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-[#25D366] transition-colors animate-fade-up"
+              style={{ animationDelay: "0.35s" }}
             >
-              <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-              <MessageCircle size={22} className="relative z-10 animate-pulse" />
-              <span className="relative z-10">Fale Conosco no WhatsApp</span>
+              <MessageCircle size={18} className="text-[#25D366]" />
+              Ou fale conosco no WhatsApp
             </a>
           </div>
         </div>
       </div>
 
-      {/* Floating social icons */}
       <div className="hidden md:flex fixed right-4 top-1/2 -translate-y-1/2 z-40 flex-col gap-3">
         {socials.map((s) => (
           <a

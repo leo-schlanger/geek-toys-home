@@ -17,12 +17,12 @@ const baseLinks: NavLink[] = [
   { label: "Rádio", href: "#radio" },
   { label: "Localização", href: "#localizacao" },
   { label: "Contato", href: "#contato" },
-  { label: "Clube", href: "https://club.geeketoys.com.br", external: true },
+  { label: "Loja", href: "https://shop.geeketoys.com.br", external: true },
+  { label: "Clube", href: "https://club.geeketoys.com.br/assinar", external: true },
 ];
 
 function buildNavLinks(): NavLink[] {
   if (!isEventVisible(ACTIVE_EVENT)) return baseLinks;
-  // Inserir Evento / Ingressos logo após Início
   return [
     baseLinks[0],
     { label: "Evento", href: "#evento", highlight: true },

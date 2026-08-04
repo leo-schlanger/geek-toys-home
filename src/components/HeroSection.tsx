@@ -12,16 +12,21 @@ const socials = [
 
 const HeroSection = () => {
   return (
-    <section id="inicio" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background */}
+    <section
+      id="inicio"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      style={{ paddingTop: "var(--event-banner-h, 0px)" }}
+    >
+      {/* Soft pink/white wash over store photo */}
       <div className="absolute inset-0">
         <img
           src={heroBg}
           alt="GeekPop & Toys Collection store"
-          className="w-full h-full object-cover opacity-30"
+          className="w-full h-full object-cover opacity-25"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-accent/10" />
       </div>
 
       <div className="container relative z-10 pt-20 pb-16">
@@ -30,7 +35,7 @@ const HeroSection = () => {
             <img
               src="/logo3d.jpg"
               alt="GeekPop & Toys Official Logo"
-              className="w-full max-w-[280px] lg:max-w-[340px] h-auto drop-shadow-2xl rounded-2xl"
+              className="w-full max-w-[280px] lg:max-w-[340px] h-auto drop-shadow-2xl rounded-2xl ring-4 ring-primary/15"
             />
           </div>
           <div className="flex flex-col items-center lg:items-start">
@@ -41,7 +46,7 @@ const HeroSection = () => {
               href="https://wa.me/5521985464666"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 bg-[#25D366] text-white px-6 py-4 rounded-full font-bold text-base lg:text-lg hover:bg-[#20ba5a] hover:scale-105 transition-all shadow-lg shadow-[#25D366]/20 animate-fade-up relative group overflow-hidden"
+              className="inline-flex items-center gap-3 bg-[#25D366] text-white px-6 py-4 rounded-full font-bold text-base lg:text-lg hover:bg-[#20ba5a] hover:scale-105 transition-all shadow-lg shadow-[#25D366]/30 animate-fade-up relative group overflow-hidden"
               style={{ animationDelay: "0.3s" }}
             >
               <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
@@ -60,7 +65,7 @@ const HeroSection = () => {
             href={s.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-accent hover:border-glow-accent hover:text-primary transition-all"
+            className="w-10 h-10 rounded-full bg-card border border-border shadow-sm flex items-center justify-center text-primary hover:border-primary hover:shadow-md hover:shadow-primary/20 transition-all"
             aria-label={s.label}
           >
             <SocialIcon type={s.icon} />

@@ -2,51 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  GeekPop & Toys — light / K-pop brand theme
+  Docs: CLAUDE.md → "Design tokens". Inspired by marketing creatives (white + hot pink + sunny yellow).
+
+  Palette (HSL → hex approx):
+    background  330 40% 99%  → #FDFBFC  (white with pink whisper)
+    foreground  240 20% 12%  → #181825  (near-black text)
+    card        0 0% 100%    → #FFFFFF
+    primary     330 85% 55%  → #EE2B8C  (GeeKpop pink — CTAs, links, icons)
+    secondary   330 55% 96%  → #FAEFF5  (section bands)
+    muted       330 25% 95%  → #F5EFF2
+    accent      48 100% 50%  → #FFCC00  (Toys yellow — highlights only)
+    border      330 45% 88%  → #EED3E0  (soft pink frame)
+    footer      330 40% 97%  → #FAF4F7
+
+  No dark mode. Prefer text-primary for icons; accent only where yellow contrasts well.
+*/
+
 @layer base {
   :root {
-    --background: 0 0% 5.1%;
-    --foreground: 0 0% 96.1%;
+    /* Pure white base with a whisper of pink warmth */
+    --background: 330 40% 99%;
+    --foreground: 240 20% 12%;
 
-    --card: 240 33% 11.4%;
-    --card-foreground: 0 0% 96.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 20% 12%;
 
-    --popover: 240 33% 11.4%;
-    --popover-foreground: 0 0% 96.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 20% 12%;
 
-    --primary: 330 81% 60%;
+    /* Hot pink — brand primary (GeeKpop) */
+    --primary: 330 85% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 33% 11.4%;
-    --secondary-foreground: 0 0% 96.1%;
+    /* Soft pink surface for secondary blocks */
+    --secondary: 330 55% 96%;
+    --secondary-foreground: 330 50% 28%;
 
-    --muted: 240 10% 20%;
-    --muted-foreground: 240 10% 69%;
+    --muted: 330 25% 95%;
+    --muted-foreground: 240 8% 42%;
 
-    --accent: 45 90% 55%;
-    --accent-foreground: 0 0% 5%;
+    /* Sunny yellow — brand accent (Toys) */
+    --accent: 48 100% 50%;
+    --accent-foreground: 240 20% 12%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 55%;
     --destructive-foreground: 0 0% 100%;
 
-    --cta: 330 81% 60%;
+    --cta: 330 85% 55%;
     --cta-foreground: 0 0% 100%;
 
-    --border: 330 25% 25%;
-    --input: 330 20% 15%;
-    --ring: 330 81% 60%;
+    /* Soft pink borders like the ad frame */
+    --border: 330 45% 88%;
+    --input: 330 30% 94%;
+    --ring: 330 85% 55%;
 
     --radius: 0.75rem;
 
-    --footer: 240 40% 3.5%;
+    /* Light footer with pink tint */
+    --footer: 330 40% 97%;
 
-    --sidebar-background: 0 0% 5.1%;
-    --sidebar-foreground: 0 0% 96.1%;
-    --sidebar-primary: 330 81% 60%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 20% 12%;
+    --sidebar-primary: 330 85% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 33% 11.4%;
-    --sidebar-accent-foreground: 0 0% 96.1%;
-    --sidebar-border: 330 25% 25%;
-    --sidebar-ring: 330 81% 60%;
+    --sidebar-accent: 330 55% 96%;
+    --sidebar-accent-foreground: 240 20% 12%;
+    --sidebar-border: 330 45% 88%;
+    --sidebar-ring: 330 85% 55%;
+
+    /* Altura do banner de evento (0 quando oculto). Atualizado pelo EventAnnouncementBanner. */
+    --event-banner-h: 0px;
   }
 }
 
@@ -70,40 +97,42 @@
 
 @layer utilities {
   .gradient-text {
-    background-image: linear-gradient(90deg, hsl(330 81% 60%), hsl(45 90% 55%));
+    background-image: linear-gradient(90deg, hsl(330 85% 55%), hsl(48 100% 50%));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
   .text-glow-primary {
-    text-shadow: 0 0 20px hsl(330 81% 60% / 0.6), 0 0 40px hsl(330 81% 60% / 0.3);
+    text-shadow: 0 0 16px hsl(330 85% 55% / 0.35), 0 0 32px hsl(330 85% 55% / 0.15);
   }
 
   .text-glow-accent {
-    text-shadow: 0 0 20px hsl(45 90% 55% / 0.6), 0 0 40px hsl(45 90% 55% / 0.3);
+    text-shadow: 0 0 16px hsl(48 100% 50% / 0.4), 0 0 32px hsl(48 100% 50% / 0.18);
   }
 
   .border-glow-primary {
-    box-shadow: 0 0 15px hsl(330 81% 60% / 0.3), inset 0 0 15px hsl(330 81% 60% / 0.05);
+    box-shadow: 0 0 12px hsl(330 85% 55% / 0.22), inset 0 0 12px hsl(330 85% 55% / 0.04);
   }
 
   .border-glow-accent {
-    box-shadow: 0 0 15px hsl(45 90% 55% / 0.3);
+    box-shadow: 0 0 12px hsl(48 100% 50% / 0.28);
   }
 
   .hover-glow-primary {
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
   }
   .hover-glow-primary:hover {
-    box-shadow: 0 0 25px hsl(330 81% 60% / 0.5), 0 0 50px hsl(330 81% 60% / 0.2);
+    box-shadow: 0 8px 28px hsl(330 85% 55% / 0.2), 0 2px 8px hsl(330 85% 55% / 0.1);
+    border-color: hsl(330 85% 55% / 0.45);
     transform: translateY(-2px);
   }
 
+  /* Frosted glass for light surfaces (navbar, cards) */
   .glass {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    background: hsl(0 0% 5.1% / 0.8);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: hsl(0 0% 100% / 0.82);
   }
 
   .section-fade-in {

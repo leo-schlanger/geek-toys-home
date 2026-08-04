@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
 
 interface NavLink {
   label: string;
   href: string;
   external?: boolean;
+  highlight?: boolean;
 }
 
-const navLinks: NavLink[] = [
+const baseLinks: NavLink[] = [
   { label: "Início", href: "#inicio" },
   { label: "Quem Somos", href: "#quem-somos" },
   { label: "Galeria", href: "#galeria" },
@@ -18,9 +20,21 @@ const navLinks: NavLink[] = [
   { label: "Clube", href: "https://club.geeketoys.com.br", external: true },
 ];
 
+function buildNavLinks(): NavLink[] {
+  if (!isEventVisible(ACTIVE_EVENT)) return baseLinks;
+  // Inserir Evento / Ingressos logo após Início
+  return [
+    baseLinks[0],
+    { label: "Evento", href: "#evento", highlight: true },
+    { label: "Fotos", href: "#fotos-evento" },
+    ...baseLinks.slice(1),
+  ];
+}
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const navLinks = buildNavLinks();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -30,25 +44,35 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "glass border-b border-border" : "bg-transparent"
-        }`}
+      className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "glass border-b border-border" : "bg-transparent"
+      }`}
+      style={{ top: "var(--event-banner-h, 0px)" }}
     >
       <div className="container flex items-center justify-between h-16 md:h-20">
         <a href="#inicio" className="flex items-center">
-          <img src="/logo.jpg" alt="GeekPop & Toys" className="h-14 md:h-16 rounded" />
+          <img
+            src="/logo.jpg"
+            alt="GeekPop & Toys"
+            className="h-14 md:h-16 rounded-lg shadow-sm ring-1 ring-border"
+          />
         </a>
 
         {/* Desktop */}
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="hidden lg:flex items-center gap-6 xl:gap-8">
           {navLinks.map((link) => (
-            <li key={link.href}>
+            <li key={link.href + link.label}>
               <a
                 href={link.href}
-                {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                {...(link.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
                 className={`text-sm font-medium transition-colors ${
                   link.external
                     ? "px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90"
-                    : "text-foreground/80 hover:text-primary"
+                    : link.highlight
+                      ? "text-primary font-semibold hover:text-primary/80"
+                      : "text-foreground/80 hover:text-primary"
                 }`}
               >
                 {link.label}
@@ -60,7 +84,7 @@ const Navbar = () => {
         {/* Mobile toggle */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-foreground"
+          className="lg:hidden text-foreground"
           aria-label="Menu"
         >
           {open ? <X size={24} /> : <Menu size={24} />}
@@ -69,17 +93,21 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden glass border-t border-border">
+        <div className="lg:hidden glass border-t border-border">
           <ul className="flex flex-col p-4 gap-4">
             {navLinks.map((link) => (
-              <li key={link.href}>
+              <li key={link.href + link.label}>
                 <a
                   href={link.href}
-                  {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  {...(link.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
                   className={`block font-medium transition-colors ${
                     link.external
                       ? "text-center py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
-                      : "text-foreground/80 hover:text-primary"
+                      : link.highlight
+                        ? "text-primary font-semibold"
+                        : "text-foreground/80 hover:text-primary"
                   }`}
                   onClick={() => setOpen(false)}
                 >

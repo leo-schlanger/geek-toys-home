@@ -7,6 +7,9 @@ interface FooterLink {
 }
 
 const footerLinks: FooterLink[] = [
+  { label: "Evento", href: "#evento" },
+  { label: "Fotos do evento", href: "#fotos-evento" },
+  { label: "Ingressos", href: "#ingressos" },
   { label: "Quem Somos", href: "#quem-somos" },
   { label: "Galeria", href: "#galeria" },
   { label: "Produtos", href: "#produtos" },
@@ -20,7 +23,7 @@ const Footer = () => (
   <footer className="bg-footer py-12 border-t border-border">
     <div className="container text-center">
       <a href="#inicio" className="inline-block hover:opacity-90 transition-opacity">
-        <img src="/logo.jpg" alt="GeekPop & Toys" className="h-24 mx-auto rounded shadow-lg shadow-primary/10" />
+        <img src="/logo.jpg" alt="GeekPop & Toys" className="h-24 mx-auto rounded-lg shadow-md shadow-primary/15 ring-2 ring-primary/10" />
       </a>
 
       <nav className="flex flex-wrap justify-center gap-6 mt-6 mb-8">
@@ -52,7 +55,7 @@ const Footer = () => (
             href={s.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-10 h-10 rounded-full bg-card border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all"
+            className="w-10 h-10 rounded-full bg-card border border-border shadow-sm flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary hover:shadow-md hover:shadow-primary/15 transition-all"
             aria-label={s.label}
           >
             <SocialIcon type={s.icon} className="w-5 h-5" />

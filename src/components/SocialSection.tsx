@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { primaryWhatsAppUrl } from "@/data/contacts";
 
 const socials = [
   {
@@ -32,22 +33,12 @@ const socials = [
     ),
   },
   {
-    name: "Shopee",
-    href: "https://shopee.com.br/geeketoys",
-    color: "hover:border-[hsl(16,100%,50%)] hover:shadow-[0_0_20px_hsl(16,100%,50%,0.4)]",
+    name: "WhatsApp",
+    href: primaryWhatsAppUrl("Olá! Vim pelo site geeketoys.com.br 👋"),
+    color: "hover:border-[#25D366] hover:shadow-[0_0_20px_rgba(37,211,102,0.4)]",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
-        <path d="M6.319 0C4.566 0 3.128 1.438 3.128 3.191V24l3.191-2.553 3.192 2.553V3.191C9.511 1.438 8.073 0 6.319 0zm11.362 0c-1.753 0-3.191 1.438-3.191 3.191V24l3.191-2.553L20.872 24V3.191C20.872 1.438 19.434 0 17.681 0z" />
-      </svg>
-    ),
-  },
-  {
-    name: "Mercado Livre",
-    href: "https://lista.mercadolivre.com.br/_CustId_1642214032?item_id=MLB6181959490&category_id=MLB1839&seller_id=1642214032&client=recoview-selleritems&recos_listing=true#origin=vip&component=sellerData&typeSeller=classic",
-    color: "hover:border-[#FFE600] hover:shadow-[0_0_20px_rgba(255,230,0,0.4)]",
-    icon: (
-      <svg viewBox="0 0 32 32" fill="currentColor" className="w-8 h-8">
-        <path d="M26.4,8.5c-1.2,0-2.3,0.5-3.1,1.3l-8.3,8.3c-0.4,0.4-1.1,0.4-1.5,0l-2.6-2.6c-0.8-0.8-2.2-0.8-3.1,0l-5,5c-0.8,0.8-0.8,2.2,0,3.1l1.5,1.5c0.8,0.8,2.2,0.8,3.1,0l5-5c0.4-0.4,1.1-0.4,1.5,0l2.6,2.6c0.8,0.8,2.2,0.8,3.1,0l8.3-8.3c0.8-0.8,1.3-1.9,1.3-3.1C29.6,9.8,28.2,8.5,26.4,8.5z" />
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.85 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
       </svg>
     ),
   },
@@ -74,10 +65,10 @@ const SocialSection = () => {
           Siga-nos nas Redes Sociais
         </h2>
         <p className="text-muted-foreground text-center mb-12">
-          Acompanhe nossas novidades e promoções!
+          Acompanhe novidades, promoções e bastidores da loja!
         </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-3xl mx-auto">
           {socials.map((s) => (
             <a
               key={s.name}

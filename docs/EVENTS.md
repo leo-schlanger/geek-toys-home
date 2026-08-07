@@ -1,8 +1,8 @@
 # Eventos no site institucional — planejamento e operação
 
-> **Última atualização:** 4 de Agosto de 2026  
+> **Última atualização:** 7 de Agosto de 2026  
 > **Repo:** `geek-toys-home` (geeketoys.com.br)  
-> **Pedido:** Laura (04/08/2026) — anúncio no topo, infos do evento, fotos com download, reserva de ingresso online
+> **Pedido:** Laura (04/08 + 06/08/2026) — evento 6/set 14h–18h, ingresso R$ 20 (colo/PCD isentos), loja em foco, WhatsApp da loja
 
 ---
 

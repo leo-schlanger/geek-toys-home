@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { EMAIL, STORE_PHONES, waMeUrl } from "@/data/contacts";
 
 const LocationSection = () => {
   const ref = useRef<HTMLElement>(null);
@@ -36,49 +37,66 @@ const LocationSection = () => {
           </div>
 
           <div className="bg-card border border-border rounded-xl p-8 shadow-sm flex flex-col justify-center gap-6">
-            {[
-              {
-                icon: MapPin,
-                label: "Endereço",
-                text: "R. Barata Ribeiro, 181 - loja J - Copacabana, Rio de Janeiro - RJ, 22011-001, Brasil",
-              },
-              {
-                icon: Phone,
-                label: "WhatsApp",
-                text: "(21) 98546-4666",
-                href: "https://wa.me/5521985464666",
-              },
-              {
-                icon: Mail,
-                label: "E-mail",
-                text: "geeketoys@gmail.com",
-                href: "mailto:geeketoys@gmail.com",
-              },
-              {
-                icon: Clock,
-                label: "Horário",
-                text: "Seg a Sex: 09h às 19h | Sáb: 09h às 16h",
-              },
-            ].map(({ icon: Icon, label, text, href }) => (
-              <div key={label} className="flex gap-4">
-                <Icon size={20} className="text-primary shrink-0 mt-0.5" />
+            <div className="flex gap-4">
+              <MapPin size={20} className="text-primary shrink-0 mt-0.5" />
+              <div>
+                <p className="font-heading font-semibold text-sm text-foreground">Endereço</p>
+                <p className="text-muted-foreground text-sm">
+                  R. Barata Ribeiro, 181 - loja J - Copacabana, Rio de Janeiro - RJ, 22011-001,
+                  Brasil
+                </p>
+              </div>
+            </div>
+
+            {STORE_PHONES.map((phone) => (
+              <div key={phone.id} className="flex gap-4">
+                <Phone size={20} className="text-primary shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-heading font-semibold text-sm text-foreground">{label}</p>
-                  {href ? (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground text-sm hover:text-primary transition-colors"
-                    >
-                      {text}
-                    </a>
-                  ) : (
-                    <p className="text-muted-foreground text-sm">{text}</p>
+                  <p className="font-heading font-semibold text-sm text-foreground">
+                    {phone.label}
+                    {phone.primary && (
+                      <span className="ml-2 text-[10px] uppercase text-primary font-bold">
+                        Principal
+                      </span>
+                    )}
+                  </p>
+                  <a
+                    href={waMeUrl(phone.e164)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground text-sm hover:text-primary transition-colors"
+                  >
+                    {phone.display}
+                  </a>
+                  {phone.note && (
+                    <p className="text-xs text-muted-foreground/80 mt-0.5">{phone.note}</p>
                   )}
                 </div>
               </div>
             ))}
+
+            <div className="flex gap-4">
+              <Mail size={20} className="text-primary shrink-0 mt-0.5" />
+              <div>
+                <p className="font-heading font-semibold text-sm text-foreground">E-mail</p>
+                <a
+                  href={`mailto:${EMAIL}`}
+                  className="text-muted-foreground text-sm hover:text-primary transition-colors"
+                >
+                  {EMAIL}
+                </a>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <Clock size={20} className="text-primary shrink-0 mt-0.5" />
+              <div>
+                <p className="font-heading font-semibold text-sm text-foreground">Horário</p>
+                <p className="text-muted-foreground text-sm">
+                  Seg a Sex: 09h às 19h | Sáb: 09h às 16h
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

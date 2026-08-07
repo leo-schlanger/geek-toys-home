@@ -1,4 +1,5 @@
 import { SocialIcon } from "./SocialIcon";
+import { primaryWhatsAppUrl, STORE_PHONES, waMeUrl } from "@/data/contacts";
 
 interface FooterLink {
   label: string;
@@ -9,12 +10,13 @@ interface FooterLink {
 const footerLinks: FooterLink[] = [
   { label: "Loja Online", href: "https://shop.geeketoys.com.br", external: true },
   { label: "Clube GeekPop", href: "https://club.geeketoys.com.br/assinar", external: true },
+  { label: "Produtos", href: "#produtos" },
   { label: "Evento", href: "#evento" },
+  { label: "Promoções", href: "#promocoes" },
   { label: "Ingressos", href: "#ingressos" },
   { label: "Fotos do evento", href: "#fotos-evento" },
   { label: "Quem Somos", href: "#quem-somos" },
   { label: "Galeria", href: "#galeria" },
-  { label: "Produtos", href: "#produtos" },
   { label: "Contato", href: "#contato" },
   { label: "Termos de Uso", href: "/termos" },
   { label: "Privacidade", href: "/privacidade" },
@@ -24,32 +26,50 @@ const Footer = () => (
   <footer className="bg-footer py-12 border-t border-border">
     <div className="container text-center">
       <a href="#inicio" className="inline-block hover:opacity-90 transition-opacity">
-        <img src="/logo.jpg" alt="GeekPop & Toys" className="h-24 mx-auto rounded-lg shadow-md shadow-primary/15 ring-2 ring-primary/10" />
+        <img
+          src="/logo.jpg"
+          alt="GeekPop & Toys"
+          className="h-24 mx-auto rounded-lg shadow-md shadow-primary/15 ring-2 ring-primary/10"
+        />
       </a>
 
-      <nav className="flex flex-wrap justify-center gap-6 mt-6 mb-8">
+      <nav className="flex flex-wrap justify-center gap-6 mt-6 mb-6">
         {footerLinks.map((link) => (
           <a
-            key={link.href}
+            key={link.href + link.label}
             href={link.href}
             {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className={`text-sm transition-colors ${link.external
+            className={`text-sm transition-colors ${
+              link.external
                 ? "text-primary hover:text-primary/80 font-medium"
                 : "text-muted-foreground hover:text-primary"
-              }`}
+            }`}
           >
             {link.label}
           </a>
         ))}
       </nav>
 
+      <p className="text-sm text-muted-foreground mb-4 flex flex-wrap justify-center gap-x-4 gap-y-1">
+        {STORE_PHONES.map((p) => (
+          <a
+            key={p.id}
+            href={waMeUrl(p.e164)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-primary transition-colors"
+          >
+            {p.display}
+          </a>
+        ))}
+      </p>
+
       <div className="flex justify-center gap-4 mb-8">
         {[
           { href: "https://www.facebook.com/geeketoyscolection/", label: "Facebook", icon: "fb" },
           { href: "https://www.instagram.com/geeketoys/", label: "Instagram", icon: "ig" },
           { href: "https://www.tiktok.com/@geeketoys", label: "TikTok", icon: "tt" },
-          { href: "https://shopee.com.br/geeketoys", label: "Shopee", icon: "sh" },
-          { href: "https://lista.mercadolivre.com.br/_CustId_1642214032?item_id=MLB6181959490&category_id=MLB1839&seller_id=1642214032&client=recoview-selleritems&recos_listing=true#origin=vip&component=sellerData&typeSeller=classic", label: "Mercado Livre", icon: "ml" },
+          { href: primaryWhatsAppUrl(), label: "WhatsApp", icon: "wa" },
         ].map((s) => (
           <a
             key={s.label}

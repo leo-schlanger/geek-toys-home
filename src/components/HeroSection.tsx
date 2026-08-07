@@ -2,16 +2,17 @@ import { MessageCircle, ShoppingBag, Sparkles, Ticket } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import { SocialIcon } from "./SocialIcon";
 import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
+import { primaryWhatsAppUrl } from "@/data/contacts";
 
 const SHOP_URL = "https://shop.geeketoys.com.br";
 const CLUB_URL = "https://club.geeketoys.com.br";
 
+/** Redes sociais oficiais — sem Shopee / Mercado Livre (pedido Laura). */
 const socials = [
   { label: "Facebook", href: "https://www.facebook.com/geeketoyscolection/", icon: "fb" },
   { label: "Instagram", href: "https://www.instagram.com/geeketoys/", icon: "ig" },
   { label: "TikTok", href: "https://www.tiktok.com/@geeketoys", icon: "tt" },
-  { label: "Shopee", href: "https://shopee.com.br/geeketoys", icon: "sh" },
-  { label: "Mercado Livre", href: "https://lista.mercadolivre.com.br/_CustId_1642214032?item_id=MLB6181959490&category_id=MLB1839&seller_id=1642214032&client=recoview-selleritems&recos_listing=true#origin=vip&component=sellerData&typeSeller=classic", icon: "ml" },
+  { label: "WhatsApp", href: primaryWhatsAppUrl(), icon: "wa" },
 ];
 
 const HeroSection = () => {
@@ -20,7 +21,7 @@ const HeroSection = () => {
   return (
     <section
       id="inicio"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden"
       style={{ paddingTop: "var(--event-banner-h, 0px)" }}
     >
       <div className="absolute inset-0">
@@ -34,7 +35,7 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-accent/10" />
       </div>
 
-      <div className="container relative z-10 pt-20 pb-16">
+      <div className="container relative z-10 pt-20 pb-12">
         <div className="flex flex-col items-center text-center lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center lg:text-left">
           <div className="mb-8 lg:mb-0 animate-fade-up flex justify-center lg:justify-center">
             <img
@@ -58,13 +59,19 @@ const HeroSection = () => {
               style={{ animationDelay: "0.25s" }}
             >
               <a
-                href={SHOP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#produtos"
                 className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3.5 rounded-full font-bold text-sm md:text-base hover:brightness-110 transition-all shadow-lg shadow-primary/25"
               >
                 <ShoppingBag size={20} />
-                Comprar na loja
+                Ver produtos
+              </a>
+              <a
+                href={SHOP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 border-2 border-primary/40 text-foreground bg-card px-6 py-3.5 rounded-full font-bold text-sm md:text-base hover:border-primary hover:bg-primary/5 transition-all"
+              >
+                Abrir loja online
               </a>
               <a
                 href={`${CLUB_URL}/assinar`}
@@ -87,14 +94,14 @@ const HeroSection = () => {
             </div>
 
             <a
-              href="https://wa.me/5521985464666"
+              href={primaryWhatsAppUrl("Olá! Vim pelo site geeketoys.com.br 👋")}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-[#25D366] transition-colors animate-fade-up"
               style={{ animationDelay: "0.35s" }}
             >
               <MessageCircle size={18} className="text-[#25D366]" />
-              Ou fale conosco no WhatsApp
+              Fale conosco no WhatsApp da loja
             </a>
           </div>
         </div>

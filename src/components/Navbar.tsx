@@ -9,11 +9,13 @@ interface NavLink {
   highlight?: boolean;
 }
 
+/** Ordem: produtos e evento no topo da navegação. */
 const baseLinks: NavLink[] = [
   { label: "Início", href: "#inicio" },
+  { label: "Produtos", href: "#produtos", highlight: true },
+  { label: "Promoções", href: "#promocoes" },
   { label: "Quem Somos", href: "#quem-somos" },
   { label: "Galeria", href: "#galeria" },
-  { label: "Produtos", href: "#produtos" },
   { label: "Rádio", href: "#radio" },
   { label: "Localização", href: "#localizacao" },
   { label: "Contato", href: "#contato" },
@@ -23,11 +25,12 @@ const baseLinks: NavLink[] = [
 
 function buildNavLinks(): NavLink[] {
   if (!isEventVisible(ACTIVE_EVENT)) return baseLinks;
+  // Início · Produtos · Evento · Promoções · resto…
   return [
     baseLinks[0],
+    baseLinks[1],
     { label: "Evento", href: "#evento", highlight: true },
-    { label: "Fotos", href: "#fotos-evento" },
-    ...baseLinks.slice(1),
+    ...baseLinks.slice(2),
   ];
 }
 
@@ -59,7 +62,7 @@ const Navbar = () => {
         </a>
 
         {/* Desktop */}
-        <ul className="hidden lg:flex items-center gap-6 xl:gap-8">
+        <ul className="hidden lg:flex items-center gap-5 xl:gap-7">
           {navLinks.map((link) => (
             <li key={link.href + link.label}>
               <a

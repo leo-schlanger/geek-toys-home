@@ -4,7 +4,6 @@ import HeroSection from "@/components/HeroSection";
 import ProductsSection from "@/components/ProductsSection";
 import EventSection from "@/components/EventSection";
 import PromoSection from "@/components/PromoSection";
-import EventPhotosSection from "@/components/EventPhotosSection";
 import ChannelsSection from "@/components/ChannelsSection";
 import AboutSection from "@/components/AboutSection";
 import GallerySection from "@/components/GallerySection";
@@ -18,6 +17,7 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 /**
  * Ordem (pedido Laura 06/08/2026):
  * produtos + evento em foco no topo; quem somos / galeria / rádio / etc. mais abaixo.
+ * Fotos da Laura entram na galeria geral (#galeria) — sem seção separada de download.
  */
 const Index = () => {
   return (
@@ -29,7 +29,6 @@ const Index = () => {
         <ProductsSection />
         <EventSection />
         <PromoSection />
-        <EventPhotosSection />
         <ChannelsSection />
         <AboutSection />
         <GallerySection />

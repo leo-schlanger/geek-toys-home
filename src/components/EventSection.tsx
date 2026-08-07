@@ -137,10 +137,10 @@ const EventSection = () => {
               Quero reservar
             </a>
             <a
-              href="#fotos-evento"
+              href="#galeria"
               className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-3 text-sm font-medium text-foreground hover:border-primary/40 hover:text-primary transition-all"
             >
-              Ver fotos do evento
+              Ver galeria
             </a>
           </div>
         </div>

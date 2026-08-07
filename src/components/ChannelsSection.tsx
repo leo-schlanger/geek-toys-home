@@ -50,7 +50,7 @@ const ChannelsSection = () => {
             id: "evento",
             icon: Ticket,
             title: ACTIVE_EVENT.shortTitle,
-            desc: "Reserve seu ingresso online e baixe as fotos oficiais depois do evento — tudo por aqui.",
+            desc: "Reserve seu ingresso online e confira as fotos na galeria do site.",
             cta: "Reservar ingresso",
             href: "#ingressos",
             external: false,

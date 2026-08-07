@@ -14,7 +14,6 @@ const footerLinks: FooterLink[] = [
   { label: "Evento", href: "#evento" },
   { label: "Promoções", href: "#promocoes" },
   { label: "Ingressos", href: "#ingressos" },
-  { label: "Fotos do evento", href: "#fotos-evento" },
   { label: "Quem Somos", href: "#quem-somos" },
   { label: "Galeria", href: "#galeria" },
   { label: "Contato", href: "#contato" },

@@ -4,6 +4,8 @@
 > **Repo:** `geek-toys-home` (geeketoys.com.br)  
 > **Pedido:** Laura (04/08 + 06/08/2026) — evento 6/set 14h–18h, ingresso R$ 20 (colo/PCD isentos), loja em foco, WhatsApp da loja
 
+
+> **Galeria (Laura, 07/08/2026):** fotos em `public/eventos/kpop-night/` entram na **galeria geral** (`#galeria` no home). Sem botão de download e sem seção `#fotos-evento`.
 ---
 
 ## 1. Pedido da Laura (resumo)
@@ -12,7 +14,7 @@
 | --- | --- |
 | Anúncio em cima da entrada do site | Banner fixo no topo (`EventAnnouncementBanner`), dispensável |
 | Parte com informações do evento | Seção `#evento` (`EventSection`) |
-| Fotos + download (evitar mandar foto por pessoa) | Seção `#fotos-evento` com lightbox + baixar 1 / baixar todas |
+| Fotos na galeria (evitar mandar foto por pessoa) | Seção `#galeria` com lightbox + baixar 1 / baixar todas |
 | Reservar ingresso online (pelo cliente) | Formulário `#ingressos` → WhatsApp da loja com dados da reserva |
 
 **Também na loja online** (`shop.geeketoys.com.br`): mesmo fluxo no repo `clube-geek-toys` — ver `clube-geek-toys/docs/EVENTS.md` (banner em todas as páginas shop, card na home, rota `/evento`).
@@ -61,7 +63,7 @@ Fluxo:
 - [ ] Nomear de forma legível e listar em `ACTIVE_EVENT.photos`
 - [ ] Deploy
 - [ ] (Opcional) desligar reserva: `ticketReservation.enabled: false`
-- [ ] Avisar no Instagram/WhatsApp: “fotos no site geeketoys.com.br#fotos-evento”
+- [ ] Avisar no Instagram/WhatsApp: “fotos no site geeketoys.com.br#galeria”
 
 ### Encerrar o evento
 

@@ -56,11 +56,23 @@ export async function fetchProducts(params: {
   if (params.featured) qs.set('featured', 'true')
   if (params.category) qs.set('category', params.category)
   const q = qs.toString()
-  return getJson<ProductListResponse>(`/products${q ? `?${q}` : ''}`)
+  const data = await getJson<ProductListResponse>(`/products${q ? `?${q}` : ''}`)
+  // Extra guard against seed products (API also filters; keep home resilient)
+  const products = (data.products ?? []).filter(
+    (p) => !p.name.toLowerCase().startsWith('checkup')
+  )
+  return { ...data, products, total: products.length }
 }
 
 export async function fetchCategories(): Promise<ShopCategory[]> {
-  return getJson<ShopCategory[]>('/products/categories')
+  const cats = await getJson<ShopCategory[]>('/products/categories')
+  // Extra guard: hide QA/seed categories if API ever returns them
+  return cats.filter(
+    (c) =>
+      c.active &&
+      !c.slug.toLowerCase().startsWith('checkup') &&
+      !c.name.toLowerCase().startsWith('checkup')
+  )
 }
 
 export function productUrl(slug: string): string {

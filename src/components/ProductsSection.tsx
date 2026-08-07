@@ -51,12 +51,21 @@ function ProductTile({ product }: { product: ShopProduct }) {
             alt={product.name}
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+              const fb = e.currentTarget.nextElementSibling as HTMLElement | null;
+              if (fb) fb.classList.remove("hidden");
+            }}
           />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-muted-foreground">
-            <ImageOff className="h-10 w-10 opacity-50" />
-          </div>
-        )}
+        ) : null}
+        <div
+          className={`flex h-full w-full flex-col items-center justify-center gap-1.5 text-muted-foreground ${
+            image ? "hidden absolute inset-0 bg-secondary/60" : ""
+          }`}
+        >
+          <ImageOff className="h-10 w-10 opacity-50" />
+          <span className="text-[10px] font-semibold uppercase tracking-wide">Sem foto</span>
+        </div>
         <div className="absolute left-2 top-2 flex flex-col gap-1">
           {product.featured && (
             <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase text-primary-foreground">

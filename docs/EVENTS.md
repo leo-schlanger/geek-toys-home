@@ -1,134 +1,102 @@
-# Eventos no site institucional — planejamento e operação
+# Eventos no site institucional — operação
 
 > **Última atualização:** 7 de Agosto de 2026  
-> **Repo:** `geek-toys-home` (geeketoys.com.br)  
-> **Pedido:** Laura (04/08 + 06/08/2026) — evento 6/set 14h–18h, ingresso R$ 20 (colo/PCD isentos), loja em foco, WhatsApp da loja
+> **Repo:** `geek-toys-home` (geeketoys.com.br / www)  
+> **Pedido Laura (04–07/08/2026):** evento 6/set 14h–18h, R$ 20, WhatsApp loja, loja em foco, fotos na **galeria geral**
 
-
-> **Galeria (Laura, 07/08/2026):** fotos em `public/eventos/kpop-night/` entram na **galeria geral** (`#galeria` no home). Sem botão de download e sem seção `#fotos-evento`.
 ---
 
-## 1. Pedido da Laura (resumo)
+## 1. O que o site faz
 
-| Necessidade | Solução no site |
+| Necessidade | Solução |
 | --- | --- |
-| Anúncio em cima da entrada do site | Banner fixo no topo (`EventAnnouncementBanner`), dispensável |
-| Parte com informações do evento | Seção `#evento` (`EventSection`) |
-| Fotos na galeria (evitar mandar foto por pessoa) | Seção `#galeria` com lightbox + baixar 1 / baixar todas |
-| Reservar ingresso online (pelo cliente) | Formulário `#ingressos` → WhatsApp da loja com dados da reserva |
+| Anúncio no topo | `EventAnnouncementBanner` (dismissível) |
+| Infos do evento | Seção `#evento` (`EventSection`) |
+| Reserva de ingresso | Formulário `#ingressos` → WhatsApp da loja |
+| Fotos | **Galeria geral** `#galeria` (`GallerySection`) — lightbox, **sem download** |
+| Produtos | `#produtos` + API `api.geeketoys.com.br` |
+| Contatos | Loja `(11) 91466-2881` primeiro; gerência `(21) 98546-4666` |
 
-**Também na loja online** (`shop.geeketoys.com.br`): mesmo fluxo no repo `clube-geek-toys` — ver `clube-geek-toys/docs/EVENTS.md` (banner em todas as páginas shop, card na home, rota `/evento`).
+**Loja online** (`shop.geeketoys.com.br`): banner, card, `/evento`, reserva — ver `clube-geek-toys/docs/EVENTS.md`. Fotos **não** ficam na loja; link aponta para `#galeria` do home.
 
-Sem backend novo: o site continua **estático**. Reservas vão para o WhatsApp da loja; fotos ficam em `public/eventos/`.
+Site **estático** (Vercel). Reservas vão para WhatsApp; não há backend de ingresso.
 
 ---
 
 ## 2. Arquitetura
 
 ```
-src/data/event.ts                 ← fonte de verdade do evento ativo
+src/data/event.ts              ← evento ativo (data, preço, textos, WhatsApp)
+src/data/contacts.ts           ← telefones oficiais
 src/components/
-  EventAnnouncementBanner.tsx     ← topo do site
-  EventSection.tsx                ← infos + highlights + link reserva
-  EventPhotosSection.tsx          ← galeria + download
-  EventTicketForm.tsx             ← formulário de reserva
-public/eventos/<slug>/            ← JPGs/WebP do evento
-  .gitkeep
+  EventAnnouncementBanner.tsx
+  EventSection.tsx             ← infos + destaques
+  EventTicketForm.tsx          ← reserva → wa.me
+  GallerySection.tsx           ← galeria geral (loja + fotos do evento)
+  ProductsSection.tsx          ← vitrine API
+  PromoSection.tsx
+public/eventos/<slug>/         ← JPGs (ex.: evento-01.jpg … evento-35.jpg)
 ```
 
 Fluxo:
 
-1. `ACTIVE_EVENT.enabled === true` → banner + seções + link na Navbar.
-2. Cliente preenche reserva → abre `wa.me` com mensagem montada.
-3. Após o evento, equipe sobe fotos em `public/eventos/<slug>/`, lista em `photos[]`, redeploy.
-4. Cliente baixa a própria foto no site (sem DM individual).
+1. `ACTIVE_EVENT.enabled === true` → banner + seção evento + nav.
+2. Cliente reserva → `wa.me` com mensagem montada.
+3. Fotos: arquivos em `public/eventos/kpop-night/` referenciados em `GallerySection` (padrão `evento-NN.jpg`).
+4. Sem seção `#fotos-evento` e sem botões de baixar.
 
 ---
 
-## 3. Checklist operacional (Laura / loja)
+## 3. Checklist operacional
 
 ### Antes do evento
 
-- [x] Preencher título, data, horário, endereço em `src/data/event.ts` — **6/set/2026 14h–18h**
-- [x] Ajustar preço do ingresso — **R$ 20** (colo/PCD isentos no texto)
-- [x] Revisar textos do banner e da descrição
-- [x] Confirmar número WhatsApp — **(11) 91466-2881**
-- [x] `enabled: true` e `ticketReservation.enabled: true`
-- [ ] Deploy do site institucional (manual — sem Actions)
-
-### Durante / após o evento (fotos)
-
-- [x] Galeria inicial (35 fotos Laura 07/08/2026 em `public/eventos/kpop-night/evento-*.jpg`)
-- [ ] Exportar fotos **do dia do evento** (ideal WebP ou JPG ≤ 1920px)
-- [ ] Nomear de forma legível e listar em `ACTIVE_EVENT.photos`
-- [ ] Deploy
-- [ ] (Opcional) desligar reserva: `ticketReservation.enabled: false`
-- [ ] Avisar no Instagram/WhatsApp: “fotos no site geeketoys.com.br#galeria”
-
-### Encerrar o evento
-
-- [ ] `enabled: false` **ou** trocar o objeto `ACTIVE_EVENT` pelo próximo evento
-- [ ] Manter pasta de fotos se quiser arquivo histórico (pode criar `/eventos/arquivo/...` no futuro)
-
----
-
-## 4. UX implementada
-
-### Banner
-
-- Fixo no topo (`z-[60]`), cor primary/accent da marca
-- CTAs: Reservar ingresso · Ver evento
-- Fechar (X) grava dismiss em `localStorage` por `event.id` (não reaparece na mesma sessão de browser)
-
-### Informações
-
-- Data formatada pt-BR, local com link Maps
-- Lista de highlights
-- Benefício de membro do Clube (se configurado)
+- [x] Data/hora/local/preço em `src/data/event.ts` (6/set 14h–18h, R$ 20)
+- [x] WhatsApp `(11) 91466-2881`
+- [x] `enabled: true` e reserva ativa
+- [x] Deploy home (Vercel em push `main`)
 
 ### Fotos
 
-- Grid responsivo + lightbox
-- Botão **Baixar** por foto (download com nome do arquivo)
-- **Baixar todas** (sequencial; browsers podem pedir permissão de múltiplos downloads)
-- Estado vazio amigável se `photos.length === 0`
+- [x] 35 fotos Laura (07/08/2026) em `public/eventos/kpop-night/evento-01…35.jpg`
+- [x] Integradas na galeria geral (`GallerySection`)
+- [ ] Após o dia do evento: substituir/adicionar fotos finais e redeploy
 
-### Reserva de ingresso
+### Encerrar
 
-Campos: nome, telefone, e-mail, quantidade (1…max), observações  
-Submit → WhatsApp com mensagem estruturada (evento, qtd, total estimado)
+- [ ] `enabled: false` ou trocar `ACTIVE_EVENT` pelo próximo evento
 
 ---
 
-## 5. Roadmap (próximas iterações)
+## 4. Contatos
 
-| Prioridade | Item | Notas |
+| Prioridade | Número | Uso |
 | --- | --- | --- |
-| MEDIO | CMS / painel admin para Laura editar sem dev | Hoje é editar `event.ts` + deploy |
-| MEDIO | Upload de fotos pelo admin (clube API + volume) | Hoje é commit/SCP em `public/eventos` |
-| BAIXO | ZIP “baixar todas” (JSZip) | Hoje baixa arquivo a arquivo |
-| BAIXO | Histórico de eventos passados | Página `/eventos` listando slugs |
-| FUTURO | Pagamento de ingresso no Stripe | Integração com clube-geek-toys |
+| 1º | (11) 91466-2881 | WhatsApp loja (atendentes) |
+| 2º | (21) 98546-4666 | Gerência |
+
+Shopee e Mercado Livre **não** aparecem no site.
 
 ---
 
-## 6. Relação com o Clube
+## 5. Deploy
 
-- Membros do **Clube GeekPop & Toys** (`club.geeketoys.com.br`) têm benefício de entrada em eventos participantes (texto no contrato e no site).
-- A reserva online no home **não** valida carteirinha automaticamente; confirmação continua manual na loja / WhatsApp.
-- Evolução natural: API no clube + flag `member_free_entry` na reserva.
+Sem GitHub Actions. Push em `main` → Vercel (`www.geeketoys.com.br`; apex redireciona).
+
+```bash
+npm run build   # local
+# produção: push main
+```
 
 ---
 
-## 7. Referência de código
+## 6. Arquivos
 
 | Arquivo | Papel |
 | --- | --- |
-| `src/data/event.ts` | Config + helpers de data/WhatsApp/URL de foto |
-| `src/components/EventAnnouncementBanner.tsx` | Banner topo |
-| `src/components/EventSection.tsx` | Bloco de informações |
-| `src/components/EventPhotosSection.tsx` | Galeria + download |
-| `src/components/EventTicketForm.tsx` | Formulário de reserva |
-| `src/pages/Index.tsx` | Composição na home |
-| `src/components/Navbar.tsx` | Link “Evento” condicional |
-)
+| `src/data/event.ts` | Config evento |
+| `src/data/contacts.ts` | Telefones |
+| `src/components/GallerySection.tsx` | Galeria geral + fotos |
+| `src/components/EventSection.tsx` | Infos |
+| `src/components/EventTicketForm.tsx` | Reserva |
+| `src/pages/Index.tsx` | Composição da home |

@@ -47,19 +47,18 @@ Fluxo:
 
 ### Antes do evento
 
-- [ ] Preencher título, data, horário, endereço em `src/data/event.ts`
-- [ ] Ajustar preço do ingresso (`ticketReservation.priceBRL`) ou `null` se gratuito
-- [ ] Revisar textos do banner e da descrição
-- [ ] Confirmar número WhatsApp (`ticketReservation.whatsappNumber`)
-- [ ] `enabled: true` e `ticketReservation.enabled: true`
-- [ ] Deploy do site
+- [x] Preencher título, data, horário, endereço em `src/data/event.ts` — **6/set/2026 14h–18h**
+- [x] Ajustar preço do ingresso — **R$ 20** (colo/PCD isentos no texto)
+- [x] Revisar textos do banner e da descrição
+- [x] Confirmar número WhatsApp — **(11) 91466-2881**
+- [x] `enabled: true` e `ticketReservation.enabled: true`
+- [ ] Deploy do site institucional (manual — sem Actions)
 
 ### Durante / após o evento (fotos)
 
-- [ ] Exportar fotos (ideal WebP ou JPG ≤ 1920px de largura)
-- [ ] Nomear de forma legível: `grupo-bts-01.jpg`, `mesa-skz-02.jpg`
-- [ ] Copiar para `public/eventos/<slug>/`
-- [ ] Listar em `ACTIVE_EVENT.photos` com `file` + `caption` opcional
+- [x] Galeria inicial (35 fotos Laura 07/08/2026 em `public/eventos/kpop-night/evento-*.jpg`)
+- [ ] Exportar fotos **do dia do evento** (ideal WebP ou JPG ≤ 1920px)
+- [ ] Nomear de forma legível e listar em `ACTIVE_EVENT.photos`
 - [ ] Deploy
 - [ ] (Opcional) desligar reserva: `ticketReservation.enabled: false`
 - [ ] Avisar no Instagram/WhatsApp: “fotos no site geeketoys.com.br#fotos-evento”

@@ -49,9 +49,9 @@ const HeroSection = () => {
               className="text-lg md:text-xl text-muted-foreground mb-6 animate-fade-up max-w-lg leading-relaxed"
               style={{ animationDelay: "0.15s" }}
             >
-              Há 15 anos trazendo o melhor do universo geek para o Brasil —{" "}
-              <span className="text-foreground font-semibold">Pioneiros do Funko Pop no país!</span>{" "}
-              Compre na loja online, entre no Clube e participe dos nossos eventos.
+              <span className="text-foreground font-semibold">Loja de K-pop no Rio de Janeiro</span>
+              {" "}— photocards, merch e cultura pop em Copacabana. Há 15 anos no mercado geek;
+              hoje o foco é K-pop. Compre online com frete pelos Correios, entre no Clube e venha aos eventos.
             </p>
 
             <div

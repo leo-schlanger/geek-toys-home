@@ -27,13 +27,13 @@ const AboutSection = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              <strong className="text-foreground">Há 15 anos no mercado geek</strong>, a GeekPop & Toys é pioneira e referência no segmento de colecionáveis no Brasil. Fomos a empresa responsável por <strong className="text-foreground">introduzir o Funko Pop no país</strong>, abrindo caminho para milhares de colecionadores brasileiros.
+              <strong className="text-foreground">Há 15 anos no mercado geek</strong>, a GeekPop &amp; Toys nasceu em Copacabana e construiu sua história como referência em colecionáveis no Brasil — inclusive como pioneira na chegada do Funko Pop ao país, abrindo caminho para milhares de colecionadores.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              Atuamos como <strong className="text-foreground">atacadistas e varejistas</strong>, sempre oferecendo o melhor mix de produtos na distribuição. De action figures a colecionáveis exclusivos, trabalhamos com marcas renomadas como Marvel, DC, Star Wars, anime e muito mais.
+              <strong className="text-foreground">Hoje nosso foco principal é o K-pop e a cultura pop</strong>: photocards, merch de grupos, álbuns, lightsticks e o que está bombando na cena. Mantemos também colecionáveis e produtos geek, com eventos como a GeekPop Night e uma curadoria pensada para fãs.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-8">
-              <strong className="text-foreground">Vendemos online para todo o Brasil</strong>, levando a cultura geek a cada canto do país. Uma empresa sempre na vanguarda, que visa o futuro e acompanha as tendências do universo nerd e geek. Visite nossa loja física em Copacabana ou compre pelo nosso site!
+              <strong className="text-foreground">Vendemos online com envio pelos Correios para todo o Brasil</strong> e atendemos na loja física em Copacabana. No Clube GeekPop você ganha 15% de desconto em qualquer produto. Visite a gente ou compre pela loja online!
             </p>
 
             <div className="grid gap-4">

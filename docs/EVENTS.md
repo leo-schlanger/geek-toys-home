@@ -13,7 +13,7 @@
 | Anúncio no topo | `EventAnnouncementBanner` (dismissível) |
 | Infos do evento | Seção `#evento` (`EventSection`) |
 | Reserva de ingresso | Formulário `#ingressos` → WhatsApp da loja |
-| Fotos | **Galeria geral** `#galeria` (`GallerySection`) — lightbox, **sem download** |
+| Fotos | **Galeria** em `/galeria` (pastas no painel; ver [`GALLERY.md`](GALLERY.md)) — lightbox, **sem download** |
 | Produtos | `#produtos` + API `api.geeketoys.com.br` |
 | Contatos | Loja `(11) 91466-2881` primeiro; gerência `(21) 98546-4666` |
 
@@ -32,7 +32,8 @@ src/components/
   EventAnnouncementBanner.tsx
   EventSection.tsx             ← infos + destaques
   EventTicketForm.tsx          ← reserva → wa.me
-  GallerySection.tsx           ← galeria geral (loja + fotos do evento)
+  GallerySection.tsx           ← bloco da home (álbuns da API, fallback estático)
+  pages/Gallery.tsx            ← página /galeria e /galeria/:slug
   ProductsSection.tsx          ← vitrine API
   PromoSection.tsx
 public/eventos/<slug>/         ← JPGs (ex.: evento-01.jpg … evento-35.jpg)
@@ -96,7 +97,8 @@ npm run build   # local
 | --- | --- |
 | `src/data/event.ts` | Config evento |
 | `src/data/contacts.ts` | Telefones |
-| `src/components/GallerySection.tsx` | Galeria geral + fotos |
+| `src/components/GallerySection.tsx` | Bloco da home; lê os álbuns da API |
+| `src/pages/Gallery.tsx` | Página própria da galeria, com pastas |
 | `src/components/EventSection.tsx` | Infos |
 | `src/components/EventTicketForm.tsx` | Reserva |
 | `src/pages/Index.tsx` | Composição da home |

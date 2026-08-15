@@ -50,11 +50,13 @@ export async function fetchProducts(params: {
   limit?: number
   featured?: boolean
   category?: string
+  search?: string
 } = {}): Promise<ProductListResponse> {
   const qs = new URLSearchParams()
   if (params.limit) qs.set('limit', String(params.limit))
   if (params.featured) qs.set('featured', 'true')
   if (params.category) qs.set('category', params.category)
+  if (params.search) qs.set('search', params.search)
   const q = qs.toString()
   const data = await getJson<ProductListResponse>(`/products${q ? `?${q}` : ''}`)
   // Extra guard against seed products (API also filters; keep home resilient)
@@ -92,4 +94,41 @@ export function formatBRL(value: number): string {
 
 export function isOnSale(p: ShopProduct): boolean {
   return p.compareAtPrice != null && p.compareAtPrice > p.price
+}
+
+
+// ─── Galeria ─────────────────────────────────────────────────────────────────
+
+export type GalleryPhoto = {
+  id: string
+  albumId: string
+  url: string
+  caption: string | null
+  sortOrder: number
+}
+
+export type GalleryAlbum = {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  coverUrl: string | null
+  /** YYYY-MM-DD quando o álbum é de um evento. */
+  eventDate: string | null
+  photoCount: number
+  photos?: GalleryPhoto[]
+}
+
+/** Álbuns publicados, na ordem definida no admin. */
+export async function fetchGalleryAlbums(): Promise<GalleryAlbum[]> {
+  const data = await getJson<{ albums: GalleryAlbum[] }>('/gallery')
+  return data.albums ?? []
+}
+
+export async function fetchGalleryAlbum(slug: string): Promise<GalleryAlbum | null> {
+  try {
+    return await getJson<GalleryAlbum>(`/gallery/${encodeURIComponent(slug)}`)
+  } catch {
+    return null
+  }
 }

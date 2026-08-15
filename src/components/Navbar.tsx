@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
+import { ThemeToggle } from "./ThemeToggle";
+import { ProductSearch } from "./ProductSearch";
 
 interface NavLink {
   label: string;
@@ -15,7 +17,7 @@ const baseLinks: NavLink[] = [
   { label: "Produtos", href: "#produtos", highlight: true },
   { label: "Promoções", href: "#promocoes" },
   { label: "Quem Somos", href: "#quem-somos" },
-  { label: "Galeria", href: "#galeria" },
+  { label: "Galeria", href: "/galeria" },
   { label: "Rádio", href: "#radio" },
   { label: "Localização", href: "#localizacao" },
   { label: "Contato", href: "#contato" },
@@ -84,6 +86,11 @@ const Navbar = () => {
           ))}
         </ul>
 
+        <div className="hidden lg:flex items-center gap-3">
+          <ProductSearch className="w-56 xl:w-64" />
+          <ThemeToggle />
+        </div>
+
         {/* Mobile toggle */}
         <button
           onClick={() => setOpen(!open)}
@@ -97,6 +104,10 @@ const Navbar = () => {
       {/* Mobile menu */}
       {open && (
         <div className="lg:hidden glass border-t border-border">
+          <div className="flex items-center gap-3 px-4 pt-4">
+            <ProductSearch className="flex-1" />
+            <ThemeToggle />
+          </div>
           <ul className="flex flex-col p-4 gap-4">
             {navLinks.map((link) => (
               <li key={link.href + link.label}>

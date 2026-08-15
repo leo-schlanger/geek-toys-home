@@ -1,9 +1,15 @@
 import Navbar from "@/components/Navbar";
+import { SeoHead } from "@/components/SeoHead";
 import Footer from "@/components/Footer";
 
 const PrivacyPolicy = () => {
     return (
         <div className="min-h-screen flex flex-col">
+            <SeoHead
+                title="Política de Privacidade — GeekPop & Toys"
+                description="Como a GeekPop & Toys coleta, usa e protege seus dados, conforme a LGPD."
+                path="/privacidade"
+            />
             <Navbar />
             <main className="flex-grow pt-32 pb-20 px-6">
                 <div className="container max-w-4xl mx-auto glass p-8 md:p-12 rounded-2xl border border-border/50 shadow-2xl">

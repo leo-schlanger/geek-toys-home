@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Images, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import Navbar from '@/components/Navbar'
+import { SeoHead } from '@/components/SeoHead'
 import Footer from '@/components/Footer'
 import {
   fetchGalleryAlbums,
@@ -59,6 +60,11 @@ function AlbumList() {
 
   return (
     <PageShell>
+      <SeoHead
+        title="Galeria — GeekPop & Toys | Eventos e loja em Copacabana"
+        description="Fotos dos eventos de K-pop e da loja física da GeekPop & Toys em Copacabana, Rio de Janeiro."
+        path="/galeria"
+      />
       <header className="mb-8 text-center">
         <h1 className="font-heading text-3xl font-bold text-foreground md:text-4xl">Galeria</h1>
         <p className="mt-2 text-muted-foreground">
@@ -193,6 +199,15 @@ function AlbumView({ slug }: { slug: string }) {
 
   return (
     <PageShell>
+      <SeoHead
+        title={`${album.name} — Galeria GeekPop & Toys`}
+        description={
+          album.description ||
+          `Fotos de ${album.name} na GeekPop & Toys, loja de K-pop em Copacabana.`
+        }
+        path={`/galeria/${album.slug}`}
+        image={album.coverUrl ?? undefined}
+      />
       <Link
         to="/galeria"
         className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"

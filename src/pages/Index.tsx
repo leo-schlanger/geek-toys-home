@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import { SeoHead } from "@/components/SeoHead";
 import EventAnnouncementBanner from "@/components/EventAnnouncementBanner";
 import HeroSection from "@/components/HeroSection";
 import ProductsSection from "@/components/ProductsSection";
@@ -22,6 +23,11 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 const Index = () => {
   return (
     <div className="min-h-screen">
+      <SeoHead
+        title="GeekPop & Toys | Loja de K-pop no Rio de Janeiro | Photocards & Colecionáveis"
+        description="Loja de K-pop no Rio de Janeiro. Photocards, merch de grupos, colecionáveis e cultura pop em Copacabana. Envio pelos Correios para todo o Brasil."
+        path="/"
+      />
       <EventAnnouncementBanner />
       <Navbar />
       <main>

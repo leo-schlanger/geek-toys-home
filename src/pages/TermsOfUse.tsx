@@ -1,9 +1,15 @@
 import Navbar from "@/components/Navbar";
+import { SeoHead } from "@/components/SeoHead";
 import Footer from "@/components/Footer";
 
 const TermsOfUse = () => {
     return (
         <div className="min-h-screen flex flex-col">
+            <SeoHead
+                title="Termos de Uso — GeekPop & Toys"
+                description="Termos de uso do site e dos serviços da GeekPop & Toys."
+                path="/termos"
+            />
             <Navbar />
             <main className="flex-grow pt-32 pb-20 px-6">
                 <div className="container max-w-4xl mx-auto glass p-8 md:p-12 rounded-2xl border border-border/50 shadow-2xl">

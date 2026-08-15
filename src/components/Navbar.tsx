@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
 import { ThemeToggle } from "./ThemeToggle";
@@ -36,10 +37,53 @@ function buildNavLinks(): NavLink[] {
   ];
 }
 
+/**
+ * Rota interna usa <Link> (navegação SPA). Âncora e link externo seguem como
+ * <a>: âncora depende do comportamento nativo de rolagem, e externo abre fora.
+ */
+function NavItem({
+  link,
+  href,
+  className,
+  onClick,
+}: {
+  link: NavLink;
+  href: string;
+  className: string;
+  onClick?: () => void;
+}) {
+  if (!link.external && href.startsWith("/") && !href.includes("#")) {
+    return (
+      <Link to={href} className={className} onClick={onClick}>
+        {link.label}
+      </Link>
+    );
+  }
+  return (
+    <a
+      href={href}
+      {...(link.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className={className}
+      onClick={onClick}
+    >
+      {link.label}
+    </a>
+  );
+}
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navLinks = buildNavLinks();
+  const { pathname } = useLocation();
+  const onHome = pathname === "/";
+
+  /**
+   * Fora da home, uma âncora precisa apontar para a home antes da seção: em
+   * /galeria, `#inicio` só rolaria a própria galeria e o clique não saía do
+   * lugar.
+   */
+  const resolveHref = (href: string) => (href.startsWith("#") && !onHome ? `/${href}` : href);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -67,11 +111,9 @@ const Navbar = () => {
         <ul className="hidden xl:flex items-center gap-4 2xl:gap-6">
           {navLinks.map((link) => (
             <li key={link.href + link.label}>
-              <a
-                href={link.href}
-                {...(link.external
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
+              <NavItem
+                link={link}
+                href={resolveHref(link.href)}
                 className={`whitespace-nowrap text-sm font-medium transition-colors ${
                   link.external
                     ? "px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90"
@@ -79,9 +121,7 @@ const Navbar = () => {
                       ? "text-primary font-semibold hover:text-primary/80"
                       : "text-foreground/80 hover:text-primary"
                 }`}
-              >
-                {link.label}
-              </a>
+              />
             </li>
           ))}
         </ul>
@@ -110,11 +150,10 @@ const Navbar = () => {
           <ul className="flex flex-col p-4 gap-4">
             {navLinks.map((link) => (
               <li key={link.href + link.label}>
-                <a
-                  href={link.href}
-                  {...(link.external
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
+                <NavItem
+                  link={link}
+                  href={resolveHref(link.href)}
+                  onClick={() => setOpen(false)}
                   className={`block font-medium transition-colors ${
                     link.external
                       ? "text-center py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
@@ -122,10 +161,7 @@ const Navbar = () => {
                         ? "text-primary font-semibold"
                         : "text-foreground/80 hover:text-primary"
                   }`}
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </a>
+                />
               </li>
             ))}
           </ul>

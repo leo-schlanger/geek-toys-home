@@ -10,7 +10,24 @@ import { cn } from '@/lib/utils'
  * direto para o produto na loja. Buscar aqui e cair na loja evita que a pessoa
  * tenha que navegar duas vezes.
  */
-export function ProductSearch({ className }: { className?: string }) {
+interface ProductSearchProps {
+  className?: string
+  /**
+   * Começa como ícone e abre o campo ao clicar. É o que permite a busca conviver
+   * com uma navegação já cheia sem espremer os links.
+   */
+  collapsible?: boolean
+  /** Classe do botão quando recolhido — não herda a largura do campo aberto. */
+  collapsedClassName?: string
+}
+
+export function ProductSearch({
+  className,
+  collapsible = false,
+  collapsedClassName,
+}: ProductSearchProps) {
+  const [expanded, setExpanded] = useState(!collapsible)
+  const inputRef = useRef<HTMLInputElement>(null)
   const [term, setTerm] = useState('')
   const [results, setResults] = useState<ShopProduct[]>([])
   const [loading, setLoading] = useState(false)
@@ -48,13 +65,17 @@ export function ProductSearch({ className }: { className?: string }) {
   }, [term])
 
   useEffect(() => {
-    if (!open) return
+    if (!open && !expanded) return
     function onClickOutside(e: MouseEvent) {
-      if (boxRef.current && !boxRef.current.contains(e.target as Node)) setOpen(false)
+      if (boxRef.current && !boxRef.current.contains(e.target as Node)) {
+        setOpen(false)
+        // Só recolhe quando não há nada digitado, para não perder a busca.
+        if (collapsible && !term.trim()) setExpanded(false)
+      }
     }
     document.addEventListener('mousedown', onClickOutside)
     return () => document.removeEventListener('mousedown', onClickOutside)
-  }, [open])
+  }, [open, expanded, collapsible, term])
 
   function goToShop() {
     const query = term.trim()
@@ -63,8 +84,28 @@ export function ProductSearch({ className }: { className?: string }) {
       : SHOP_URL
   }
 
+  if (collapsible && !expanded) {
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          setExpanded(true)
+          requestAnimationFrame(() => inputRef.current?.focus())
+        }}
+        aria-label="Buscar produtos"
+        title="Buscar produtos"
+        className={cn(
+          'rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
+          collapsedClassName
+        )}
+      >
+        <Search className="h-4 w-4" />
+      </button>
+    )
+  }
+
   return (
-    <div ref={boxRef} className={cn('relative', className)}>
+    <div ref={boxRef} className={cn('relative', collapsible && 'w-56', className)}>
       <form
         role="search"
         onSubmit={(e) => {
@@ -81,6 +122,7 @@ export function ProductSearch({ className }: { className?: string }) {
         />
         <input
           id="product-search"
+          ref={inputRef}
           type="search"
           value={term}
           placeholder="Buscar produtos…"

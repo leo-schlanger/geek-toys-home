@@ -54,8 +54,8 @@ const Navbar = () => {
       }`}
       style={{ top: "var(--event-banner-h, 0px)" }}
     >
-      <div className="container flex items-center justify-between h-16 md:h-20">
-        <a href="#inicio" className="flex items-center">
+      <div className="container flex items-center justify-between gap-4 h-16 md:h-20">
+        <a href="#inicio" className="flex shrink-0 items-center">
           <img
             src="/logo.jpg"
             alt="GeekPop & Toys"
@@ -64,7 +64,7 @@ const Navbar = () => {
         </a>
 
         {/* Desktop */}
-        <ul className="hidden lg:flex items-center gap-5 xl:gap-7">
+        <ul className="hidden xl:flex items-center gap-4 2xl:gap-6">
           {navLinks.map((link) => (
             <li key={link.href + link.label}>
               <a
@@ -72,7 +72,7 @@ const Navbar = () => {
                 {...(link.external
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
-                className={`text-sm font-medium transition-colors ${
+                className={`whitespace-nowrap text-sm font-medium transition-colors ${
                   link.external
                     ? "px-4 py-2 bg-primary text-primary-foreground rounded-full hover:bg-primary/90"
                     : link.highlight
@@ -86,15 +86,15 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className="hidden lg:flex items-center gap-3">
-          <ProductSearch className="w-56 xl:w-64" />
-          <ThemeToggle />
+        <div className="flex shrink-0 items-center gap-1">
+          <ProductSearch collapsible collapsedClassName="hidden sm:block" className="hidden sm:block" />
+          <ThemeToggle compact />
         </div>
 
         {/* Mobile toggle */}
         <button
           onClick={() => setOpen(!open)}
-          className="lg:hidden text-foreground"
+          className="xl:hidden text-foreground"
           aria-label="Menu"
         >
           {open ? <X size={24} /> : <Menu size={24} />}
@@ -103,10 +103,9 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {open && (
-        <div className="lg:hidden glass border-t border-border">
-          <div className="flex items-center gap-3 px-4 pt-4">
-            <ProductSearch className="flex-1" />
-            <ThemeToggle />
+        <div className="xl:hidden glass border-t border-border">
+          <div className="px-4 pt-4">
+            <ProductSearch />
           </div>
           <ul className="flex flex-col p-4 gap-4">
             {navLinks.map((link) => (

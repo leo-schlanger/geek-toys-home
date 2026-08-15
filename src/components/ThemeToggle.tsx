@@ -9,7 +9,13 @@ const OPTIONS: { value: Theme; label: string; Icon: typeof Sun }[] = [
   { value: 'system', label: 'Sistema', Icon: Monitor },
 ]
 
-export function ThemeToggle({ className }: { className?: string }) {
+interface ThemeToggleProps {
+  className?: string
+  /** Um botão só, que cicla entre os modos. Usado onde não sobra espaço. */
+  compact?: boolean
+}
+
+export function ThemeToggle({ className, compact = false }: ThemeToggleProps) {
   const [theme, setTheme] = useState<Theme>(() =>
     typeof window === 'undefined' ? 'system' : readStoredTheme()
   )
@@ -18,6 +24,26 @@ export function ThemeToggle({ className }: { className?: string }) {
     storeTheme(theme)
     applyTheme(theme)
   }, [theme])
+
+  if (compact) {
+    const current = OPTIONS.find((o) => o.value === theme) ?? OPTIONS[2]
+    const next = OPTIONS[(OPTIONS.indexOf(current) + 1) % OPTIONS.length]
+    const Icon = current.Icon
+    return (
+      <button
+        type="button"
+        onClick={() => setTheme(next.value)}
+        aria-label={`Tema: ${current.label}. Mudar para ${next.label}`}
+        title={`Tema: ${current.label}`}
+        className={cn(
+          'rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
+          className
+        )}
+      >
+        <Icon className="h-4 w-4" />
+      </button>
+    )
+  }
 
   return (
     <div

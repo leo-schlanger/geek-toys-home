@@ -122,6 +122,33 @@ qualquer volta a valor por breakpoint. `src/test/setup.ts` traz um stub de
 
 ---
 
+## Alvos de toque
+
+Varredura de 16/08/2026 a 360/390/414/768/1024/1440px. Os **controles isolados
+de ícone** ficam em 44x44 (Apple HIG); WCAG 2.5.8 AA exige 24x24 como piso.
+
+| Controle                    | Antes | Agora |
+| --------------------------- | ----- | ----- |
+| Hambúrguer do menu          | 24x24 | 44x44 |
+| Fechar anúncio (banner)     | 28x28 | 44x44 |
+| Perfil / tema / busca       | 32x32 | 40x40 |
+
+Feito **só com padding** — o ícone renderiza no mesmo tamanho; o que cresceu é
+a área que aceita o dedo. O hambúrguer leva `-mr-2` para o padding extra não
+empurrar a linha.
+
+**Link de texto inline não entra nessa conta.** Os links da navbar medem 17px
+de altura porque isso é o line-height da fonte; a WCAG isenta explicitamente
+link dentro de bloco de texto. Não os infle.
+
+## O que a varredura considera falso positivo
+
+A seção Rádio acusa elementos "vazando" 95–168px do pai. São `div`/`img`
+decorativos com `pointer-events-none` (glows e o fundo do card), que
+transbordam de propósito e ficam contidos por um ancestral. A prova de que não
+é problema: **não há rolagem horizontal em nenhuma largura testada**. Use isso
+como critério antes de "consertar" um vazamento.
+
 ## Ao acrescentar um item na navegação
 
 1. Link interno usa `<Link>`; âncora e externo seguem como `<a>` (ver `NavItem`).
@@ -130,3 +157,4 @@ qualquer volta a valor por breakpoint. `src/test/setup.ts` traz um stub de
    vai no grupo da direita, não na lista de links.
 4. Meça no celular de verdade (360px), não só no desktop. Foi o que faltou no
    caso do banner.
+5. Controle isolado de ícone nasce com 44x44 de área tocável, via padding.

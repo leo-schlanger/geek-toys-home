@@ -233,8 +233,10 @@ const ProductsSection = () => {
               <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground">
                 Acabou de chegar!
               </h3>
+              {/* Não repete "novidades": o título já diz isso. O subtítulo
+                  serve para informar o que o título não cobre. */}
               <p className="text-sm text-muted-foreground">
-                Novidades e destaques da loja GeekPop
+                Os últimos itens que entraram no catálogo
               </p>
             </div>
             <a

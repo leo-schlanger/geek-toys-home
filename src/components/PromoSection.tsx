@@ -12,7 +12,14 @@ import {
 import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
 
 /**
- * Novidades + Sale/promoção (pedido Laura, estilo iBox).
+ * Sale, promoções e vantagens do Clube (pedido Laura, estilo iBox).
+ *
+ * **Não tem grade de novidades.** Até 16/08/2026 tinha, e era a mesma coisa que
+ * o bloco "Acabou de chegar!" da `ProductsSection`: as duas chamavam
+ * `fetchProducts` com a ordenação padrão (mais recentes primeiro), então o
+ * visitante via praticamente os mesmos produtos duas vezes na mesma página.
+ * Novidade agora aparece uma vez só, em `#produtos`; aqui fica o que tem
+ * desconto e as vantagens do Clube.
  */
 const PromoSection = () => {
   const ref = useRef<HTMLElement>(null);
@@ -36,7 +43,6 @@ const PromoSection = () => {
 
   const all = data?.products ?? [];
   const onSale = all.filter(isOnSale).slice(0, 8);
-  const novidades = all.filter((p) => !isOnSale(p)).slice(0, 8);
   const eventOn = isEventVisible(ACTIVE_EVENT);
 
   return (
@@ -49,7 +55,7 @@ const PromoSection = () => {
         <div className="text-center mb-10">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/30 text-accent-foreground px-3 py-1 text-xs font-bold uppercase tracking-wide mb-3">
             <Tag className="h-3.5 w-3.5" />
-            Novidades &amp; promoções
+            Ofertas &amp; vantagens
           </span>
           <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-3">
             Sale e destaques
@@ -170,71 +176,6 @@ const PromoSection = () => {
           </div>
         )}
 
-        {/* Novidades */}
-        <div>
-          <h3 className="font-heading text-xl md:text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" />
-            Novidades
-          </h3>
-          {isLoading && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="aspect-[3/4] rounded-xl bg-card animate-pulse" />
-              ))}
-            </div>
-          )}
-          {!isLoading && novidades.length === 0 && (
-            <p className="text-muted-foreground text-center py-6">
-              Em breve mais novidades — acompanhe o Instagram{" "}
-              <a
-                href="https://www.instagram.com/geeketoys/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary font-semibold hover:underline"
-              >
-                @geeketoys
-              </a>
-              .
-            </p>
-          )}
-          {novidades.length > 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-              {novidades.slice(0, 8).map((p) => (
-                <a
-                  key={p.id}
-                  href={productUrl(p.slug)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-xl border border-border bg-card overflow-hidden shadow-sm hover-glow-primary transition-all group"
-                >
-                  <div className="aspect-square bg-secondary/50 relative">
-                    {p.images?.[0] ? (
-                      <img
-                        src={p.images[0]}
-                        alt={p.name}
-                        className="h-full w-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-muted-foreground">
-                        <ImageOff className="h-8 w-8 opacity-50" />
-                      </div>
-                    )}
-                    <span className="absolute left-2 top-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold text-primary-foreground">
-                      Novo
-                    </span>
-                  </div>
-                  <div className="p-3">
-                    <p className="line-clamp-2 text-sm font-semibold group-hover:text-primary transition-colors">
-                      {p.name}
-                    </p>
-                    <p className="mt-1 font-bold">{formatBRL(p.price)}</p>
-                  </div>
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
     </section>
   );

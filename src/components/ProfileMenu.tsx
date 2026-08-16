@@ -50,8 +50,12 @@ const TARGETS: ProfileTarget[] = [
 interface ProfileMenuProps {
   className?: string
   /**
-   * Lista aberta, sem botão — para o menu mobile, onde já existe um painel
-   * expandido e um segundo nível de clique só atrapalharia.
+   * Lista aberta, sem botão — é a forma usada no menu mobile.
+   *
+   * Abaixo de `xl` o botão com dropdown não é usado: o painel tem 288px e,
+   * ancorado à direita numa tela de 390px, sai cortado pela borda esquerda.
+   * Nessas larguras "Meu Perfil" vive dentro do hambúrguer, junto do resto da
+   * navegação, que é onde a pessoa procura.
    */
   inline?: boolean
   /** Chamado ao escolher um destino (fecha o menu mobile). */
@@ -109,7 +113,7 @@ export function ProfileMenu({ className, inline = false, onNavigate }: ProfileMe
           <div
             role="menu"
             aria-label="Meu Perfil"
-            className="absolute right-0 z-50 mt-2 w-72 overflow-hidden rounded-xl border border-border bg-card p-1.5 shadow-lg"
+            className="absolute right-0 z-50 mt-2 w-[min(18rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-border bg-card p-1.5 shadow-lg"
           >
             {TARGETS.map((t) => (
               <ProfileLink key={t.href} target={t} onSelect={() => setOpen(false)} />

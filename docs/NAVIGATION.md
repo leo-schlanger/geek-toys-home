@@ -21,13 +21,15 @@
 
 Duas zonas com comportamentos diferentes:
 
-| Zona            | Classe          | Abaixo de 1280px           |
-| --------------- | --------------- | -------------------------- |
-| Lista de links  | `hidden xl:flex` | some, vira hambúrguer      |
-| Grupo da direita | (sem breakpoint) | **continua visível**       |
+| Zona                  | Classe           | Abaixo de 1280px      |
+| --------------------- | ---------------- | --------------------- |
+| Lista de links        | `hidden xl:flex` | some, vira hambúrguer |
+| Busca                 | `hidden sm:block` | some abaixo de 640px |
+| **Meu Perfil**        | `hidden xl:block` | some, vai pro hambúrguer |
+| Tema                  | (sem breakpoint) | **continua visível**  |
 
-O grupo da direita é onde entra o que alguém precisa alcançar **sem abrir menu
-nenhum**: busca de produto, perfil e tema.
+Só o tema fica sempre à mão. Perfil e busca recolhem porque o painel deles não
+cabe ancorado à direita numa tela estreita — sai cortado pela borda.
 
 ---
 
@@ -70,13 +72,16 @@ O segundo é melhor: volta para a página pedida depois de autenticar.
 
 ### Dois modos
 
-| Modo             | Onde         | Comportamento                                    |
-| ---------------- | ------------ | ------------------------------------------------ |
-| padrão           | grupo direita | botão + dropdown; rótulo aparece a partir de `lg` |
-| `inline`         | menu mobile   | lista aberta, sem botão                          |
+| Modo     | Onde                    | Comportamento                    |
+| -------- | ----------------------- | -------------------------------- |
+| padrão   | grupo direita, só `xl+` | botão + dropdown de 288px        |
+| `inline` | menu mobile, abaixo de `xl` | lista aberta, sem botão      |
 
-O `inline` existe porque, dentro de um painel já expandido, um segundo nível de
-clique só atrapalha.
+O `inline` existe por dois motivos: dentro de um painel já expandido um segundo
+nível de clique só atrapalha, e — o que decidiu a questão — **o dropdown de
+288px não cabe numa tela de 390px** ancorado à direita. A primeira versão
+deixava o botão visível no celular e o painel saía cortado pela borda esquerda.
+O `w-[min(18rem,calc(100vw-2rem))]` é o cinto de segurança para isso não voltar.
 
 ---
 
@@ -153,8 +158,9 @@ como critério antes de "consertar" um vazamento.
 
 1. Link interno usa `<Link>`; âncora e externo seguem como `<a>` (ver `NavItem`).
 2. Fora da home, âncora precisa virar `/#secao` — é o que `resolveHref` faz.
-3. Se o item precisa ser alcançável no celular **sem abrir o hambúrguer**, ele
-   vai no grupo da direita, não na lista de links.
+3. Item com painel/dropdown recolhe para dentro do hambúrguer no celular — um
+   painel ancorado à direita não cabe em tela estreita. Só controle de um
+   clique só (como o tema) fica sempre visível.
 4. Meça no celular de verdade (360px), não só no desktop. Foi o que faltou no
    caso do banner.
 5. Controle isolado de ícone nasce com 44x44 de área tocável, via padding.

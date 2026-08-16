@@ -128,14 +128,15 @@ const Navbar = () => {
         </ul>
 
         {/*
-          Grupo da direita: fica visível em todos os tamanhos, ao contrário da
-          lista de links (que some abaixo de `xl` e vira hambúrguer). "Meu
-          Perfil" mora aqui de propósito — quem já é cliente não deveria ter que
-          abrir um menu para chegar na própria conta no celular.
+          Grupo da direita. "Meu Perfil" só aparece a partir de `xl`, junto com
+          a lista de links: abaixo disso o dropdown (288px) não cabe ancorado à
+          direita de uma tela de 390px e sai cortado pela borda. No celular ele
+          vive dentro do hambúrguer, em `inline` — mesmo lugar dos outros itens
+          de navegação.
         */}
         <div className="flex shrink-0 items-center gap-1">
           <ProductSearch collapsible collapsedClassName="hidden sm:block" className="hidden sm:block" />
-          <ProfileMenu />
+          <ProfileMenu className="hidden xl:block" />
           <ThemeToggle compact />
         </div>
 
@@ -155,9 +156,21 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {open && (
-        <div className="xl:hidden glass border-t border-border">
+        // O painel rola: banner + barra ocupam ~156px de uma tela de 844px e a
+        // lista completa passa disso. Sem `overflow-y-auto` o último item fica
+        // cortado pela borda inferior, sem jeito de alcançá-lo.
+        <div className="xl:hidden glass max-h-[calc(100vh-var(--event-banner-h,0px)-4rem)] overflow-y-auto overscroll-contain border-t border-border">
           <div className="px-4 pt-4">
             <ProductSearch />
+          </div>
+          {/*
+            "Meu Perfil" é o primeiro item da navegação, logo abaixo da busca.
+            Quem abre o menu já sendo cliente vem atrás da própria conta; no fim
+            da lista ele caía fora da tela em 390x844 e ainda ficava sob o botão
+            flutuante do WhatsApp.
+          */}
+          <div className="border-b border-border p-4">
+            <ProfileMenu inline onNavigate={() => setOpen(false)} />
           </div>
           <ul className="flex flex-col p-4 gap-4">
             {navLinks.map((link) => (
@@ -177,9 +190,6 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          <div className="border-t border-border p-4">
-            <ProfileMenu inline onNavigate={() => setOpen(false)} />
-          </div>
         </div>
       )}
     </nav>

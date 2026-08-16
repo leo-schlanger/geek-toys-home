@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
 import { ThemeToggle } from "./ThemeToggle";
 import { ProductSearch } from "./ProductSearch";
+import { ProfileMenu } from "./ProfileMenu";
 
 interface NavLink {
   label: string;
@@ -126,8 +127,15 @@ const Navbar = () => {
           ))}
         </ul>
 
+        {/*
+          Grupo da direita: fica visível em todos os tamanhos, ao contrário da
+          lista de links (que some abaixo de `xl` e vira hambúrguer). "Meu
+          Perfil" mora aqui de propósito — quem já é cliente não deveria ter que
+          abrir um menu para chegar na própria conta no celular.
+        */}
         <div className="flex shrink-0 items-center gap-1">
           <ProductSearch collapsible collapsedClassName="hidden sm:block" className="hidden sm:block" />
+          <ProfileMenu />
           <ThemeToggle compact />
         </div>
 
@@ -165,6 +173,9 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
+          <div className="border-t border-border p-4">
+            <ProfileMenu inline onNavigate={() => setOpen(false)} />
+          </div>
         </div>
       )}
     </nav>

@@ -95,7 +95,7 @@ export function ProductSearch({
         aria-label="Buscar produtos"
         title="Buscar produtos"
         className={cn(
-          'rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
+          'rounded-full p-3 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
           collapsedClassName
         )}
       >

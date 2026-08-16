@@ -86,7 +86,7 @@ export function ProfileMenu({ className, inline = false, onNavigate }: ProfileMe
         aria-haspopup="menu"
         aria-label="Meu Perfil"
         title="Meu Perfil"
-        className="flex items-center gap-1.5 rounded-full p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:px-3"
+        className="flex items-center gap-1.5 rounded-full p-3 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:px-3"
       >
         <UserRound className="h-4 w-4 shrink-0" aria-hidden />
         <span className="hidden text-sm font-medium lg:inline">Meu Perfil</span>

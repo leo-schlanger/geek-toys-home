@@ -102,7 +102,7 @@ const EventAnnouncementBanner = () => {
         <button
           type="button"
           onClick={dismiss}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-white/15 transition-colors"
+          className="absolute right-1 top-1/2 -translate-y-1/2 p-3.5 rounded-full hover:bg-white/15 transition-colors"
           aria-label="Fechar anúncio"
         >
           <X className="h-4 w-4" />

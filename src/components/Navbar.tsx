@@ -139,10 +139,14 @@ const Navbar = () => {
           <ThemeToggle compact />
         </div>
 
-        {/* Mobile toggle */}
+        {/*
+          Mobile toggle. O `-mr-2` devolve o espaço que o padding tomou, para o
+          botão crescer de 24x24 para 44x44 (Apple HIG) sem empurrar o layout.
+          É o controle mais importante do site no celular e era o menor alvo.
+        */}
         <button
           onClick={() => setOpen(!open)}
-          className="xl:hidden text-foreground"
+          className="-mr-2 rounded-full p-2.5 text-foreground transition-colors hover:bg-muted xl:hidden"
           aria-label="Menu"
         >
           {open ? <X size={24} /> : <Menu size={24} />}

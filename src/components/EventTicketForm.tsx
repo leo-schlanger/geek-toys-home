@@ -87,8 +87,13 @@ const EventTicketForm = ({ event = ACTIVE_EVENT }: Props) => {
         </div>
       </div>
 
+      {/*
+        `min-w-0` nos <label>: item de grid nasce com `min-width:auto`, e o
+        <input> tem largura intrínseca própria — a 360px isso empurrava os
+        campos 6px para fora da trilha, desalinhando da margem da seção.
+      */}
       <form onSubmit={handleSubmit} className="grid sm:grid-cols-2 gap-4">
-        <label className="flex flex-col gap-1.5 sm:col-span-2">
+        <label className="flex min-w-0 flex-col gap-1.5 sm:col-span-2">
           <span className="text-sm font-medium">Nome completo</span>
           <input
             type="text"
@@ -101,7 +106,7 @@ const EventTicketForm = ({ event = ACTIVE_EVENT }: Props) => {
           />
         </label>
 
-        <label className="flex flex-col gap-1.5">
+        <label className="flex min-w-0 flex-col gap-1.5">
           <span className="text-sm font-medium">Telefone / WhatsApp</span>
           <input
             type="tel"
@@ -114,7 +119,7 @@ const EventTicketForm = ({ event = ACTIVE_EVENT }: Props) => {
           />
         </label>
 
-        <label className="flex flex-col gap-1.5">
+        <label className="flex min-w-0 flex-col gap-1.5">
           <span className="text-sm font-medium">E-mail</span>
           <input
             type="email"
@@ -127,7 +132,7 @@ const EventTicketForm = ({ event = ACTIVE_EVENT }: Props) => {
           />
         </label>
 
-        <label className="flex flex-col gap-1.5">
+        <label className="flex min-w-0 flex-col gap-1.5">
           <span className="text-sm font-medium">Quantidade de ingressos</span>
           <input
             type="number"
@@ -157,7 +162,7 @@ const EventTicketForm = ({ event = ACTIVE_EVENT }: Props) => {
           </div>
         </div>
 
-        <label className="flex flex-col gap-1.5 sm:col-span-2">
+        <label className="flex min-w-0 flex-col gap-1.5 sm:col-span-2">
           <span className="text-sm font-medium">Observações (opcional)</span>
           <textarea
             rows={3}

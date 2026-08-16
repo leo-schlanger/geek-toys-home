@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CalendarHeart, Ticket, X } from "lucide-react";
 import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
 
@@ -19,26 +19,42 @@ function readBannerVisible(eventId: string): boolean {
 
 /**
  * Banner fixo no topo do site. Deslocamento da Navbar via CSS var --event-banner-h.
+ *
+ * A altura e **medida**, nao estimada. Ate 16/08/2026 eram dois numeros fixos
+ * (44px acima de 768px, 72px abaixo). O texto do banner vem de `data/event.ts`
+ * e cresceu: a 390px ele quebrava em 111px, a var continuava dizendo 72px, e os
+ * 39px de sobra ficavam por cima da Navbar — que tem z-index menor. O resultado
+ * era o **hamburguer do menu mobile intocavel no celular**: o clique caia no
+ * banner. Como o texto e conteudo editavel, qualquer numero fixo aqui volta a
+ * errar na proxima vez que a Laura mudar a frase.
  */
 const EventAnnouncementBanner = () => {
   const event = ACTIVE_EVENT;
   const [visible, setVisible] = useState(() => readBannerVisible(event.id));
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const root = document.documentElement;
     if (!visible || !isEventVisible(event)) {
-      document.documentElement.style.setProperty("--event-banner-h", "0px");
+      root.style.setProperty("--event-banner-h", "0px");
       return;
     }
-    const mq = window.matchMedia("(min-width: 768px)");
+    const el = ref.current;
+    if (!el) return;
+
     const apply = () => {
-      document.documentElement.style.setProperty(
-        "--event-banner-h",
-        mq.matches ? "44px" : "72px"
-      );
+      root.style.setProperty("--event-banner-h", `${Math.ceil(el.getBoundingClientRect().height)}px`);
     };
     apply();
-    mq.addEventListener("change", apply);
-    return () => mq.removeEventListener("change", apply);
+
+    // Pega quebra de linha por rotacao, zoom, fonte tardia ou texto novo —
+    // casos que um matchMedia por largura nao enxerga.
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      root.style.setProperty("--event-banner-h", "0px");
+    };
   }, [visible, event]);
 
   if (!visible || !isEventVisible(event)) return null;
@@ -54,6 +70,7 @@ const EventAnnouncementBanner = () => {
 
   return (
     <div
+      ref={ref}
       role="region"
       aria-label="Anúncio do evento"
       className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-primary via-primary to-primary/90 text-primary-foreground shadow-md border-b border-primary/40"

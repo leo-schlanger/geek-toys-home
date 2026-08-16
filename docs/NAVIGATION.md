@@ -127,6 +127,27 @@ qualquer volta a valor por breakpoint. `src/test/setup.ts` traz um stub de
 
 ---
 
+## Menu mobile aberto
+
+O painel do hambúrguer tem `overflow-y-auto` e teto de
+`calc(100vh - var(--event-banner-h) - 4rem)`: banner mais barra comem ~156px de
+uma tela de 844px, e a lista passa disso. Sem isso o último item ficava cortado
+pela borda, sem jeito de alcançá-lo.
+
+A ordem dentro do painel é **busca → Meu Perfil → links → CTAs**. "Meu Perfil"
+vem antes dos links porque quem abre o menu já sendo cliente vem atrás da
+própria conta.
+
+Enquanto o menu está aberto, a `Navbar` marca `document.body` com
+`data-nav-open="true"`, e `index.css` esconde o `[data-floating-whatsapp]`.
+O botão do WhatsApp é `fixed bottom-5 right-5 z-50` e ficava por cima dos
+últimos itens da lista. O atributo no body existe porque o `WhatsAppFloat` é
+irmão da Navbar em `Index.tsx` — não alcança aquele estado por props, e criar
+um contexto só para isso não se paga.
+
+**Ao acrescentar outro elemento flutuante**, dê a ele o mesmo tratamento: ou
+some com o menu aberto, ou fica fora da área do painel.
+
 ## Alvos de toque
 
 Varredura de 16/08/2026 a 360/390/414/768/1024/1440px. Os **controles isolados

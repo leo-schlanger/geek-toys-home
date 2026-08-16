@@ -191,3 +191,17 @@
     transform: translateY(0);
   }
 }
+
+@layer utilities {
+  /*
+   * Com o menu mobile aberto, o botão flutuante do WhatsApp some.
+   *
+   * Ele é `fixed bottom-5 right-5 z-50` e o painel do menu rola por baixo: o
+   * botão ficava por cima dos últimos itens da lista, tapando o que estivesse
+   * ali. O `data-nav-open` é escrito pela `Navbar` (o `WhatsAppFloat` é irmão
+   * dela em `Index.tsx` e não alcança aquele estado por props).
+   */
+  body[data-nav-open="true"] [data-floating-whatsapp] {
+    display: none;
+  }
+}

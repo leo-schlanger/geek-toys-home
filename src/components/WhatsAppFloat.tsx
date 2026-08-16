@@ -1,9 +1,16 @@
 import { MessageCircle } from "lucide-react";
 import { primaryWhatsAppUrl, PRIMARY_WHATSAPP } from "@/data/contacts";
 
-/** Botão flutuante WhatsApp — número principal da loja (atendentes). */
+/**
+ * Botão flutuante WhatsApp — número principal da loja (atendentes).
+ *
+ * O `data-floating-whatsapp` é o gancho da regra em `index.css` que o esconde
+ * enquanto o menu mobile está aberto: sendo `fixed`, ele ficava por cima dos
+ * últimos itens do painel.
+ */
 const WhatsAppFloat = () => (
   <a
+    data-floating-whatsapp
     href={primaryWhatsAppUrl("Olá! Vim pelo site geeketoys.com.br 👋")}
     target="_blank"
     rel="noopener noreferrer"

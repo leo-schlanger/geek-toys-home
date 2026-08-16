@@ -92,6 +92,24 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /**
+   * Publica o estado do menu no `<body>` para quem está fora desta árvore.
+   *
+   * O `WhatsAppFloat` é irmão da Navbar em `Index.tsx` e não tem como ler este
+   * `open`. Um atributo no body resolve sem criar contexto só para isso — e a
+   * regra que o esconde mora em `index.css`, perto das outras de layout.
+   */
+  useEffect(() => {
+    if (open) {
+      document.body.dataset.navOpen = "true";
+    } else {
+      delete document.body.dataset.navOpen;
+    }
+    return () => {
+      delete document.body.dataset.navOpen;
+    };
+  }, [open]);
+
   return (
     <nav
       className={`fixed left-0 right-0 z-50 transition-all duration-300 ${

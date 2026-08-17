@@ -15,9 +15,26 @@ const PrivacyPolicy = () => {
                 <div className="container max-w-4xl mx-auto glass p-8 md:p-12 rounded-2xl border border-border/50 shadow-2xl">
                     <h1 className="text-4xl font-heading font-bold mb-8 gradient-text">Política de Privacidade</h1>
                     <div className="prose max-w-none space-y-6 text-muted-foreground">
-                        <p className="text-sm"><strong>Última atualização:</strong> Março de 2026</p>
+                        <p className="text-sm"><strong>Última atualização:</strong> 17 de agosto de 2026</p>
 
-                        <p>A <strong>GeekPop & Toys Collection</strong>, sediada em Copacabana, Rio de Janeiro - RJ, valoriza a sua privacidade. Esta política descreve como coletamos e usamos seus dados em conformidade com a Lei Geral de Proteção de Dados (LGPD).</p>
+                        <section className="space-y-3 bg-muted/20 p-4 rounded-lg">
+                            <h2 className="text-2xl font-semibold text-foreground">Controlador dos Dados</h2>
+                            <p><strong>N. STANLEY SCHLANGER COMERCIO DE ARTIGOS EM GERAL LTDA</strong></p>
+                            <p>Nome Fantasia: <strong>GEEKPOP &amp; TOYS</strong></p>
+                            <p>CNPJ: 52.846.344/0001-10</p>
+                            <p>Endereço: Rua Barata Ribeiro, 181, Loja J - Copacabana, Rio de Janeiro - RJ, CEP 22.011-001</p>
+                            <p>Encarregado de Dados (DPO): <a href="mailto:contato@geeketoys.com.br" className="text-primary hover:underline">contato@geeketoys.com.br</a></p>
+                        </section>
+
+                        <p>Esta política descreve como coletamos e usamos seus dados em conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018).</p>
+
+                        <p className="text-sm bg-muted/20 p-4 rounded-lg">
+                            Este site institucional não realiza cadastro nem venda. O cadastro do clube, a loja
+                            online e o tratamento de dados que decorre deles são descritos na íntegra na{' '}
+                            <a href="https://club.geeketoys.com.br/privacidade" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                                política completa da plataforma
+                            </a>, que prevalece em caso de divergência.
+                        </p>
 
                         <section className="space-y-3">
                             <h2 className="text-2xl font-semibold text-foreground">1. Dados Coletados</h2>
@@ -96,8 +113,9 @@ const PrivacyPolicy = () => {
                         </section>
 
                         <section className="space-y-3">
-                            <h2 className="text-2xl font-semibold text-foreground">5. Contato</h2>
-                            <p>Para questões sobre seus dados: <a href="mailto:contato@geeketoys.com.br" className="text-primary hover:underline">contato@geeketoys.com.br</a></p>
+                            <h2 className="text-2xl font-semibold text-foreground">5. Contato e Reclamações</h2>
+                            <p>Para questões sobre seus dados: <a href="mailto:contato@geeketoys.com.br" className="text-primary hover:underline">contato@geeketoys.com.br</a>. Respondemos em até 15 dias.</p>
+                            <p>Você também pode registrar reclamação junto à Autoridade Nacional de Proteção de Dados em <a href="https://www.gov.br/anpd" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">www.gov.br/anpd</a>.</p>
                         </section>
                     </div>
                 </div>

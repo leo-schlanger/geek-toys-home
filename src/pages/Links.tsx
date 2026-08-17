@@ -15,6 +15,7 @@ import {
 import { getBioLinks, type BioLink, type LinkIcon } from '@/data/links'
 import { SeoHead } from '@/components/SeoHead'
 import { CreatorCredit } from '@/components/CreatorCredit'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 /**
  * Bio-link page for social profiles, Instagram above all.
@@ -64,6 +65,10 @@ export default function Links() {
         aria-hidden
         className="pointer-events-none absolute -bottom-40 -right-20 h-80 w-80 rounded-full bg-accent/20 blur-3xl"
       />
+
+      {/* Fixed rather than in the flow: the page is a single column and a toggle
+          inline above the logo would be the first thing the eye lands on. */}
+      <ThemeToggle className="fixed right-4 top-4 z-10 bg-card/80 backdrop-blur" />
 
       <main className="relative mx-auto flex min-h-screen w-full max-w-md flex-col px-5 py-10">
         <header className="animate-fade-up text-center opacity-0" style={{ animationDelay: '0ms' }}>

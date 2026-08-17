@@ -20,13 +20,13 @@ function readBannerVisible(eventId: string): boolean {
 /**
  * Banner fixo no topo do site. Deslocamento da Navbar via CSS var --event-banner-h.
  *
- * A altura e **medida**, nao estimada. Ate 16/08/2026 eram dois numeros fixos
- * (44px acima de 768px, 72px abaixo). O texto do banner vem de `data/event.ts`
- * e cresceu: a 390px ele quebrava em 111px, a var continuava dizendo 72px, e os
- * 39px de sobra ficavam por cima da Navbar — que tem z-index menor. O resultado
- * era o **hamburguer do menu mobile intocavel no celular**: o clique caia no
- * banner. Como o texto e conteudo editavel, qualquer numero fixo aqui volta a
- * errar na proxima vez que a Laura mudar a frase.
+ * The height is **measured**, not estimated. It used to be two fixed numbers
+ * (44px above 768px, 72px below). The banner text comes from `data/event.ts`
+ * and grew: at 390px it wrapped to 111px while the variable still said 72px,
+ * and the 39px overflow sat over the Navbar, which has the lower z-index. The
+ * result was an **untappable mobile menu button**: clicks landed on the banner.
+ * Since the text is editable content, any fixed number here will be wrong again
+ * the next time the copy changes.
  */
 const EventAnnouncementBanner = () => {
   const event = ACTIVE_EVENT;
@@ -47,8 +47,8 @@ const EventAnnouncementBanner = () => {
     };
     apply();
 
-    // Pega quebra de linha por rotacao, zoom, fonte tardia ou texto novo —
-    // casos que um matchMedia por largura nao enxerga.
+    // Catches wrapping from rotation, zoom, a late font or new copy — cases a
+    // width-based matchMedia cannot see.
     const ro = new ResizeObserver(apply);
     ro.observe(el);
     return () => {

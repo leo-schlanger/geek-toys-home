@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useNowPlaying } from "@/hooks/useNowPlaying";
 
-// Backoff pra reconexão após drop do stream
+// Reconnection backoff after a stream drop
 const RECONNECT_BACKOFF_MS = [1000, 2000, 4000, 8000];
 
 const RadioSection = () => {
@@ -62,7 +62,7 @@ const RadioSection = () => {
     }, RECONNECT_BACKOFF_MS[attempt]);
   }, [streamUrl]);
 
-  // Listeners do <audio> pra reconexão e sincronização de estado
+  // <audio> listeners for reconnection and state sync
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -82,7 +82,7 @@ const RadioSection = () => {
       if (isPlayingRef.current) attemptReconnect();
     };
     const onEnded = () => {
-      // Live stream não deveria "terminar"; tratar como drop
+      // A livestream should never "end", so treat it as a drop
       if (isPlayingRef.current) attemptReconnect();
     };
     const onPause = () => {

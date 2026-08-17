@@ -6,18 +6,18 @@ import { cn } from '@/lib/utils'
 /**
  * Busca de produtos no site institucional.
  *
- * Consulta a API da loja e mostra as primeiras correspondências; clicar leva
- * direto para o produto na loja. Buscar aqui e cair na loja evita que a pessoa
- * tenha que navegar duas vezes.
+ * Queries the shop API and shows the first matches; clicking goes straight to
+ * the product. Searching here and landing in the shop spares a second
+ * navigation.
  */
 interface ProductSearchProps {
   className?: string
   /**
-   * Começa como ícone e abre o campo ao clicar. É o que permite a busca conviver
-   * com uma navegação já cheia sem espremer os links.
+   * Starts as an icon and opens on click, which lets search coexist with an
+   * already busy navigation without squeezing the links.
    */
   collapsible?: boolean
-  /** Classe do botão quando recolhido — não herda a largura do campo aberto. */
+  /** Collapsed button class; must not inherit the open field's width. */
   collapsedClassName?: string
 }
 
@@ -34,7 +34,7 @@ export function ProductSearch({
   const [open, setOpen] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
 
-  // Espera a digitação parar antes de consultar a API.
+  // Waits for typing to stop before hitting the API.
   useEffect(() => {
     const query = term.trim()
     if (query.length < 2) {
@@ -69,7 +69,7 @@ export function ProductSearch({
     function onClickOutside(e: MouseEvent) {
       if (boxRef.current && !boxRef.current.contains(e.target as Node)) {
         setOpen(false)
-        // Só recolhe quando não há nada digitado, para não perder a busca.
+        // Only collapses when the field is empty, so a search is never lost.
         if (collapsible && !term.trim()) setExpanded(false)
       }
     }

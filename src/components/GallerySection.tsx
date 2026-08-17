@@ -9,7 +9,7 @@ import gallery4 from "@/assets/gallery-4.jpg";
 import gallery5 from "@/assets/gallery-5.jpg";
 import gallery6 from "@/assets/gallery-6.jpg";
 
-/** Fotos fixas da loja (assets no bundle). */
+/** Static store photos bundled with the app. */
 const STORE_IMAGES = [
   { src: gallery1, alt: "GeekPop & Toys — loja 1" },
   { src: gallery2, alt: "GeekPop & Toys — loja 2" },
@@ -20,9 +20,9 @@ const STORE_IMAGES = [
 ];
 
 /**
- * Estas fotos vivem no banco desde 15/08 e são editadas pelo painel. A lista
- * estática continua aqui como rede de segurança: se a API não responder, a
- * seção mostra as fotos do bundle em vez de aparecer vazia.
+ * These photos live in the database and are edited from the admin panel. The
+ * static list stays as a safety net: if the API is unreachable, the section
+ * shows the bundled photos instead of appearing empty.
  */
 const EVENT_GALLERY_IMAGES = Array.from({ length: 35 }, (_, i) => {
   const n = String(i + 1).padStart(2, "0");
@@ -36,8 +36,8 @@ const images = [...STORE_IMAGES, ...EVENT_GALLERY_IMAGES];
 
 const GallerySection = () => {
   const ref = useRef<HTMLElement>(null);
-  // Álbuns criados no painel. As fotos estáticas abaixo continuam sendo a base
-  // da seção — os álbuns aparecem como atalho para a página completa.
+  // Albums created in the panel. The static photos below remain the section's
+  // base; albums appear as a shortcut to the full page.
   const [albums, setAlbums] = useState<GalleryAlbum[]>([]);
   const [lightbox, setLightbox] = useState<string | null>(null);
 

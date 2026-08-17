@@ -1,11 +1,11 @@
 /**
- * Configuração do evento ativo no site institucional.
+ * Active event on the institutional site.
  *
- * Como atualizar (Laura / operação):
- * 1. Edite este arquivo com data, local, texto e preço.
+ * To update:
+ * 1. Edit this file with the date, venue, copy and price.
  * 2. Coloque as fotos em `public/eventos/<slug>/` e liste os nomes em `photos`.
- * 3. `enabled: false` esconde banner + seções (sem deploy de lógica extra).
- * 4. Após o evento: deixe `ticketReservation.enabled: false` e `photos` com as fotos finais.
+ * 3. `enabled: false` hides the banner and sections.
+ * 4. After the event: set `ticketReservation.enabled: false` and fill `photos`.
  *
  * Detalhes: docs/EVENTS.md
  */
@@ -15,23 +15,23 @@ export type EventPhoto = {
   file: string
   /** Legenda opcional (ex.: "Grupo A — mesa 3") */
   caption?: string
-  /** Texto alternativo acessível */
+  /** Accessible alt text. */
   alt?: string
 }
 
 export type EventConfig = {
-  /** Identificador estável (localStorage do banner, âncoras) */
+  /** Stable id, used by the banner's localStorage key and anchors. */
   id: string
   /** Pasta em public/eventos/{slug}/ */
   slug: string
-  /** Liga/desliga banner + seções de evento no site */
+  /** Toggles the banner and event sections. */
   enabled: boolean
   title: string
-  /** Subtítulo curto pro banner e hero do bloco */
+  /** Short subtitle for the banner and the block's hero. */
   shortTitle: string
-  /** Texto do banner no topo (uma linha) */
+  /** Top banner text, one line. */
   bannerText: string
-  /** ISO date da data/hora do evento (exibição formatada em pt-BR) */
+  /** ISO datetime; displayed formatted in pt-BR. */
   startsAt: string
   endsAt?: string
   location: {
@@ -41,20 +41,20 @@ export type EventConfig = {
   }
   description: string[]
   highlights: string[]
-  /** Ex.: "Entrada liberada para membros do Clube" */
+  /** e.g. "free entry for club members" */
   memberPerk?: string
   ticketReservation: {
     enabled: boolean
-    /** Preço unitário em BRL; null = gratuito / a combinar */
+    /** Unit price in BRL; null means free or to be arranged. */
     priceBRL: number | null
     currencyLabel?: string
     maxPerReservation: number
     whatsappNumber: string
-    /** Instruções extras abaixo do formulário */
+    /** Extra instructions below the form. */
     notes?: string
   }
   photos: EventPhoto[]
-  /** CTA secundário no banner (âncora ou URL) */
+  /** Secondary banner CTA: an anchor or a URL. */
   ctaPrimary: { label: string; href: string }
   ctaSecondary?: { label: string; href: string }
 }
@@ -70,10 +70,9 @@ export const ACTIVE_EVENT: EventConfig = {
   title: 'GeekPop Night — Encontro K-pop & Collectibles',
   shortTitle: 'GeekPop Night',
   /**
-   * Curto de propósito: o banner é `fixed` e come o topo da tela no celular.
-   * A 390px, cada linha custa ~31px. A versão longa anterior (85 caracteres)
-   * quebrava em 3 linhas e ocupava 111px — um terço da primeira dobra.
-   * "reserve já" saiu porque o botão "Reservar ingresso" está ao lado.
+   * Deliberately short: the banner is `fixed` and eats the top of a phone
+   * screen. At 390px each line costs ~31px, and the previous 85-character
+   * version wrapped to three lines and 111px — a third of the first fold.
    */
   bannerText: '🎉 GeekPop Night · domingo 6/set, 14h–18h · Ingresso R$ 20',
   startsAt: '2026-09-06T14:00:00-03:00',
@@ -108,7 +107,7 @@ export const ACTIVE_EVENT: EventConfig = {
     notes:
       'Ingresso R$ 20/pessoa. Criança de colo e criança com deficiência não pagam — informe na observação. A reserva é enviada pelo WhatsApp da loja para confirmação. Pagamento e retirada conforme orientação da equipe.',
   },
-  // Fotos da Laura ficam na galeria geral (GallerySection), não em seção de download.
+  // Event photos go into the general gallery, not a download section.
   photos: [],
   ctaPrimary: { label: 'Reservar ingresso', href: '#ingressos' },
   ctaSecondary: { label: 'Ver evento', href: '#evento' },

@@ -3,12 +3,12 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import { ProfileMenu } from './ProfileMenu'
 
 /**
- * O que estes testes protegem: os dois destinos.
+ * What these protect: the two destinations.
  *
- * O site institucional não tem login, então "Meu Perfil" é só encaminhamento —
- * e encaminhamento errado leva a pessoa para uma tela onde a conta dela não
- * existe. Membro do Clube e cliente da loja são cadastros distintos, em
- * subdomínios distintos.
+ * The institutional site has no login, so "my profile" is only a redirect —
+ * and the wrong redirect lands someone on a screen where their account does
+ * not exist. Club members and shop customers are separate records on separate
+ * subdomains.
  */
 
 const MEMBRO = 'https://club.geeketoys.com.br/membro'

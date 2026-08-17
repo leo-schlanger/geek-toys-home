@@ -6,20 +6,20 @@ const DEFAULT_IMAGE = `${SITE}/og-image.png`
 export interface SeoHeadProps {
   title: string
   description: string
-  /** Caminho da rota, para canonical e og:url. */
+  /** Route path, used for canonical and og:url. */
   path: string
   image?: string
   noIndex?: boolean
 }
 
 /**
- * Meta por página.
+ * Per-page meta.
  *
- * Sem isto toda rota herdava o canonical da home, o que declara ao buscador que
- * /galeria e /privacidade são a mesma página que a raiz. Roda no cliente: o
+ * Without it every route inherited the home's canonical, telling search engines
+ * that /galeria and /privacidade are the same page as the root. Runs on the
  * Google executa JS, e os crawlers de rede social continuam lendo o HTML
- * estático (que descreve a home — aceitável, já que o que se compartilha do
- * site institucional é a raiz).
+ * static shell, which describes the home — acceptable, since what gets shared
+ * from the institutional site is the root.
  */
 export function SeoHead({ title, description, path, image, noIndex = false }: SeoHeadProps) {
   useEffect(() => {

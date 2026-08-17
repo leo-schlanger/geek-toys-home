@@ -13,7 +13,7 @@ import {
 
 function formatEventDate(iso: string | null): string | null {
   if (!iso) return null
-  // Meio-dia evita o fuso puxar a data para o dia anterior.
+  // Midday keeps the timezone from pulling the date back a day.
   return new Date(`${iso}T12:00`).toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'long',
@@ -21,7 +21,7 @@ function formatEventDate(iso: string | null): string | null {
   })
 }
 
-/** Lista de pastas, ou uma pasta aberta quando a rota traz o slug. */
+/** The folder list, or one open folder when the route carries a slug. */
 const Gallery = () => {
   const { slug } = useParams<{ slug?: string }>()
   return slug ? <AlbumView slug={slug} /> : <AlbumList />
@@ -154,7 +154,7 @@ function AlbumView({ slug }: { slug: string }) {
     [photos.length]
   )
 
-  // Setas e Esc no lightbox: é o que se espera de uma galeria em tela cheia.
+  // Arrows and Esc in the lightbox, as expected of a fullscreen gallery.
   useEffect(() => {
     if (lightbox == null) return
     function onKey(e: KeyboardEvent) {
@@ -245,7 +245,7 @@ function AlbumView({ slug }: { slug: string }) {
                 src={photo.url}
                 alt={photo.caption ?? ''}
                 loading="lazy"
-                /* Sem download: a galeria é vitrine, não acervo para baixar. */
+                /* No download: the gallery is a showcase, not an archive. */
                 onContextMenu={(e) => e.preventDefault()}
                 draggable={false}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"

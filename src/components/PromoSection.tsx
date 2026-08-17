@@ -12,13 +12,13 @@ import {
 import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
 
 /**
- * Sale, promoções e vantagens do Clube (pedido Laura, estilo iBox).
+ * Sale, promotions and club benefits.
  *
- * **Não tem grade de novidades.** Até 16/08/2026 tinha, e era a mesma coisa que
+ * **No "new arrivals" grid.** It used to have one, showing the same thing as
  * o bloco "Acabou de chegar!" da `ProductsSection`: as duas chamavam
- * `fetchProducts` com a ordenação padrão (mais recentes primeiro), então o
- * visitante via praticamente os mesmos produtos duas vezes na mesma página.
- * Novidade agora aparece uma vez só, em `#produtos`; aqui fica o que tem
+ * `fetchProducts` with the default ordering, so a visitor saw practically the
+ * same products twice on one page. New arrivals now appear once, in
+ * `#produtos`; what stays here is
  * desconto e as vantagens do Clube.
  */
 const PromoSection = () => {

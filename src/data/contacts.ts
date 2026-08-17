@@ -1,15 +1,14 @@
 /**
- * Contatos oficiais da loja GeekPop & Toys.
- * Loja (atendentes) primeiro; Norberto como secundário.
+ * Official store contacts, staffed line first.
  */
 
 export type ContactPhone = {
   id: string
   label: string
-  /** E.164 sem + (ex.: 5511914662881) */
+  /** E.164 without the leading + */
   e164: string
   display: string
-  /** Destacar como principal na UI */
+  /** Highlight as primary in the UI. */
   primary?: boolean
   note?: string
 }
@@ -32,7 +31,7 @@ export const STORE_PHONES: ContactPhone[] = [
   },
 ]
 
-/** Número principal (atendentes) — CTAs, reservas, float */
+/** Primary number, used by CTAs, reservations and the float. */
 export const PRIMARY_WHATSAPP = STORE_PHONES[0]
 
 export const EMAIL = 'geeketoys@gmail.com'

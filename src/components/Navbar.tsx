@@ -13,7 +13,7 @@ interface NavLink {
   highlight?: boolean;
 }
 
-/** Ordem: produtos e evento no topo da navegação. */
+/** Products and the event lead the navigation. */
 const baseLinks: NavLink[] = [
   { label: "Início", href: "#inicio" },
   { label: "Produtos", href: "#produtos", highlight: true },
@@ -29,7 +29,7 @@ const baseLinks: NavLink[] = [
 
 function buildNavLinks(): NavLink[] {
   if (!isEventVisible(ACTIVE_EVENT)) return baseLinks;
-  // Início · Produtos · Evento · Promoções · resto…
+  // Home, products, event, promos, then the rest
   return [
     baseLinks[0],
     baseLinks[1],
@@ -39,8 +39,8 @@ function buildNavLinks(): NavLink[] {
 }
 
 /**
- * Rota interna usa <Link> (navegação SPA). Âncora e link externo seguem como
- * <a>: âncora depende do comportamento nativo de rolagem, e externo abre fora.
+ * Internal routes use <Link> for SPA navigation. Anchors and external links
+ * stay as <a>: anchors rely on native scrolling, external links open away.
  */
 function NavItem({
   link,
@@ -80,9 +80,9 @@ const Navbar = () => {
   const onHome = pathname === "/";
 
   /**
-   * Fora da home, uma âncora precisa apontar para a home antes da seção: em
-   * /galeria, `#inicio` só rolaria a própria galeria e o clique não saía do
-   * lugar.
+   * Away from the home page an anchor must target the home before the section:
+   * on /galeria, `#inicio` would only scroll the gallery and the click would go
+   * nowhere.
    */
   const resolveHref = (href: string) => (href.startsWith("#") && !onHome ? `/${href}` : href);
 
@@ -93,11 +93,11 @@ const Navbar = () => {
   }, []);
 
   /**
-   * Publica o estado do menu no `<body>` para quem está fora desta árvore.
+   * Publishes the menu state on `<body>` for anything outside this tree.
    *
-   * O `WhatsAppFloat` é irmão da Navbar em `Index.tsx` e não tem como ler este
-   * `open`. Um atributo no body resolve sem criar contexto só para isso — e a
-   * regra que o esconde mora em `index.css`, perto das outras de layout.
+   * `WhatsAppFloat` is the Navbar's sibling in `Index.tsx` and cannot read
+   * this `open`. A body attribute solves it without a context just for this;
+   * the rule that hides it lives in `index.css`.
    */
   useEffect(() => {
     if (open) {
@@ -174,9 +174,9 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {open && (
-        // O painel rola: banner + barra ocupam ~156px de uma tela de 844px e a
-        // lista completa passa disso. Sem `overflow-y-auto` o último item fica
-        // cortado pela borda inferior, sem jeito de alcançá-lo.
+        // The panel scrolls: banner plus bar take ~156px of an 844px screen and
+        // the full list exceeds that. Without `overflow-y-auto` the last item is
+        // cut off at the bottom edge with no way to reach it.
         <div className="xl:hidden glass max-h-[calc(100vh-var(--event-banner-h,0px)-4rem)] overflow-y-auto overscroll-contain border-t border-border">
           <div className="px-4 pt-4">
             <ProductSearch />

@@ -15,15 +15,15 @@ export function storeTheme(theme: Theme): void {
   localStorage.setItem(STORAGE_KEY, theme)
 }
 
-/** Aplica a classe que o Tailwind usa (darkMode: 'class'). */
+/** Applies the class Tailwind expects (darkMode: 'class'). */
 export function applyTheme(theme: Theme): void {
   const dark = theme === 'dark' || (theme === 'system' && systemPrefersDark())
   document.documentElement.classList.toggle('dark', dark)
 }
 
 /**
- * Chamado antes do React montar, para a página não piscar no tema errado.
- * Também assina a troca do tema do sistema enquanto o usuário está em "system".
+ * Called before React mounts so the page never flashes the wrong theme. Also
+ * subscribes to system theme changes while the preference is "system".
  */
 export function initTheme(): void {
   applyTheme(readStoredTheme())

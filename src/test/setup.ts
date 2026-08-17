@@ -15,12 +15,12 @@ Object.defineProperty(window, "matchMedia", {
 });
 
 /**
- * jsdom não implementa ResizeObserver, e o EventAnnouncementBanner passou a
- * depender dele para medir a própria altura (ver a correção de 16/08/2026).
- * Sem este stub, qualquer teste que renderize o banner — ou a Navbar dentro
- * dele — quebra com "ResizeObserver is not defined".
+ * jsdom does not implement ResizeObserver, and EventAnnouncementBanner needs
+ * it to measure its own height. Without this stub any test rendering the
+ * banner — or the Navbar inside it — fails with "ResizeObserver is not
+ * defined".
  *
- * Guarda a callback para o teste poder disparar uma remedição na mão.
+ * Keeps the callback so a test can trigger a re-measure by hand.
  */
 class ResizeObserverStub {
   static callbacks: ResizeObserverCallback[] = [];

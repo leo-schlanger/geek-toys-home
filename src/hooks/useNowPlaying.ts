@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 
 /**
- * Dados que realmente usamos do AzuraCast. O payload é grande; extraímos só
- * o essencial pra evitar acoplar o UI a campos que podem mudar.
+ * What we actually use from AzuraCast. The payload is large; taking only the
+ * essentials keeps the UI from coupling to fields that may change.
  */
 export interface NowPlayingSong {
   title: string;
@@ -40,13 +40,13 @@ const API_URL =
 
 /**
  * Polling do "agora tocando" do AzuraCast. Usa o endpoint `nowplaying_static`
- * (arquivo JSON cacheado, servido direto pelo nginx) em vez do `nowplaying`
- * dinâmico — ~10x mais leve no servidor e cobre nosso caso (rádio auto-DJ,
- * sem shows ao vivo nem podcasts).
+ * (a cached JSON served straight by nginx) rather than the dynamic
+ * `nowplaying`: far lighter on the server and enough for an auto-DJ station
+ * with no live shows or podcasts.
  *
- * - Poll a cada 15s quando a aba está visível (padrão recomendado pela doc)
- * - React Query pausa automaticamente quando a aba está em background
- * - AzuraCast já envia `Access-Control-Allow-Origin: *` (conferido)
+ * - Polls every 15s while the tab is visible
+ * - React Query pauses automatically while the tab is backgrounded
+ * - AzuraCast already sends `Access-Control-Allow-Origin: *`
  */
 export function useNowPlaying(): NowPlayingState {
   const { data, isLoading } = useQuery({

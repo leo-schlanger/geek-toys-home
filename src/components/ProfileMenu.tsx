@@ -4,25 +4,24 @@ import { CLUB_URL, SHOP_URL } from '@/lib/shop-api'
 import { cn } from '@/lib/utils'
 
 /**
- * "Meu Perfil" na navegação do site institucional.
+ * "My profile" in the institutional site's navigation.
  *
- * Este site **não tem login**. Ele é estático, servido do Vercel a partir do
- * apex, e o JWT de quem já é cliente vive no `localStorage` de `club.*` e
- * `shop.*` — que é por origem, então daqui não dá para saber se alguém está
- * logado nem quem é. Por isso o menu não mostra nome, avatar nem estado: ele é
- * um encaminhamento honesto para onde o perfil realmente existe.
+ * This site **has no login**. It is static, and a customer's JWT lives in the
+ * localStorage of `club.*` and `shop.*`, which is per origin — so from here
+ * there is no way to know whether anyone is signed in, or who. Hence no name,
+ * avatar or state: the menu is an honest redirect to where the profile
+ * actually exists.
  *
- * São dois destinos porque são dois cadastros distintos:
+ * Two destinations, because these are two separate records:
  *
- * | Público            | Onde mora o perfil                          |
- * | ------------------ | ------------------------------------------- |
- * | Membro do Clube    | `club.geeketoys.com.br/membro`              |
- * | Cliente da loja    | `shop.geeketoys.com.br/minhas-compras`      |
+ * | Audience      | Where the profile lives                     |
+ * | ------------- | ------------------------------------------- |
+ * | Club member   | `club.geeketoys.com.br/membro`              |
+ * | Shop customer | `shop.geeketoys.com.br/minhas-compras`      |
  *
- * Um link só obrigaria a escolher um público e deixar o outro sem caminho.
- * Quem chega deslogado não cai em beco: `/membro` redireciona para o login do
- * clube e `/minhas-compras` para `/entrar?next=/minhas-compras`, que volta para
- * a página pedida depois de autenticar.
+ * A single link would force picking one audience and leaving the other without
+ * a route. Signed-out visitors do not hit a dead end: each destination
+ * redirects to its own login and returns afterwards.
  */
 
 interface ProfileTarget {
@@ -50,12 +49,12 @@ const TARGETS: ProfileTarget[] = [
 interface ProfileMenuProps {
   className?: string
   /**
-   * Lista aberta, sem botão — é a forma usada no menu mobile.
+   * Open list with no button, as used in the mobile menu.
    *
-   * Abaixo de `xl` o botão com dropdown não é usado: o painel tem 288px e,
-   * ancorado à direita numa tela de 390px, sai cortado pela borda esquerda.
-   * Nessas larguras "Meu Perfil" vive dentro do hambúrguer, junto do resto da
-   * navegação, que é onde a pessoa procura.
+   * Below `xl` the dropdown is not used: the panel is 288px and, anchored
+   * right on a 390px screen, it runs off the left edge. At those widths
+   * "my profile" lives inside the hamburger with the rest of the
+   * navigation, which is where people look for it.
    */
   inline?: boolean
   /** Chamado ao escolher um destino (fecha o menu mobile). */

@@ -11,7 +11,7 @@ const OPTIONS: { value: Theme; label: string; Icon: typeof Sun }[] = [
 
 interface ThemeToggleProps {
   className?: string
-  /** Um botão só, que cicla entre os modos. Usado onde não sobra espaço. */
+  /** A single button cycling the modes, for where space is tight. */
   compact?: boolean
 }
 

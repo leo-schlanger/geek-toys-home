@@ -1,6 +1,6 @@
 /**
- * Cliente leve da API da loja (api.geeketoys.com.br).
- * Usado na home institucional para vitrine de produtos.
+ * Lightweight client for the shop API, used by the institutional home to
+ * display products.
  */
 
 const API_BASE = 'https://api.geeketoys.com.br'
@@ -113,13 +113,13 @@ export type GalleryAlbum = {
   slug: string
   description: string | null
   coverUrl: string | null
-  /** YYYY-MM-DD quando o álbum é de um evento. */
+  /** YYYY-MM-DD when the album belongs to an event. */
   eventDate: string | null
   photoCount: number
   photos?: GalleryPhoto[]
 }
 
-/** Álbuns publicados, na ordem definida no admin. */
+/** Published albums, in the order set in the admin. */
 export async function fetchGalleryAlbums(): Promise<GalleryAlbum[]> {
   const data = await getJson<{ albums: GalleryAlbum[] }>('/gallery')
   return data.albums ?? []

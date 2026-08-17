@@ -16,9 +16,9 @@ import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 /**
- * Ordem (pedido Laura 06/08/2026):
- * produtos + evento em foco no topo; quem somos / galeria / rádio / etc. mais abaixo.
- * Fotos da Laura entram na galeria geral (#galeria) — sem seção separada de download.
+ * Order: products and the event lead; about, gallery, radio and the rest
+ * follow. Event photos go into the general gallery, with no separate
+ * download section.
  */
 const Index = () => {
   return (

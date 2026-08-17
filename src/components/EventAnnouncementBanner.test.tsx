@@ -4,19 +4,19 @@ import EventAnnouncementBanner from './EventAnnouncementBanner'
 import { ACTIVE_EVENT, isEventVisible } from '@/data/event'
 
 /**
- * O bug que este teste tranca (encontrado em 16/08/2026):
+ * The bug this test pins:
  *
- * A altura do banner era **chutada** — `44px` acima de 768px, `72px` abaixo —
- * e escrita na var `--event-banner-h`, que é o quanto a Navbar desce. O texto
- * do banner vem de `data/event.ts` e cresceu: a 390px ele passou a quebrar em
- * **111px**. Os 39px de diferença ficavam por cima da Navbar, que tem z-index
- * menor que o banner.
+ * The banner's height was **guessed** — 44px above 768px, 72px below — and
+ * written into `--event-banner-h`, which is how far the Navbar shifts down.
+ * The banner text comes from `data/event.ts` and grew: at 390px it wrapped to
+ * 111px, and the 39px difference sat over the Navbar, which has the lower
+ * z-index.
  *
- * Consequência real, medida no navegador: **o hambúrguer do menu mobile ficou
- * intocável no celular** — o toque caía no banner. A navegação inteira do site
- * ficava inacessível em telas estreitas.
+ * Measured consequence: the mobile menu button became **untappable**, taps
+ * landing on the banner instead. Site navigation was unreachable on narrow
+ * screens.
  *
- * Qualquer volta a um número fixo aqui reprova.
+ * Any return to a fixed number here fails.
  */
 
 const VAR = '--event-banner-h'
@@ -44,8 +44,8 @@ afterEach(() => {
 
 describe('EventAnnouncementBanner — altura publicada na var CSS', () => {
   it('o evento precisa estar ativo, senão este arquivo não testa nada', () => {
-    // Guarda explícita: se alguém desligar o evento, o teste abaixo passaria
-    // por vacuidade e a regressão voltaria sem aviso.
+    // Explicit guard: if the event were disabled, the test below would pass
+    // vacuously and the regression could return unnoticed.
     expect(isEventVisible(ACTIVE_EVENT)).toBe(true)
   })
 
@@ -53,7 +53,7 @@ describe('EventAnnouncementBanner — altura publicada na var CSS', () => {
     comAlturaDe(111)
     render(<EventAnnouncementBanner />)
 
-    // 72px era o valor fixo do código antigo para telas estreitas.
+    // 72px was the old hard-coded value for narrow screens.
     expect(varAtual()).toBe('111px')
     expect(varAtual()).not.toBe('72px')
   })
@@ -62,7 +62,7 @@ describe('EventAnnouncementBanner — altura publicada na var CSS', () => {
     comAlturaDe(49)
     render(<EventAnnouncementBanner />)
 
-    // 44px era o valor fixo do código antigo para desktop.
+    // 44px was the old hard-coded value for desktop.
     expect(varAtual()).toBe('49px')
     expect(varAtual()).not.toBe('44px')
   })

@@ -1,6 +1,7 @@
 import { SocialIcon } from "./SocialIcon";
 import { useLocation } from "react-router-dom";
 import { primaryWhatsAppUrl, STORE_PHONES, waMeUrl } from "@/data/contacts";
+import { CreatorCredit } from "@/components/CreatorCredit";
 
 interface FooterLink {
   label: string;
@@ -119,6 +120,7 @@ const Footer = () => {
         <p className="text-xs text-muted-foreground/60 mt-1">
           Copacabana, Rio de Janeiro - RJ
         </p>
+        <CreatorCredit className="mt-4" />
       </div>
     </footer>
   );

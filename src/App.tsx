@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import TermsOfUse from "./pages/TermsOfUse";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Gallery from "./pages/Gallery";
+import Links from "./pages/Links";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,8 @@ const App = () => (
           <Route path="/privacidade" element={<PrivacyPolicy />} />
           <Route path="/galeria" element={<Gallery />} />
           <Route path="/galeria/:slug" element={<Gallery />} />
+          {/* Single destination for the Instagram bio. */}
+          <Route path="/links" element={<Links />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

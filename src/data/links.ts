@@ -3,7 +3,13 @@
  *
  * Everything shown on that page comes from here, so changing what the bio
  * points at is one edit in one file. Order matters: it is the order on screen,
- * and the first two entries are what most visitors tap.
+ * and the first entries are what most visitors tap.
+ *
+ * The list is deliberately short. Rádio, galeria e Facebook saíram em 19/08 a
+ * pedido da loja: eram destinos que quase ninguém tocava e empurravam para
+ * baixo os que vendem. Entrar no grupo do WhatsApp virou o primeiro link —
+ * é o único que transforma uma visita em audiência recorrente, e a página
+ * inteira existe para essa conversão.
  *
  * `highlight` promotes an entry to the big card at the top. Keep at most one or
  * two — the point of the page is a short, scannable list, and every extra link
@@ -17,11 +23,9 @@ export type LinkIcon =
   | 'shop'
   | 'club'
   | 'whatsapp'
+  | 'whatsapp-group'
   | 'instagram'
   | 'tiktok'
-  | 'facebook'
-  | 'radio'
-  | 'gallery'
   | 'event'
   | 'location'
 
@@ -39,6 +43,14 @@ export interface BioLink {
 
 /** Links that never change with a campaign. */
 const STATIC_LINKS: BioLink[] = [
+  {
+    id: 'whatsapp-group',
+    label: 'Entrar no grupo do WhatsApp',
+    description: 'Novidades, chegadas e avisos em primeira mão',
+    href: 'https://chat.whatsapp.com/DeqhPV5NOWS3YsFxImCaK6?s=sw&p=a&mlu=4',
+    icon: 'whatsapp-group',
+    highlight: true,
+  },
   {
     id: 'shop',
     label: 'Loja online',
@@ -63,21 +75,6 @@ const STATIC_LINKS: BioLink[] = [
     icon: 'club',
   },
   {
-    id: 'radio',
-    label: 'Rádio GeekPop',
-    description: 'K-pop e cultura pop tocando agora',
-    href: 'https://radio.geeketoys.com.br',
-    icon: 'radio',
-  },
-  {
-    id: 'gallery',
-    label: 'Galeria de fotos',
-    description: 'Eventos e bastidores da loja',
-    href: '/galeria',
-    icon: 'gallery',
-    internal: true,
-  },
-  {
     id: 'location',
     label: 'Como chegar na loja',
     description: 'Rua Barata Ribeiro, 181 — Copacabana, RJ',
@@ -96,19 +93,16 @@ const STATIC_LINKS: BioLink[] = [
     href: 'https://www.tiktok.com/@geeketoys',
     icon: 'tiktok',
   },
-  {
-    id: 'facebook',
-    label: 'Facebook',
-    href: 'https://www.facebook.com/geeketoyscolection/',
-    icon: 'facebook',
-  },
 ]
 
 /**
- * Full list, with the active event pinned to the top when there is one.
+ * Full list, with the active event pinned right below the WhatsApp group.
  *
  * Reuses `isEventVisible` so the event disappears from the bio on the same date
  * it disappears from the site — a dead event link is worse than no link.
+ *
+ * The group stays first even during a campaign: the event sells one afternoon,
+ * the group is who the loja can reach on every afternoon after it.
  */
 export function getBioLinks(): BioLink[] {
   if (!isEventVisible()) return STATIC_LINKS
@@ -121,5 +115,6 @@ export function getBioLinks(): BioLink[] {
     icon: 'event',
     highlight: true,
   }
-  return [event, ...STATIC_LINKS]
+  const [group, ...rest] = STATIC_LINKS
+  return [group, event, ...rest]
 }

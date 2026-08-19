@@ -3,13 +3,11 @@ import {
   ShoppingBag,
   Sparkles,
   MessageCircle,
+  Users,
   Instagram,
   Music2,
-  Radio,
-  Images,
   CalendarHeart,
   MapPin,
-  Facebook,
   ArrowUpRight,
 } from 'lucide-react'
 import { getBioLinks, type BioLink, type LinkIcon } from '@/data/links'
@@ -33,11 +31,11 @@ const ICONS: Record<LinkIcon, typeof ShoppingBag> = {
   shop: ShoppingBag,
   club: Sparkles,
   whatsapp: MessageCircle,
+  // Grupo e conversa direta são destinos diferentes e ficam lado a lado: o
+  // ícone de pessoas é o que separa os dois de relance.
+  'whatsapp-group': Users,
   instagram: Instagram,
   tiktok: Music2,
-  facebook: Facebook,
-  radio: Radio,
-  gallery: Images,
   event: CalendarHeart,
   location: MapPin,
 }
@@ -51,7 +49,7 @@ export default function Links() {
     <div className="relative min-h-screen overflow-hidden bg-background">
       <SeoHead
         title="Links | GeekPop & Toys"
-        description="Todos os links da GeekPop & Toys: loja online, clube com 15% de desconto, WhatsApp, rádio e redes sociais."
+        description="Todos os links da GeekPop & Toys: grupo do WhatsApp, loja online, clube com 15% de desconto e redes sociais."
         path="/links"
       />
 

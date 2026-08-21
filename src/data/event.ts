@@ -48,7 +48,11 @@ export type EventConfig = {
     /** Unit price in BRL; null means free or to be arranged. */
     priceBRL: number | null
     currencyLabel?: string
-    maxPerReservation: number
+    /**
+     * Teto por reserva. `null` = sem teto — ficou 6 até 21/08/2026, quando uma
+     * família bateu no limite. Mantenha igual ao clube-geek-toys/src/data/event.ts.
+     */
+    maxPerReservation: number | null
     whatsappNumber: string
     /** Extra instructions below the form. */
     notes?: string
@@ -101,7 +105,7 @@ export const ACTIVE_EVENT: EventConfig = {
     enabled: true,
     priceBRL: 20,
     currencyLabel: 'R$',
-    maxPerReservation: 6,
+    maxPerReservation: null,
     // WhatsApp da loja (atendentes) — (11) 91466-2881
     whatsappNumber: '5511914662881',
     notes:

@@ -12,7 +12,10 @@ type Props = {
 };
 
 const EventTicketForm = ({ event = ACTIVE_EVENT }: Props) => {
+  /** `null` = sem teto de quantidade; o clamp abaixo vira só o mínimo de 1. */
   const max = event.ticketReservation.maxPerReservation;
+  const clampQuantity = (value: number) =>
+    max == null ? Math.max(value, 1) : Math.min(Math.max(value, 1), max);
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -39,11 +42,11 @@ const EventTicketForm = ({ event = ACTIVE_EVENT }: Props) => {
 
   const unit = event.ticketReservation.priceBRL;
   const total =
-    unit == null ? null : unit * Math.min(Math.max(form.quantity, 1), max);
+    unit == null ? null : unit * clampQuantity(form.quantity);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const qty = Math.min(Math.max(Number(form.quantity) || 1, 1), max);
+    const qty = clampQuantity(Number(form.quantity) || 1);
     const url = buildReservationWhatsAppUrl({
       event,
       name: form.name.trim(),
@@ -138,17 +141,19 @@ const EventTicketForm = ({ event = ACTIVE_EVENT }: Props) => {
             type="number"
             required
             min={1}
-            max={max}
+            {...(max == null ? {} : { max })}
             value={form.quantity}
             onChange={(e) =>
               setForm({
                 ...form,
-                quantity: Math.min(Math.max(Number(e.target.value) || 1, 1), max),
+                quantity: clampQuantity(Number(e.target.value) || 1),
               })
             }
             className="bg-background border border-border rounded-lg px-4 py-3 text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
-          <span className="text-xs text-muted-foreground">Máximo {max} por reserva</span>
+          {max != null && (
+            <span className="text-xs text-muted-foreground">Máximo {max} por reserva</span>
+          )}
         </label>
 
         <div className="flex flex-col justify-end gap-1.5">

@@ -18,18 +18,18 @@ describe('theme', () => {
     document.documentElement.classList.remove('dark')
   })
 
-  it('cai em "system" quando não há preferência salva ou o valor é lixo', () => {
+  it('falls back to "system" when nothing is stored, or the value is junk', () => {
     expect(readStoredTheme()).toBe('system')
     localStorage.setItem('geekpop-theme', 'roxo')
     expect(readStoredTheme()).toBe('system')
   })
 
-  it('guarda e relê a preferência', () => {
+  it('stores and reads back the preference', () => {
     storeTheme('dark')
     expect(readStoredTheme()).toBe('dark')
   })
 
-  it('liga a classe dark no escolha explícita', () => {
+  it('adds the dark class on an explicit choice', () => {
     mockSystemDark(false)
     applyTheme('dark')
     expect(document.documentElement.classList.contains('dark')).toBe(true)
@@ -38,7 +38,7 @@ describe('theme', () => {
     expect(document.documentElement.classList.contains('dark')).toBe(false)
   })
 
-  it('em "system", segue a preferência do sistema', () => {
+  it('in "system", follows the OS preference', () => {
     mockSystemDark(true)
     applyTheme('system')
     expect(document.documentElement.classList.contains('dark')).toBe(true)

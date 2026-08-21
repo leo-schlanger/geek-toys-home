@@ -14,8 +14,8 @@ import { ProfileMenu } from './ProfileMenu'
 const MEMBRO = 'https://club.geeketoys.com.br/membro'
 const COMPRAS = 'https://shop.geeketoys.com.br/minhas-compras'
 
-describe('ProfileMenu — botão + dropdown', () => {
-  it('começa fechado', () => {
+describe('ProfileMenu — button and dropdown', () => {
+  it('starts closed', () => {
     render(<ProfileMenu />)
     expect(screen.getByRole('button', { name: 'Meu Perfil' })).toHaveAttribute(
       'aria-expanded',
@@ -24,7 +24,7 @@ describe('ProfileMenu — botão + dropdown', () => {
     expect(screen.queryByRole('menu')).not.toBeInTheDocument()
   })
 
-  it('abre com os dois destinos, cada um no seu subdomínio', () => {
+  it('opens with both destinations, each on its own subdomain', () => {
     render(<ProfileMenu />)
     fireEvent.click(screen.getByRole('button', { name: 'Meu Perfil' }))
 
@@ -33,7 +33,7 @@ describe('ProfileMenu — botão + dropdown', () => {
     expect(screen.getByRole('menuitem', { name: /Minhas Compras/ })).toHaveAttribute('href', COMPRAS)
   })
 
-  it('explica qual é qual — os rótulos sozinhos não separam os dois públicos', () => {
+  it('explains which is which: the labels alone do not separate the two audiences', () => {
     render(<ProfileMenu />)
     fireEvent.click(screen.getByRole('button', { name: 'Meu Perfil' }))
 
@@ -41,7 +41,7 @@ describe('ProfileMenu — botão + dropdown', () => {
     expect(screen.getByText(/Pedidos, rastreio/)).toBeInTheDocument()
   })
 
-  it('fecha ao clicar de novo no botão', () => {
+  it('closes when the button is clicked again', () => {
     render(<ProfileMenu />)
     const botao = screen.getByRole('button', { name: 'Meu Perfil' })
 
@@ -52,7 +52,7 @@ describe('ProfileMenu — botão + dropdown', () => {
     expect(screen.queryByRole('menu')).not.toBeInTheDocument()
   })
 
-  it('fecha ao escolher um destino, para o painel não ficar aberto na volta', () => {
+  it('closes on choosing a destination, so the panel is not open on return', () => {
     render(<ProfileMenu />)
     fireEvent.click(screen.getByRole('button', { name: 'Meu Perfil' }))
     fireEvent.click(screen.getByRole('menuitem', { name: /Minhas Compras/ }))
@@ -62,7 +62,7 @@ describe('ProfileMenu — botão + dropdown', () => {
 })
 
 describe('ProfileMenu — modo inline (menu mobile)', () => {
-  it('mostra os destinos direto, sem exigir um segundo clique', () => {
+  it('shows the destinations directly, with no second click', () => {
     render(<ProfileMenu inline />)
 
     expect(screen.queryByRole('button', { name: 'Meu Perfil' })).not.toBeInTheDocument()
@@ -71,7 +71,7 @@ describe('ProfileMenu — modo inline (menu mobile)', () => {
     expect(screen.getByRole('menuitem', { name: /Minhas Compras/ })).toHaveAttribute('href', COMPRAS)
   })
 
-  it('avisa o pai ao escolher, para o menu mobile fechar junto', () => {
+  it('notifies the parent on choosing, so the mobile menu closes too', () => {
     const onNavigate = vi.fn()
     render(<ProfileMenu inline onNavigate={onNavigate} />)
 

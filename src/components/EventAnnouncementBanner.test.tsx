@@ -43,13 +43,13 @@ afterEach(() => {
 })
 
 describe('EventAnnouncementBanner — altura publicada na var CSS', () => {
-  it('o evento precisa estar ativo, senão este arquivo não testa nada', () => {
+  it('the event must be active, or this file tests nothing', () => {
     // Explicit guard: if the event were disabled, the test below would pass
     // vacuously and the regression could return unnoticed.
     expect(isEventVisible(ACTIVE_EVENT)).toBe(true)
   })
 
-  it('publica a altura MEDIDA, não um número fixo por breakpoint', () => {
+  it('publishes the MEASURED height, not a fixed per-breakpoint number', () => {
     comAlturaDe(111)
     render(<EventAnnouncementBanner />)
 
@@ -58,7 +58,7 @@ describe('EventAnnouncementBanner — altura publicada na var CSS', () => {
     expect(varAtual()).not.toBe('72px')
   })
 
-  it('acompanha uma altura diferente — o valor não vem do breakpoint', () => {
+  it('tracks a different height: the value does not come from the breakpoint', () => {
     comAlturaDe(49)
     render(<EventAnnouncementBanner />)
 
@@ -67,7 +67,7 @@ describe('EventAnnouncementBanner — altura publicada na var CSS', () => {
     expect(varAtual()).not.toBe('44px')
   })
 
-  it('arredonda para cima — meio pixel a menos reexpõe a Navbar', () => {
+  it('rounds up: half a pixel short re-exposes the Navbar', () => {
     comAlturaDe(62.4)
     render(<EventAnnouncementBanner />)
 

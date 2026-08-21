@@ -31,14 +31,14 @@ describe('ProductSearch', () => {
     vi.useRealTimers()
   })
 
-  it('não consulta a API com menos de 2 caracteres', async () => {
+  it('does not query the API with fewer than 2 characters', async () => {
     render(<ProductSearch />)
     fireEvent.change(screen.getByLabelText(/Buscar produtos/i), { target: { value: 'b' } })
     await new Promise((r) => setTimeout(r, 400))
     expect(mockedFetch).not.toHaveBeenCalled()
   })
 
-  it('mostra os produtos encontrados', async () => {
+  it('shows the products it finds', async () => {
     mockedFetch.mockResolvedValue({ products: [product], total: 1, page: 1, limit: 6 })
     render(<ProductSearch />)
 
@@ -54,7 +54,7 @@ describe('ProductSearch', () => {
     )
   })
 
-  it('avisa quando não encontra nada', async () => {
+  it('says so when nothing matches', async () => {
     mockedFetch.mockResolvedValue({ products: [], total: 0, page: 1, limit: 6 })
     render(<ProductSearch />)
 
@@ -65,7 +65,7 @@ describe('ProductSearch', () => {
     })
   })
 
-  it('sobrevive a erro da API sem quebrar a página', async () => {
+  it('survives an API error without breaking the page', async () => {
     mockedFetch.mockRejectedValue(new Error('offline'))
     render(<ProductSearch />)
 

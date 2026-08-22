@@ -70,7 +70,7 @@ const STATIC_LINKS: BioLink[] = [
   {
     id: 'club',
     label: 'Clube GeekPop & Toys',
-    description: '15% de desconto em qualquer produto',
+    description: '10% de desconto em qualquer produto',
     href: 'https://club.geeketoys.com.br/assinar',
     icon: 'club',
   },

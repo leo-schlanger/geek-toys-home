@@ -34,7 +34,7 @@ interface ProfileTarget {
 const TARGETS: ProfileTarget[] = [
   {
     label: 'Área do Membro',
-    description: 'Carteirinha, assinatura e os 15% de desconto',
+    description: 'Carteirinha, assinatura e os 10% de desconto',
     href: `${CLUB_URL}/membro`,
     Icon: IdCard,
   },

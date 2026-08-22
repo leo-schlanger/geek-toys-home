@@ -33,7 +33,7 @@ const AboutSection = () => {
               <strong className="text-foreground">Hoje nosso foco principal é o K-pop e a cultura pop</strong>: photocards, merch de grupos, álbuns, lightsticks e o que está bombando na cena. Mantemos também colecionáveis e produtos geek, com eventos como a GeekPop Night e uma curadoria pensada para fãs.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-8">
-              <strong className="text-foreground">Vendemos online com envio pelos Correios para todo o Brasil</strong> e atendemos na loja física em Copacabana. No Clube GeekPop você ganha 15% de desconto em qualquer produto. Visite a gente ou compre pela loja online!
+              <strong className="text-foreground">Vendemos online com envio pelos Correios para todo o Brasil</strong> e atendemos na loja física em Copacabana. No Clube GeekPop você ganha 10% de desconto em qualquer produto. Visite a gente ou compre pela loja online!
             </p>
 
             <div className="grid gap-4">

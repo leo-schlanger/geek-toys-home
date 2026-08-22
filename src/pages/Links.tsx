@@ -51,7 +51,7 @@ export default function Links() {
     <div className="relative min-h-screen overflow-hidden bg-background">
       <SeoHead
         title="Links | GeekPop & Toys"
-        description="Todos os links da GeekPop & Toys: grupo do WhatsApp, loja online, clube com 15% de desconto e redes sociais."
+        description="Todos os links da GeekPop & Toys: grupo do WhatsApp, loja online, clube com 10% de desconto e redes sociais."
         path="/links"
       />
 

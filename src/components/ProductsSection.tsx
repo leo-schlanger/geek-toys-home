@@ -163,7 +163,7 @@ const ProductsSection = () => {
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Entre e já veja o catálogo. Membros do Clube têm{" "}
-            <strong className="text-foreground">15% de desconto</strong> no
+            <strong className="text-foreground">10% de desconto</strong> no
             checkout.
           </p>
         </div>

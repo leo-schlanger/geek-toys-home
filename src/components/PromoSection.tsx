@@ -76,11 +76,11 @@ const PromoSection = () => {
           >
             <Percent className="h-8 w-8 text-accent-foreground mb-3" />
             <h3 className="font-heading text-xl font-bold text-foreground mb-1">
-              15% OFF no Clube
+              10% OFF no Clube
             </h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Assine o Clube GeekPop e ganhe 15% em qualquer produto da loja online
-              e física.
+              Assine o Clube GeekPop por R$ 12,50/mês e ganhe 10% em qualquer
+              produto da loja online e física.
             </p>
             <span className="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:underline">
               Quero o desconto <ArrowRight className="h-4 w-4" />

@@ -9,7 +9,8 @@ import {
   isOnSale,
   productUrl,
 } from "@/lib/shop-api";
-import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
+import { formatEventDateRange } from "@/data/event";
+import { useActiveEvent } from "@/hooks/useActiveEvent";
 
 /**
  * Sale, promotions and club benefits.
@@ -43,7 +44,7 @@ const PromoSection = () => {
 
   const all = data?.products ?? [];
   const onSale = all.filter(isOnSale).slice(0, 8);
-  const eventOn = isEventVisible(ACTIVE_EVENT);
+  const { event: activeEvent, visible: eventOn } = useActiveEvent();
 
   return (
     <section
@@ -93,12 +94,18 @@ const PromoSection = () => {
             >
               <Sparkles className="h-8 w-8 text-primary mb-3" />
               <h3 className="font-heading text-xl font-bold text-foreground mb-1">
-                {ACTIVE_EVENT.shortTitle}
+                {activeEvent.shortTitle}
               </h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                6 de setembro · 14h–18h · Ingresso R${" "}
-                {ACTIVE_EVENT.ticketReservation.priceBRL ?? "—"}. Criança de colo e
-                PCD não pagam.
+              {/* Data e preço saem do evento: o texto fixo daqui já ficou
+                  anunciando "6 de setembro" depois da data ter mudado. */}
+              <p className="text-sm text-muted-foreground mb-4 first-letter:uppercase">
+                {formatEventDateRange(activeEvent.startsAt, activeEvent.endsAt)} ·{" "}
+                {activeEvent.ticketReservation.priceBRL == null
+                  ? "Entrada gratuita"
+                  : `Entrada ${activeEvent.ticketReservation.currencyLabel} ${activeEvent.ticketReservation.priceBRL
+                      .toFixed(2)
+                      .replace(".", ",")}`}
+                . Criança de colo e PCD não pagam.
               </p>
               <span className="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:underline">
                 Reservar ingresso <ArrowRight className="h-4 w-4" />

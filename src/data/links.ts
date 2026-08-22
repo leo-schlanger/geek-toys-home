@@ -17,7 +17,7 @@
  */
 
 import { primaryWhatsAppUrl } from './contacts'
-import { ACTIVE_EVENT, formatEventDateRange, isEventVisible } from './event'
+import { FALLBACK_EVENT, formatEventDateRange, isEventVisible, type EventConfig } from './event'
 
 export type LinkIcon =
   | 'shop'
@@ -104,13 +104,13 @@ const STATIC_LINKS: BioLink[] = [
  * The group stays first even during a campaign: the event sells one afternoon,
  * the group is who the loja can reach on every afternoon after it.
  */
-export function getBioLinks(): BioLink[] {
-  if (!isEventVisible()) return STATIC_LINKS
+export function getBioLinks(active: EventConfig = FALLBACK_EVENT): BioLink[] {
+  if (!isEventVisible(active)) return STATIC_LINKS
 
   const event: BioLink = {
     id: 'event',
-    label: ACTIVE_EVENT.shortTitle,
-    description: formatEventDateRange(ACTIVE_EVENT.startsAt, ACTIVE_EVENT.endsAt),
+    label: active.shortTitle,
+    description: formatEventDateRange(active.startsAt, active.endsAt),
     href: 'https://shop.geekpoptoys.com.br/evento',
     icon: 'event',
     highlight: true,

@@ -8,16 +8,13 @@ import {
   ArrowRight,
   Ticket,
 } from "lucide-react";
-import {
-  ACTIVE_EVENT,
-  formatEventDateRange,
-  isEventVisible,
-} from "@/data/event";
+import { formatEventDateRange } from "@/data/event";
+import { useActiveEvent } from "@/hooks/useActiveEvent";
 import EventTicketForm from "./EventTicketForm";
 
 const EventSection = () => {
   const ref = useRef<HTMLElement>(null);
-  const event = ACTIVE_EVENT;
+  const { event, visible } = useActiveEvent();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -30,7 +27,7 @@ const EventSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  if (!isEventVisible(event)) return null;
+  if (!visible) return null;
 
   const dateLabel = formatEventDateRange(event.startsAt, event.endsAt);
 

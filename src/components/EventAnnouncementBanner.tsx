@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { CalendarHeart, Ticket, X } from "lucide-react";
-import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
+import { useActiveEvent } from "@/hooks/useActiveEvent";
 
 const STORAGE_PREFIX = "event-banner-dismissed:";
 
@@ -8,12 +8,11 @@ function storageKey(eventId: string) {
   return `${STORAGE_PREFIX}${eventId}`;
 }
 
-function readBannerVisible(eventId: string): boolean {
-  if (!isEventVisible(ACTIVE_EVENT)) return false;
+function isDismissed(eventId: string): boolean {
   try {
-    return localStorage.getItem(storageKey(eventId)) !== "1";
+    return localStorage.getItem(storageKey(eventId)) === "1";
   } catch {
-    return true;
+    return false;
   }
 }
 
@@ -29,13 +28,16 @@ function readBannerVisible(eventId: string): boolean {
  * the next time the copy changes.
  */
 const EventAnnouncementBanner = () => {
-  const event = ACTIVE_EVENT;
-  const [visible, setVisible] = useState(() => readBannerVisible(event.id));
+  const { event, visible: eventVisible } = useActiveEvent();
+  // Guarda por evento, não um booleano só: quem fechou o anúncio do evento
+  // passado precisa ver o próximo.
+  const [dismissedId, setDismissedId] = useState<string | null>(null);
   const ref = useRef<HTMLDivElement>(null);
+  const visible = eventVisible && dismissedId !== event.id && !isDismissed(event.id);
 
   useEffect(() => {
     const root = document.documentElement;
-    if (!visible || !isEventVisible(event)) {
+    if (!visible) {
       root.style.setProperty("--event-banner-h", "0px");
       return;
     }
@@ -57,7 +59,7 @@ const EventAnnouncementBanner = () => {
     };
   }, [visible, event]);
 
-  if (!visible || !isEventVisible(event)) return null;
+  if (!visible) return null;
 
   const dismiss = () => {
     try {
@@ -65,7 +67,7 @@ const EventAnnouncementBanner = () => {
     } catch {
       /* ignore */
     }
-    setVisible(false);
+    setDismissedId(event.id);
   };
 
   return (
@@ -82,20 +84,18 @@ const EventAnnouncementBanner = () => {
         </p>
 
         <div className="flex items-center gap-2 shrink-0">
-          {event.ctaSecondary && (
-            <a
-              href={event.ctaSecondary.href}
-              className="text-xs md:text-sm font-medium underline-offset-2 hover:underline opacity-95"
-            >
-              {event.ctaSecondary.label}
-            </a>
-          )}
           <a
-            href={event.ctaPrimary.href}
+            href="#evento"
+            className="text-xs md:text-sm font-medium underline-offset-2 hover:underline opacity-95"
+          >
+            Ver evento
+          </a>
+          <a
+            href="#ingressos"
             className="inline-flex items-center gap-1.5 rounded-full bg-accent text-accent-foreground px-3 py-1 text-xs md:text-sm font-bold hover:brightness-105 transition-all shadow-sm"
           >
             <Ticket className="h-3.5 w-3.5" aria-hidden />
-            {event.ctaPrimary.label}
+            {event.ticketReservation.enabled ? "Reservar ingresso" : "Saiba mais"}
           </a>
         </div>
 

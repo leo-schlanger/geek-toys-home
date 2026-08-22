@@ -11,6 +11,7 @@ import {
   ArrowRight,
   ShoppingBag,
 } from "lucide-react";
+import { categoryIcon } from "@/lib/category-icons";
 import {
   SHOP_URL,
   categoryUrl,
@@ -174,23 +175,29 @@ const ProductsSection = () => {
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4">
             {apiCategories.length > 0
-              ? apiCategories.map((cat) => (
-                  <a
-                    key={cat.id}
-                    href={categoryUrl(cat.slug)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-card border border-border rounded-xl p-4 md:p-5 text-center shadow-sm hover-glow-primary transition-all group block"
-                  >
-                    <Music
-                      size={32}
-                      className="mx-auto mb-2 text-primary group-hover:text-accent transition-colors"
-                    />
-                    <h4 className="font-heading font-semibold text-sm text-foreground">
-                      {cat.name}
-                    </h4>
-                  </a>
-                ))
+              ? apiCategories.map((cat) => {
+                  // O ícone vem da categoria (aba Categorias do admin). Isto já
+                  // desenhou uma nota musical fixa em todas — mesma arte
+                  // catorze vezes, sem relação com o que a categoria vende.
+                  const Icon = categoryIcon(cat.icon, cat.name);
+                  return (
+                    <a
+                      key={cat.id}
+                      href={categoryUrl(cat.slug)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-card border border-border rounded-xl p-4 md:p-5 text-center shadow-sm hover-glow-primary transition-all group block"
+                    >
+                      <Icon
+                        size={32}
+                        className="mx-auto mb-2 text-primary group-hover:text-accent transition-colors"
+                      />
+                      <h4 className="font-heading font-semibold text-sm text-foreground">
+                        {cat.name}
+                      </h4>
+                    </a>
+                  );
+                })
               : FALLBACK_CATEGORIES.map(({ icon: Icon, title, slug }) => (
                   <a
                     key={title}

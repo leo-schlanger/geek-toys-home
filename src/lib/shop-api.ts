@@ -3,6 +3,8 @@
  * display products.
  */
 
+import { FALLBACK_EVENT, type EventConfig } from '@/data/event'
+
 const API_BASE = 'https://api.geeketoys.com.br'
 export const SHOP_URL = 'https://shop.geeketoys.com.br'
 export const CLUB_URL = 'https://club.geeketoys.com.br'
@@ -27,6 +29,8 @@ export type ShopCategory = {
   name: string
   slug: string
   description: string | null
+  /** Chave do ícone escolhido no admin — ver `src/lib/category-icons.ts`. */
+  icon: string | null
   active: boolean
   sortOrder: number
 }
@@ -130,5 +134,26 @@ export async function fetchGalleryAlbum(slug: string): Promise<GalleryAlbum | nu
     return await getJson<GalleryAlbum>(`/gallery/${encodeURIComponent(slug)}`)
   } catch {
     return null
+  }
+}
+
+
+// ─── Evento em cartaz ────────────────────────────────────────────────────────
+
+/**
+ * O evento vem da API (aba **Eventos** do admin), não mais de um arquivo neste
+ * repo.
+ *
+ * `null` = nada em cartaz (a admin arquivou tudo), e precisa chegar como `null`
+ * — devolver o fallback aqui ressuscitaria no site o evento que ela tirou do
+ * ar. O fallback cobre só a falha de rede: aí o site mantém a campanha em vez
+ * de sumir com o banner por causa de um timeout.
+ */
+export async function fetchActiveEvent(): Promise<EventConfig | null> {
+  try {
+    const data = await getJson<{ event: EventConfig | null }>('/events/active')
+    return data.event ?? null
+  } catch {
+    return FALLBACK_EVENT
   }
 }

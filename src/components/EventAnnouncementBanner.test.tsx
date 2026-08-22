@@ -1,7 +1,22 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { render, cleanup, fireEvent, screen } from '@testing-library/react'
+import { render as rtlRender, cleanup, fireEvent, screen } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import EventAnnouncementBanner from './EventAnnouncementBanner'
-import { ACTIVE_EVENT, isEventVisible } from '@/data/event'
+import { FALLBACK_EVENT, isEventVisible } from '@/data/event'
+
+// O evento passou a vir da API. `placeholderData` entrega o fallback embutido
+// no primeiro render, então o banner continua medindo a altura sem esperar rede
+// — só o provider do react-query passou a ser obrigatório.
+vi.mock('@/lib/shop-api', () => ({
+  fetchActiveEvent: vi.fn(async () => FALLBACK_EVENT),
+}))
+
+function render(ui: React.ReactElement) {
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } },
+  })
+  return rtlRender(<QueryClientProvider client={client}>{ui}</QueryClientProvider>)
+}
 
 /**
  * The bug this test pins:
@@ -46,7 +61,7 @@ describe('EventAnnouncementBanner — altura publicada na var CSS', () => {
   it('the event must be active, or this file tests nothing', () => {
     // Explicit guard: if the event were disabled, the test below would pass
     // vacuously and the regression could return unnoticed.
-    expect(isEventVisible(ACTIVE_EVENT)).toBe(true)
+    expect(isEventVisible(FALLBACK_EVENT)).toBe(true)
   })
 
   it('publishes the MEASURED height, not a fixed per-breakpoint number', () => {

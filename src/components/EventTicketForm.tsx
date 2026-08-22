@@ -2,7 +2,7 @@ import { useState } from "react";
 import { MessageCircle, Ticket } from "lucide-react";
 import { toast } from "sonner";
 import {
-  ACTIVE_EVENT,
+  FALLBACK_EVENT,
   buildReservationWhatsAppUrl,
   type EventConfig,
 } from "@/data/event";
@@ -11,7 +11,7 @@ type Props = {
   event?: EventConfig;
 };
 
-const EventTicketForm = ({ event = ACTIVE_EVENT }: Props) => {
+const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
   /** `null` = sem teto de quantidade; o clamp abaixo vira só o mínimo de 1. */
   const max = event.ticketReservation.maxPerReservation;
   const clampQuantity = (value: number) =>

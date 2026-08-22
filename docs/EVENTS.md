@@ -1,8 +1,9 @@
 # Eventos no site institucional — operação
 
-> **Última atualização:** 7 de Agosto de 2026  
+> **Última atualização:** 22 de Agosto de 2026  
 > **Repo:** `geek-toys-home` (geeketoys.com.br / www)  
-> **Pedido Laura (04–07/08/2026):** evento 6/set 14h–18h, R$ 20, WhatsApp loja, loja em foco, fotos na **galeria geral**
+> **Evento em cartaz:** 20/set 14h–18h, Mar Palace Copacabana Hotel, entrada R$ 20, WhatsApp loja, fotos na **galeria geral**  
+> **Quem edita:** a admin, na aba **Eventos** do painel da loja — **não** é mais um arquivo deste repo.
 
 ---
 
@@ -26,7 +27,9 @@ Site **estático** (Vercel). Reservas vão para WhatsApp; não há backend de in
 ## 2. Arquitetura
 
 ```
-src/data/event.ts              ← evento ativo (data, preço, textos, WhatsApp)
+src/hooks/useActiveEvent.ts    ← evento vivo, de GET /events/active
+src/data/event.ts              ← tipos + FALLBACK (só primeiro paint; editar NÃO muda o site)
+src/lib/category-icons.ts      ← ícone por categoria (mesma tabela da loja)
 src/data/contacts.ts           ← telefones oficiais
 src/components/
   EventAnnouncementBanner.tsx
@@ -41,7 +44,10 @@ public/eventos/<slug>/         ← JPGs (ex.: evento-01.jpg … evento-35.jpg)
 
 Fluxo:
 
-1. `ACTIVE_EVENT.enabled === true` → banner + seção evento + nav.
+1. `GET https://api.geeketoys.com.br/events/active` → o evento publicado no
+   painel da loja. `status === 'published'` → banner + seção evento + nav.
+   Falha de rede cai no `FALLBACK_EVENT` embutido — o site nunca fica sem evento
+   por causa de um timeout.
 2. Cliente reserva → `wa.me` com mensagem montada.
 3. Fotos: arquivos em `public/eventos/kpop-night/` referenciados em `GallerySection` (padrão `evento-NN.jpg`).
 4. Sem seção `#fotos-evento` e sem botões de baixar.
@@ -52,10 +58,10 @@ Fluxo:
 
 ### Antes do evento
 
-- [x] Data/hora/local/preço em `src/data/event.ts` (6/set 14h–18h, R$ 20)
+- [x] Data/hora/local/preço na aba **Eventos** do painel da loja (20/set 14h–18h, Mar Palace, R$ 20)
 - [x] WhatsApp `(11) 91466-2881`
-- [x] `enabled: true` e reserva ativa
-- [x] Deploy home (Vercel em push `main`)
+- [x] Status **Publicado** e reserva ativa
+- [x] Sem deploy: o site lê da API (cache de 1 min)
 
 ### Fotos
 
@@ -95,7 +101,9 @@ npm run build   # local
 
 | Arquivo | Papel |
 | --- | --- |
-| `src/data/event.ts` | Config evento |
+| `src/data/event.ts` | Tipos + fallback (a config vive no banco da loja) |
+| `src/hooks/useActiveEvent.ts` | Evento vivo, de `GET /events/active` |
+| `src/lib/category-icons.ts` | Ícone por categoria — antes era uma nota musical fixa em **todas** |
 | `src/data/contacts.ts` | Telefones |
 | `src/components/GallerySection.tsx` | Bloco da home; lê os álbuns da API |
 | `src/pages/Gallery.tsx` | Página própria da galeria, com pastas |

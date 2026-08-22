@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
+import { useActiveEvent } from "@/hooks/useActiveEvent";
 import { ThemeToggle } from "./ThemeToggle";
 import { ProductSearch } from "./ProductSearch";
 import { ProfileMenu } from "./ProfileMenu";
@@ -27,8 +27,8 @@ const baseLinks: NavLink[] = [
   { label: "Clube", href: "https://club.geeketoys.com.br/assinar", external: true },
 ];
 
-function buildNavLinks(): NavLink[] {
-  if (!isEventVisible(ACTIVE_EVENT)) return baseLinks;
+function buildNavLinks(eventOn: boolean): NavLink[] {
+  if (!eventOn) return baseLinks;
   // Home, products, event, promos, then the rest
   return [
     baseLinks[0],
@@ -75,7 +75,8 @@ function NavItem({
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const navLinks = buildNavLinks();
+  const { visible: eventOn } = useActiveEvent();
+  const navLinks = buildNavLinks(eventOn);
   const { pathname } = useLocation();
   const onHome = pathname === "/";
 

@@ -1,7 +1,7 @@
 import { MessageCircle, ShoppingBag, Sparkles, Ticket } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
 import { SocialIcon } from "./SocialIcon";
-import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
+import { useActiveEvent } from "@/hooks/useActiveEvent";
 import { primaryWhatsAppUrl } from "@/data/contacts";
 
 const SHOP_URL = "https://shop.geeketoys.com.br";
@@ -16,7 +16,7 @@ const socials = [
 ];
 
 const HeroSection = () => {
-  const eventOn = isEventVisible(ACTIVE_EVENT);
+  const { visible: eventOn } = useActiveEvent();
 
   return (
     <section

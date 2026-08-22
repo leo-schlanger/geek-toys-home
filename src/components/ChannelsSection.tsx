@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { ShoppingBag, Sparkles, Ticket, ArrowRight } from "lucide-react";
-import { ACTIVE_EVENT, isEventVisible } from "@/data/event";
+import { useActiveEvent } from "@/hooks/useActiveEvent";
 
 const SHOP_URL = "https://shop.geeketoys.com.br";
 const CLUB_URL = "https://club.geeketoys.com.br";
@@ -10,7 +10,7 @@ const CLUB_URL = "https://club.geeketoys.com.br";
  */
 const ChannelsSection = () => {
   const ref = useRef<HTMLElement>(null);
-  const eventOn = isEventVisible(ACTIVE_EVENT);
+  const { event: activeEvent, visible: eventOn } = useActiveEvent();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -49,7 +49,7 @@ const ChannelsSection = () => {
           {
             id: "evento",
             icon: Ticket,
-            title: ACTIVE_EVENT.shortTitle,
+            title: activeEvent.shortTitle,
             desc: "Reserve seu ingresso online e confira as fotos na galeria do site.",
             cta: "Reservar ingresso",
             href: "#ingressos",

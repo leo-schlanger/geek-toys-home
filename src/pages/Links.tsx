@@ -11,6 +11,7 @@ import {
   ArrowUpRight,
 } from 'lucide-react'
 import { getBioLinks, type BioLink, type LinkIcon } from '@/data/links'
+import { useActiveEvent } from '@/hooks/useActiveEvent'
 import { SeoHead } from '@/components/SeoHead'
 import { CreatorCredit } from '@/components/CreatorCredit'
 import { ThemeToggle } from '@/components/ThemeToggle'
@@ -41,7 +42,8 @@ const ICONS: Record<LinkIcon, typeof ShoppingBag> = {
 }
 
 export default function Links() {
-  const links = getBioLinks()
+  const { event } = useActiveEvent()
+  const links = getBioLinks(event)
   const featured = links.filter((l) => l.highlight)
   const rest = links.filter((l) => !l.highlight)
 

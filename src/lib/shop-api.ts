@@ -157,3 +157,83 @@ export async function fetchActiveEvent(): Promise<EventConfig | null> {
     return FALLBACK_EVENT
   }
 }
+
+
+// ─── Reserva de ingresso ─────────────────────────────────────────────────────
+
+/**
+ * PIX da reserva. `emvCode` é o copia-e-cola e o conteúdo do QR.
+ * Espelha `ReservationPix` da loja.
+ */
+export type ReservationPix = {
+  emvCode: string
+  pixKey: string
+  merchantName: string
+  amount: number
+  txId: string
+}
+
+export type CreatedReservation = {
+  code: string
+  quantity: number
+  totalCents: number
+  pix: ReservationPix | null
+}
+
+export type CreateReservationResult =
+  | { ok: true; reservation: CreatedReservation; ticketsUrl: string }
+  | { ok: false; error: string }
+
+/** Página pública dos ingressos da compra — é onde o PIX é exibido. */
+export function reservationTicketsUrl(code: string): string {
+  return `${SHOP_URL}/ingressos/${encodeURIComponent(code)}`
+}
+
+/**
+ * Registra a reserva na API da loja.
+ *
+ * Até 23/08/2026 o formulário deste site só abria o WhatsApp: nada era
+ * gravado, ninguém recebia PIX e a admin não era notificada — reservas
+ * chegavam como mensagem solta e se perdiam. O cadastro é o mesmo que a loja
+ * usa, então as duas vitrines caem na mesma tabela.
+ *
+ * Nunca lança: o formulário precisa poder cair no WhatsApp se a API falhar.
+ */
+export async function createReservation(
+  eventId: string,
+  input: {
+    buyerName: string
+    buyerEmail: string
+    buyerPhone: string
+    notes?: string
+    attendees: { name: string; kind: string }[]
+  }
+): Promise<CreateReservationResult> {
+  try {
+    const res = await fetch(
+      `${API_BASE}/events/${encodeURIComponent(eventId)}/reservations`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(input),
+      }
+    )
+    const data = (await res.json().catch(() => null)) as
+      | { reservation?: CreatedReservation; ticketsUrl?: string; error?: string }
+      | null
+
+    if (!res.ok || !data?.reservation) {
+      return { ok: false, error: data?.error || 'Não foi possível registrar a reserva.' }
+    }
+    return {
+      ok: true,
+      reservation: data.reservation,
+      // A API monta o link no domínio espelho (`shop.geekpoptoys.com.br`, ver
+      // SHOP_CANONICAL_URL). Os dois atendem, mas trocar de marca no meio do
+      // pagamento assusta — quem saiu de geeketoys.com.br continua nele.
+      ticketsUrl: reservationTicketsUrl(data.reservation.code),
+    }
+  } catch {
+    return { ok: false, error: 'Não foi possível falar com o servidor.' }
+  }
+}

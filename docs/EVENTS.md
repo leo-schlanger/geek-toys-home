@@ -1,6 +1,6 @@
 # Eventos no site institucional — operação
 
-> **Última atualização:** 22 de Agosto de 2026  
+> **Última atualização:** 23 de Agosto de 2026  
 > **Repo:** `geek-toys-home` (geeketoys.com.br / www)  
 > **Evento em cartaz:** 20/set 14h–18h, Mar Palace Copacabana Hotel, entrada R$ 20, WhatsApp loja, fotos na **galeria geral**  
 > **Quem edita:** a admin, na aba **Eventos** do painel da loja — **não** é mais um arquivo deste repo.
@@ -13,14 +13,23 @@
 | --- | --- |
 | Anúncio no topo | `EventAnnouncementBanner` (dismissível) |
 | Infos do evento | Seção `#evento` (`EventSection`) |
-| Reserva de ingresso | Formulário `#ingressos` → WhatsApp da loja |
+| Reserva de ingresso | Formulário `#ingressos` → **grava na API** e leva ao PIX |
 | Fotos | **Galeria** em `/galeria` (pastas no painel; ver [`GALLERY.md`](GALLERY.md)) — lightbox, **sem download** |
 | Produtos | `#produtos` + API `api.geeketoys.com.br` |
 | Contatos | Loja `(11) 91466-2881` primeiro; gerência `(21) 98546-4666` |
 
 **Loja online** (`shop.geeketoys.com.br`): banner, card, `/evento`, reserva — ver `clube-geek-toys/docs/EVENTS.md`. Fotos **não** ficam na loja; link aponta para `#galeria` do home.
 
-Site **estático** (Vercel). Reservas vão para WhatsApp; não há backend de ingresso.
+Site **estático** (Vercel), mas a reserva **não é mais estática**: o formulário
+faz `POST /events/:id/reservations` na API da loja, exatamente como `shop.*`. As
+duas vitrines caem na mesma tabela `event_reservations`.
+
+> **Corrigido em 23/08/2026.** Até esta data o formulário daqui só montava uma
+> mensagem de `wa.me`: a reserva não existia no banco, o cliente nunca via o
+> PIX e a admin não era notificada. Uma reserva de 2 ingressos chegou como
+> mensagem solta no WhatsApp e não havia como cobrar nem confirmar — foi
+> lançada à mão depois. O WhatsApp continua existindo, mas como **fallback**
+> de quando a API não responde.
 
 ---
 
@@ -34,7 +43,7 @@ src/data/contacts.ts           ← telefones oficiais
 src/components/
   EventAnnouncementBanner.tsx
   EventSection.tsx             ← infos + destaques
-  EventTicketForm.tsx          ← reserva → wa.me
+  EventTicketForm.tsx          ← reserva → POST na API (wa.me é fallback)
   GallerySection.tsx           ← bloco da home (álbuns da API, fallback estático)
   pages/Gallery.tsx            ← página /galeria e /galeria/:slug
   ProductsSection.tsx          ← vitrine API
@@ -48,7 +57,12 @@ Fluxo:
    painel da loja. `status === 'published'` → banner + seção evento + nav.
    Falha de rede cai no `FALLBACK_EVENT` embutido — o site nunca fica sem evento
    por causa de um timeout.
-2. Cliente reserva → `wa.me` com mensagem montada.
+2. Cliente reserva → `POST /events/:id/reservations` com **um nome por
+   pessoa** (o ingresso é nominal). A API devolve o código da reserva, os
+   ingressos e o **PIX**; o site manda a pessoa para
+   `shop.geeketoys.com.br/ingressos/<código>`, onde o QR e o copia-e-cola já
+   são renderizados. O e-mail com o PIX sai junto, e a admin é notificada.
+   Se a API falhar, aí sim cai no `wa.me` com o pedido inteiro montado.
 3. Fotos: arquivos em `public/eventos/kpop-night/` referenciados em `GallerySection` (padrão `evento-NN.jpg`).
 4. Sem seção `#fotos-evento` e sem botões de baixar.
 

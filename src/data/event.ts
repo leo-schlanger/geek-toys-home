@@ -136,30 +136,48 @@ export function photoPublicUrl(event: EventConfig, file: string): string {
   return `/eventos/${event.slug}/${encodeURIComponent(file)}`
 }
 
+export type TicketKind = 'full' | 'member' | 'free'
+
+export const TICKET_KIND_LABEL: Record<TicketKind, string> = {
+  full: 'Inteira',
+  member: 'Membro do Clube (50%)',
+  free: 'Isento (colo ou PCD)',
+}
+
+/** Preço por tipo de ingresso; espelha `server/api/src/config/events.ts`. */
+export function ticketPriceBRL(event: EventConfig, kind: TicketKind): number {
+  const price = event.ticketReservation.priceBRL
+  if (price == null || kind === 'free') return 0
+  if (kind === 'member') return price / 2
+  return price
+}
+
+export function formatBRL(value: number, currencyLabel = 'R$'): string {
+  return `${currencyLabel} ${value.toFixed(2).replace('.', ',')}`
+}
+
+/**
+ * Mensagem de reserva no WhatsApp.
+ *
+ * Virou **fallback**: o caminho normal registra a reserva na API e leva a
+ * pessoa ao PIX. Isto aqui só entra quando a API não responde — e por isso
+ * carrega o código da reserva quando ele existe, para a equipe procurar em vez
+ * de remontar o pedido a partir da conversa.
+ */
 export function buildReservationWhatsAppUrl(params: {
   event: EventConfig
   name: string
   phone: string
   email: string
-  quantity: number
+  attendees: { name: string; kind: TicketKind }[]
   notes?: string
+  reservationCode?: string | null
+  ticketsUrl?: string | null
 }): string {
-  const { event, name, phone, email, quantity, notes } = params
-  const price =
-    event.ticketReservation.priceBRL == null
-      ? 'a combinar / cortesia'
-      : `${event.ticketReservation.currencyLabel ?? 'R$'} ${event.ticketReservation.priceBRL
-          .toFixed(2)
-          .replace('.', ',')}`
-
-  const total =
-    event.ticketReservation.priceBRL == null
-      ? '—'
-      : `${event.ticketReservation.currencyLabel ?? 'R$'} ${(
-          event.ticketReservation.priceBRL * quantity
-        )
-          .toFixed(2)
-          .replace('.', ',')}`
+  const { event, name, phone, email, attendees, notes, reservationCode, ticketsUrl } = params
+  const currency = event.ticketReservation.currencyLabel ?? 'R$'
+  const price = event.ticketReservation.priceBRL
+  const total = attendees.reduce((sum, a) => sum + ticketPriceBRL(event, a.kind), 0)
 
   const lines = [
     `Olá! Quero *reservar ingresso(s)* para o evento:`,
@@ -168,10 +186,31 @@ export function buildReservationWhatsAppUrl(params: {
     `👤 Nome: ${name}`,
     `📱 Telefone: ${phone}`,
     `✉️ E-mail: ${email}`,
-    `🎫 Quantidade: ${quantity}`,
-    `💵 Valor unitário: ${price}`,
-    `💰 Total estimado: ${total}`,
+    `🎫 Quantidade: ${attendees.length}`,
   ]
+
+  if (attendees.length > 0) {
+    lines.push(``, `*Ingressos (um por pessoa):*`)
+    attendees.forEach((a, i) => {
+      const suffix = a.kind === 'full' ? '' : ` — ${TICKET_KIND_LABEL[a.kind]}`
+      lines.push(`${i + 1}. ${a.name}${suffix}`)
+    })
+  }
+
+  lines.push(
+    ``,
+    `💵 Valor unitário: ${price == null ? 'a combinar / cortesia' : formatBRL(price, currency)}`,
+    `💰 Total estimado: ${price == null ? '—' : formatBRL(total, currency)}`
+  )
+
+  if (reservationCode) {
+    lines.push(``, `🔖 Código da reserva: *${reservationCode}*`)
+  }
+  if (ticketsUrl) {
+    lines.push(`🔗 Meus ingressos: ${ticketsUrl}`)
+  }
+
+  lines.push(``, `_Reserva via site (geeketoys.com.br)_`)
   if (notes?.trim()) {
     lines.push(``, `📝 Observações: ${notes.trim()}`)
   }
@@ -180,3 +219,4 @@ export function buildReservationWhatsAppUrl(params: {
   const text = encodeURIComponent(lines.join('\n'))
   return `https://wa.me/${event.ticketReservation.whatsappNumber}?text=${text}`
 }
+

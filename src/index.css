@@ -74,6 +74,14 @@
 
     /* Altura do banner de evento (0 quando oculto). Atualizado pelo EventAnnouncementBanner. */
     --event-banner-h: 0px;
+    /* Altura do aviso de promoção (0 quando oculto). Atualizado pelo ShopPromoBanner. */
+    --promo-banner-h: 0px;
+    /*
+     * Altura total da faixa fixa de avisos. É o que a Navbar e o Hero precisam
+     * saber: cada banner mede o seu pedaço, e quem se desloca soma os dois — se
+     * ambos escrevessem a mesma variável, o segundo apagaria o primeiro.
+     */
+    --top-banners-h: calc(var(--event-banner-h, 0px) + var(--promo-banner-h, 0px));
   }
 
   /* Tema escuro: mesma paleta, papéis invertidos. O rosa da marca clareia um
@@ -174,11 +182,20 @@
     transform: translateY(-2px);
   }
 
-  /* Frosted glass for light surfaces (navbar, cards) */
+  /*
+   * Superfície elevada e translúcida: navbar, menu mobile, card da rádio e as
+   * páginas de política/termos.
+   *
+   * Era branco fixo (`hsl(0 0% 100% / 0.82)`), então no tema escuro a barra
+   * ficava clara com o texto claro por cima — ilegível, e era o que aparecia
+   * em toda página rolada. Sai de `--card` porque é isso que ela é: uma
+   * superfície acima do fundo. No tema claro `--card` é branco puro, o mesmo
+   * valor de antes; no escuro ela acompanha o resto da página.
+   */
   .glass {
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    background: hsl(0 0% 100% / 0.82);
+    background: hsl(var(--card) / 0.82);
   }
 
   .section-fade-in {

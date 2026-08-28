@@ -101,6 +101,67 @@ export function isOnSale(p: ShopProduct): boolean {
 }
 
 
+// ─── Promoção do canal online ────────────────────────────────────────────────
+
+/** Espelha `ShopPromo` da loja (`GET /promo`). */
+export type ShopPromo = {
+  enabled: boolean
+  /** Pontos percentuais, 0–90. */
+  percent: number
+  bannerEnabled: boolean
+  bannerText: string
+}
+
+export const PROMO_OFF: ShopPromo = {
+  enabled: false,
+  percent: 0,
+  bannerEnabled: false,
+  bannerText: '',
+}
+
+/**
+ * A promoção do site, configurada no admin da loja.
+ *
+ * Cai para "sem promoção" em vez de estourar: o institucional é uma vitrine, e
+ * ficar sem o aviso é muito melhor do que a página não carregar. Quem cobra é a
+ * loja, que refaz o preço do pedido do zero.
+ */
+export async function fetchShopPromo(): Promise<ShopPromo> {
+  try {
+    return await getJson<ShopPromo>('/promo')
+  } catch {
+    return PROMO_OFF
+  }
+}
+
+/**
+ * O preço de tabela reescrito como preço do site.
+ *
+ * O institucional mostra os mesmos produtos da loja; se ele anunciar o preço
+ * cheio enquanto a loja cobra 5% menos, a vitrine mente sobre o próprio preço.
+ * Retorna `null` quando não há promoção, para quem chama manter o que já
+ * desenhava.
+ */
+export function applyShopPromo(
+  listPrice: number,
+  promo: ShopPromo | null | undefined
+): { price: number; listPrice: number; percent: number } | null {
+  if (!promo?.enabled || !(promo.percent > 0)) return null
+  if (!Number.isFinite(listPrice) || listPrice <= 0) return null
+  const percent = Math.min(90, promo.percent)
+  return {
+    price: Math.round(listPrice * (1 - percent / 100) * 100) / 100,
+    listPrice: Math.round(listPrice * 100) / 100,
+    percent,
+  }
+}
+
+/** `5` continua `5`, `7.5` vira `7,5` — sem `,0` em número inteiro. */
+export function formatPercent(percent: number): string {
+  return Number.isInteger(percent) ? String(percent) : String(percent).replace('.', ',')
+}
+
+
 // ─── Galeria ─────────────────────────────────────────────────────────────────
 
 export type GalleryPhoto = {

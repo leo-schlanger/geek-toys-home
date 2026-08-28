@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import { SeoHead } from "@/components/SeoHead";
 import EventAnnouncementBanner from "@/components/EventAnnouncementBanner";
+import ShopPromoBanner from "@/components/ShopPromoBanner";
 import HeroSection from "@/components/HeroSection";
 import ProductsSection from "@/components/ProductsSection";
 import EventSection from "@/components/EventSection";
@@ -29,6 +30,7 @@ const Index = () => {
         path="/"
       />
       <EventAnnouncementBanner />
+      <ShopPromoBanner />
       <Navbar />
       <main>
         <HeroSection />

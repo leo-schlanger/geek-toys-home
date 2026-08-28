@@ -4,11 +4,14 @@ import { Percent, Sparkles, Tag, ArrowRight, ImageOff } from "lucide-react";
 import {
   CLUB_URL,
   SHOP_URL,
+  applyShopPromo,
   fetchProducts,
   formatBRL,
+  formatPercent,
   isOnSale,
   productUrl,
 } from "@/lib/shop-api";
+import { useShopPromo } from "@/hooks/useShopPromo";
 import { formatEventDateRange } from "@/data/event";
 import { useActiveEvent } from "@/hooks/useActiveEvent";
 
@@ -24,6 +27,7 @@ import { useActiveEvent } from "@/hooks/useActiveEvent";
  */
 const PromoSection = () => {
   const ref = useRef<HTMLElement>(null);
+  const { promo } = useShopPromo();
 
   const { data, isLoading } = useQuery({
     queryKey: ["home-promo-products"],
@@ -121,11 +125,23 @@ const PromoSection = () => {
           >
             <Tag className="h-8 w-8 text-primary mb-3" />
             <h3 className="font-heading text-xl font-bold text-foreground mb-1">
-              Vitrine online
+              {promo.enabled
+                ? `${formatPercent(promo.percent)}% OFF no site`
+                : "Vitrine online"}
             </h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Photocards, Funko, pelúcias e mais — compre direto em
-              shop.geeketoys.com.br.
+              {promo.enabled ? (
+                <>
+                  Photocards, Funko, pelúcias e mais, com{" "}
+                  {formatPercent(promo.percent)}% de desconto em tudo — os preços
+                  aqui já saem com o abatimento.
+                </>
+              ) : (
+                <>
+                  Photocards, Funko, pelúcias e mais — compre direto em
+                  shop.geeketoys.com.br.
+                </>
+              )}
             </p>
             <span className="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:underline">
               Ver catálogo <ArrowRight className="h-4 w-4" />
@@ -169,7 +185,9 @@ const PromoSection = () => {
                   <div className="p-3">
                     <p className="line-clamp-2 text-sm font-semibold">{p.name}</p>
                     <div className="mt-1 flex items-baseline gap-2">
-                      <span className="font-bold">{formatBRL(p.price)}</span>
+                      <span className="font-bold">
+                        {formatBRL(applyShopPromo(p.price, promo)?.price ?? p.price)}
+                      </span>
                       {p.compareAtPrice != null && (
                         <span className="text-xs line-through text-muted-foreground">
                           {formatBRL(p.compareAtPrice)}

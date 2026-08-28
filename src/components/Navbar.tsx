@@ -116,7 +116,7 @@ const Navbar = () => {
       className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
         scrolled ? "glass border-b border-border" : "bg-transparent"
       }`}
-      style={{ top: "var(--event-banner-h, 0px)" }}
+      style={{ top: "var(--top-banners-h, 0px)" }}
     >
       <div className="container flex items-center justify-between gap-4 h-16 md:h-20">
         <a href="#inicio" className="flex shrink-0 items-center">
@@ -178,7 +178,7 @@ const Navbar = () => {
         // The panel scrolls: banner plus bar take ~156px of an 844px screen and
         // the full list exceeds that. Without `overflow-y-auto` the last item is
         // cut off at the bottom edge with no way to reach it.
-        <div className="xl:hidden glass max-h-[calc(100vh-var(--event-banner-h,0px)-4rem)] overflow-y-auto overscroll-contain border-t border-border">
+        <div className="xl:hidden glass max-h-[calc(100vh-var(--top-banners-h,0px)-4rem)] overflow-y-auto overscroll-contain border-t border-border">
           <div className="px-4 pt-4">
             <ProductSearch />
           </div>

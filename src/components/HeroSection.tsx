@@ -22,7 +22,7 @@ const HeroSection = () => {
     <section
       id="inicio"
       className="relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ paddingTop: "var(--event-banner-h, 0px)" }}
+      style={{ paddingTop: "var(--top-banners-h, 0px)" }}
     >
       <div className="absolute inset-0">
         <img

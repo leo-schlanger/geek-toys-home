@@ -12,11 +12,13 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import { categoryIcon } from "@/lib/category-icons";
+import { useShopPromo } from "@/hooks/useShopPromo";
 import {
   SHOP_URL,
   categoryUrl,
   fetchCategories,
   fetchProducts,
+  applyShopPromo,
   formatBRL,
   isOnSale,
   productUrl,
@@ -34,9 +36,19 @@ const FALLBACK_CATEGORIES = [
 ];
 
 function ProductTile({ product }: { product: ShopProduct }) {
+  const { promo } = useShopPromo();
   const image = product.images?.[0] ?? null;
   const onSale = isOnSale(product);
   const outOfStock = product.stock <= 0;
+
+  // A vitrine institucional cota o mesmo preço que a loja cobra. Enquanto ela
+  // imprimia o preço de tabela, o visitante via um valor e pagava outro — e
+  // quem clica daqui vai direto para a loja, onde o desconto aparece.
+  const sitePromo = applyShopPromo(product.price, promo);
+  const strikePrice =
+    onSale && product.compareAtPrice != null
+      ? product.compareAtPrice
+      : (sitePromo?.listPrice ?? null);
 
   return (
     <a
@@ -98,11 +110,11 @@ function ProductTile({ product }: { product: ShopProduct }) {
         </h3>
         <div className="mt-auto flex items-baseline gap-2 pt-1">
           <span className="text-base font-bold text-foreground">
-            {formatBRL(product.price)}
+            {formatBRL(sitePromo?.price ?? product.price)}
           </span>
-          {onSale && product.compareAtPrice != null && (
+          {strikePrice != null && (
             <span className="text-xs text-muted-foreground line-through">
-              {formatBRL(product.compareAtPrice)}
+              {formatBRL(strikePrice)}
             </span>
           )}
         </div>

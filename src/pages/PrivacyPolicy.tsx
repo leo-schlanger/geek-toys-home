@@ -106,7 +106,7 @@ const PrivacyPolicy = () => {
                             <h2 className="text-2xl font-semibold text-foreground">4. Compartilhamento de Dados</h2>
                             <p>Não vendemos seus dados. Compartilhamos apenas com:</p>
                             <ul className="list-disc pl-5 space-y-2">
-                                <li>Processadores de pagamento.</li>
+                                <li>Pagar.me (Stone) — processamento de pagamentos com cartão e PIX. Os dados do cartão vão do seu navegador direto para a operadora e não passam pelos nossos servidores.</li>
                                 <li>Serviços de hospedagem e infraestrutura de TI.</li>
                                 <li>Autoridades judiciais, se solicitado por lei.</li>
                             </ul>

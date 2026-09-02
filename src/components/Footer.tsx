@@ -1,4 +1,5 @@
 import { SocialIcon } from "./SocialIcon";
+import PaymentMethods from "./PaymentMethods";
 import { useLocation } from "react-router-dom";
 import { primaryWhatsAppUrl, STORE_PHONES, waMeUrl } from "@/data/contacts";
 import { CreatorCredit } from "@/components/CreatorCredit";
@@ -113,6 +114,10 @@ const Footer = () => {
             </a>
           ))}
         </div>
+
+        {/* "Posso pagar no PIX?" is the question the WhatsApp gets every week.
+            Answering it here saves the message and the wait. */}
+        <PaymentMethods className="mb-8" />
 
         <p className="text-sm text-muted-foreground">
           © 2026 GeekPop & Toys Collection — Todos os direitos reservados

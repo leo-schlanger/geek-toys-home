@@ -14,6 +14,9 @@
 
 export type EventStatus = 'draft' | 'published' | 'archived'
 
+/** Botão abaixo das artes — um formulário de inscrição, por exemplo. */
+export type EventLink = { label: string; url: string }
+
 export type EventConfig = {
   /** Id estável — chave do localStorage do banner e âncora das seções. */
   id: string
@@ -31,6 +34,9 @@ export type EventConfig = {
   bannerText: string
   /** Flyer enviado pelo admin. `null` = só texto. */
   bannerImageUrl: string | null
+  /** Outras artes do mesmo evento (cartaz da competição, programação…). */
+  flyers: { url: string }[]
+  links: EventLink[]
   /** ISO datetime; exibido formatado em pt-BR. */
   startsAt: string
   endsAt: string | null
@@ -67,6 +73,8 @@ export const FALLBACK_EVENT: EventConfig = {
   shortTitle: 'Photocard Trading',
   bannerText: '🎉 Photocard Trading + Dança Livre · domingo 20/set, 14h–18h · Entrada R$ 20',
   bannerImageUrl: null,
+  flyers: [],
+  links: [],
   startsAt: '2026-09-20T14:00:00-03:00',
   endsAt: '2026-09-20T18:00:00-03:00',
   location: {
@@ -220,3 +228,20 @@ export function buildReservationWhatsAppUrl(params: {
   return `https://wa.me/${event.ticketReservation.whatsappNumber}?text=${text}`
 }
 
+
+function isWebUrl(value: unknown): value is string {
+  return typeof value === 'string' && /^https?:\/\//i.test(value)
+}
+
+/** Every piece of art, banner first. Tolerates a payload without `flyers`. */
+export function eventArt(event: EventConfig): string[] {
+  const urls = [event.bannerImageUrl, ...(event.flyers ?? []).map((f) => f?.url)]
+  return urls.filter(isWebUrl)
+}
+
+/** Buttons the admin added. http(s) only: they are rendered as `href`. */
+export function eventLinks(event: EventConfig): EventLink[] {
+  return (event.links ?? []).filter(
+    (link) => link && link.label?.trim() && isWebUrl(link.url)
+  )
+}

@@ -7,8 +7,9 @@ import {
   Gift,
   ArrowRight,
   Ticket,
+  ExternalLink,
 } from "lucide-react";
-import { formatEventDateRange } from "@/data/event";
+import { eventArt, eventLinks, formatEventDateRange } from "@/data/event";
 import { useActiveEvent } from "@/hooks/useActiveEvent";
 import EventTicketForm from "./EventTicketForm";
 
@@ -30,6 +31,9 @@ const EventSection = () => {
   if (!visible) return null;
 
   const dateLabel = formatEventDateRange(event.startsAt, event.endsAt);
+  const art = eventArt(event);
+  const links = eventLinks(event);
+  const canReserve = event.ticketReservation.enabled;
 
   return (
     <section
@@ -50,6 +54,57 @@ const EventSection = () => {
             Tudo o que você precisa saber — e como garantir sua vaga online.
           </p>
         </div>
+
+        {(art.length > 0 || links.length > 0) && (
+          <div aria-label="Divulgação" role="region" className="mb-10 space-y-5">
+            {art.length > 0 && (
+              <div
+                className={
+                  art.length > 1
+                    ? "grid sm:grid-cols-2 gap-4 items-start"
+                    : "mx-auto w-full max-w-lg"
+                }
+              >
+                {art.map((url, i) => (
+                  // Flyer text is small on a phone: a tap opens it full size.
+                  <a key={url} href={url} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={url}
+                      alt={`Divulgação${art.length > 1 ? ` ${i + 1}` : ""}: ${event.title}`}
+                      loading="lazy"
+                      className="w-full rounded-2xl border border-border object-contain shadow-sm"
+                    />
+                  </a>
+                ))}
+              </div>
+            )}
+            {(canReserve || links.length > 0) && (
+              <div className="mx-auto flex max-w-2xl flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
+                {canReserve && (
+                  <a
+                    href="#ingressos"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary text-primary-foreground px-5 py-3 font-semibold hover:brightness-110 transition-all"
+                  >
+                    <Ticket className="h-4 w-4" />
+                    Reservar ingresso
+                  </a>
+                )}
+                {links.map((link) => (
+                  <a
+                    key={link.url}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-primary/40 bg-background px-5 py-3 font-semibold text-primary hover:bg-primary/10 transition-all"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-5 gap-6 md:gap-8 mb-10">
           <div className="lg:col-span-3 rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm space-y-6">

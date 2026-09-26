@@ -57,3 +57,14 @@ describe('EventSection — flyers and links', () => {
     expect(screen.queryByRole('region', { name: 'Divulgação' })).not.toBeInTheDocument()
   })
 })
+
+describe('EventSection — past events', () => {
+  it('hides the bundled fallback, which is always a past event', async () => {
+    const { isEventVisible } = await vi.importActual<typeof import('@/data/event')>('@/data/event')
+    expect(isEventVisible(FALLBACK_EVENT, Date.parse('2026-09-26T21:00:00-03:00'))).toBe(false)
+    expect(isEventVisible(FALLBACK_EVENT, Date.parse('2026-09-20T15:00:00-03:00'))).toBe(true)
+    expect(
+      isEventVisible({ ...FALLBACK_EVENT, endsAt: null }, Date.parse(FALLBACK_EVENT.startsAt) + 25 * 3600_000)
+    ).toBe(false)
+  })
+})

@@ -47,13 +47,20 @@ function varAtual() {
   return document.documentElement.style.getPropertyValue(VAR)
 }
 
+// The fallback is a past event, and past events are hidden: freeze the clock
+// on its day so this file keeps testing the banner, not the calendar.
+const DURING_FALLBACK_EVENT = new Date('2026-09-20T15:00:00-03:00')
+
 beforeEach(() => {
+  vi.useFakeTimers({ toFake: ['Date'] })
+  vi.setSystemTime(DURING_FALLBACK_EVENT)
   localStorage.clear()
   document.documentElement.style.removeProperty(VAR)
 })
 
 afterEach(() => {
   cleanup()
+  vi.useRealTimers()
   vi.restoreAllMocks()
 })
 

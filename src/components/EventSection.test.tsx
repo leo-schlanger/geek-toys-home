@@ -1,5 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen, within } from '@testing-library/react'
+import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { act, render, screen, within } from '@testing-library/react'
 import { FALLBACK_EVENT, type EventConfig } from '@/data/event'
 import EventSection from './EventSection'
 
@@ -9,20 +9,53 @@ import EventSection from './EventSection'
  * sign-up form, first). A link that is not http(s) never becomes an `href`.
  */
 
-const state = vi.hoisted(() => ({ event: null as unknown as EventConfig }))
+const state = vi.hoisted(() => ({ event: null as unknown as EventConfig, visible: true }))
 
 vi.mock('@/hooks/useActiveEvent', () => ({
-  useActiveEvent: () => ({ event: state.event, visible: true }),
+  useActiveEvent: () => ({ event: state.event, visible: state.visible }),
 }))
 vi.mock('./EventTicketForm', () => ({ default: () => <div data-testid="ticket-form" /> }))
 
-class NoopObserver {
-  observe() {}
+// Records what is observed and lets a test report it on screen.
+const observed: Element[] = []
+let reportVisible: ((el: Element) => void) | null = null
+class FakeObserver {
+  constructor(private cb: (entries: { isIntersecting: boolean; target: Element }[]) => void) {
+    reportVisible = (el) => this.cb([{ isIntersecting: true, target: el }])
+  }
+  observe(el: Element) {
+    observed.push(el)
+  }
   disconnect() {}
 }
-vi.stubGlobal('IntersectionObserver', NoopObserver)
+vi.stubGlobal('IntersectionObserver', FakeObserver)
+
+describe('EventSection — fade-in', () => {
+  // The event arrives after mount (the bundled fallback is a past event, so
+  // the first render is empty). The observer used to be set up only at mount,
+  // with nothing to watch, and the section stayed at opacity 0 for everyone.
+  it('fades in when the event shows up after the first render', () => {
+    observed.length = 0
+    state.event = FALLBACK_EVENT
+    state.visible = false
+    const { rerender, container } = render(<EventSection />)
+    expect(container.querySelector('#evento')).toBeNull()
+
+    state.visible = true
+    rerender(<EventSection />)
+    const section = container.querySelector('#evento')!
+    expect(observed).toContain(section)
+
+    act(() => reportVisible?.(section))
+    expect(section).toHaveClass('visible')
+  })
+})
 
 describe('EventSection — flyers and links', () => {
+  beforeEach(() => {
+    state.visible = true
+  })
+
   it('opens with date, time, place and price, then the cover', () => {
     state.event = {
       ...FALLBACK_EVENT,
@@ -40,24 +73,19 @@ describe('EventSection — flyers and links', () => {
     expect(within(hero).getByText('14h às 18h')).toBeInTheDocument()
     expect(within(hero).getByText('R$ 20 por pessoa')).toBeInTheDocument()
     expect(within(hero).getByText('Membros do Clube: R$ 10')).toBeInTheDocument()
-    expect(within(hero).getByRole('img')).toHaveAttribute(
-      'src',
-      'https://api.example/uploads/events/e/banner-1.jpg'
-    )
+    // Both posters side by side, in the first block.
+    expect(within(hero).getAllByRole('img').map((img) => img.getAttribute('src'))).toEqual([
+      'https://api.example/uploads/events/e/banner-1.jpg',
+      'https://api.example/uploads/events/e/flyer-1.jpg',
+    ])
     expect(within(hero).getByRole('link', { name: /Reservar ingresso/ })).toHaveAttribute(
       'href',
       '#ingressos'
     )
 
-    // The competition poster, with its sign-up button, further down.
-    const images = screen.getAllByRole('img').map((img) => img.getAttribute('src'))
-    expect(images).toContain('https://api.example/uploads/events/e/flyer-1.jpg')
-    const signUps = screen.getAllByRole('link', { name: /Inscrição da competição/ })
-    expect(signUps.length).toBe(2)
-    for (const a of signUps) {
-      expect(a).toHaveAttribute('href', 'https://forms.gle/abc')
-      expect(a).toHaveAttribute('target', '_blank')
-    }
+    const signUp = within(hero).getByRole('link', { name: /Inscrição da competição/ })
+    expect(signUp).toHaveAttribute('href', 'https://forms.gle/abc')
+    expect(signUp).toHaveAttribute('target', '_blank')
     expect(screen.queryByRole('link', { name: /Mal/ })).not.toBeInTheDocument()
   })
 

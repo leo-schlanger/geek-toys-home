@@ -45,11 +45,14 @@ const EventSection = () => {
     );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
-  }, []);
+    // `visible` re-runs this: the section renders nothing until the event
+    // arrives, and an observer set up at mount has no element to watch — the
+    // section then stayed at opacity 0 for every visitor.
+  }, [visible]);
 
   if (!visible) return null;
 
-  const [cover, ...moreArt] = eventArt(event);
+  const art = eventArt(event);
   const links = eventLinks(event);
   const canReserve = event.ticketReservation.enabled;
   const subtitle =
@@ -65,7 +68,7 @@ const EventSection = () => {
         <div
           aria-labelledby="evento-titulo"
           role="region"
-          className="grid items-start gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-12"
+          className={`grid items-start gap-8 lg:gap-12 ${art.length > 1 ? "lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)]" : "lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]"}`}
         >
           <div className="order-1 space-y-6 lg:order-2">
             <div className="flex flex-wrap items-center gap-2">
@@ -118,9 +121,9 @@ const EventSection = () => {
             </div>
           </div>
 
-          {cover && (
+          {art.length > 0 && (
             <div className="order-2 lg:order-1">
-              <Artwork url={cover} alt={`Cartaz: ${event.title}`} />
+              <Posters art={art} title={event.title} />
             </div>
           )}
         </div>
@@ -158,42 +161,6 @@ const EventSection = () => {
                 </div>
               )}
             </aside>
-          </div>
-        )}
-
-        {moreArt.length > 0 && (
-          <div className="mt-16">
-            <h3 className="font-heading text-2xl font-bold text-foreground">Mais sobre o evento</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Toque na imagem para ver em tamanho cheio.
-            </p>
-            <div
-              className={
-                moreArt.length === 1
-                  ? "mx-auto mt-6 max-w-xl"
-                  : "mt-6 grid items-start gap-6 sm:grid-cols-2"
-              }
-            >
-              {moreArt.map((url, i) => (
-                <Artwork key={url} url={url} alt={`Divulgação ${i + 2}: ${event.title}`} />
-              ))}
-            </div>
-            {links.length > 0 && (
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                {links.map((link) => (
-                  <a
-                    key={link.url}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={PRIMARY_BUTTON}
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            )}
           </div>
         )}
 
@@ -264,6 +231,26 @@ function EventFacts({ event }: { event: EventConfig }) {
         </Fact>
       )}
     </ul>
+  );
+}
+
+/**
+ * Every poster, side by side — the event one and the competition one. Laura
+ * asked for both on the site; one of them tucked further down read as missing.
+ */
+function Posters({ art, title }: { art: string[]; title: string }) {
+  if (art.length === 1) return <Artwork url={art[0]} alt={`Cartaz: ${title}`} />;
+  return (
+    <div>
+      <div className="grid grid-cols-2 items-start gap-3 sm:gap-4">
+        {art.map((url, i) => (
+          <Artwork key={url} url={url} alt={`Cartaz ${i + 1}: ${title}`} />
+        ))}
+      </div>
+      <p className="mt-2 text-center text-xs text-muted-foreground">
+        Toque em um cartaz para ver em tamanho cheio.
+      </p>
+    </div>
   );
 }
 

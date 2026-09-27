@@ -27,7 +27,7 @@ const HeroSection = () => {
       <div className="absolute inset-0">
         <img
           src={heroBg}
-          alt="GeekPop & Toys Collection store"
+          alt=""
           className="w-full h-full object-cover opacity-25"
           loading="eager"
         />
@@ -40,18 +40,25 @@ const HeroSection = () => {
           <div className="mb-8 lg:mb-0 animate-fade-up flex justify-center lg:justify-center">
             <img
               src="/logo3d.jpg"
-              alt="GeekPop & Toys Official Logo"
+              alt="Logo da GeekPop & Toys"
               className="w-full max-w-[280px] lg:max-w-[340px] h-auto drop-shadow-2xl rounded-2xl ring-4 ring-primary/15"
             />
           </div>
           <div className="flex flex-col items-center lg:items-start w-full">
+            {/* The page's only <h1>: the home had none, and it is the phrase
+                people search for. */}
+            <h1
+              className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 animate-fade-up leading-tight"
+              style={{ animationDelay: "0.1s" }}
+            >
+              Loja de K-pop no Rio de Janeiro
+            </h1>
             <p
               className="text-lg md:text-xl text-muted-foreground mb-6 animate-fade-up max-w-lg leading-relaxed"
               style={{ animationDelay: "0.15s" }}
             >
-              <span className="text-foreground font-semibold">Loja de K-pop no Rio de Janeiro</span>
-              {" "}— photocards, merch e cultura pop em Copacabana. Há 15 anos no mercado geek;
-              hoje o foco é K-pop. Compre online com frete pelos Correios, entre no Clube e venha aos eventos.
+              Photocards, merch e cultura pop em Copacabana. Há 15 anos no mercado geek; hoje o
+              foco é K-pop. Compre online com frete pelos Correios, entre no Clube e venha aos eventos.
             </p>
 
             <div

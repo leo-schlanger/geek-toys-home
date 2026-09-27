@@ -68,3 +68,13 @@ describe('EventSection — past events', () => {
     ).toBe(false)
   })
 })
+
+describe('formatEventDateRange', () => {
+  it('shows Rio time whatever the visitor time zone', async () => {
+    const { formatEventDateRange } = await vi.importActual<typeof import('@/data/event')>('@/data/event')
+    const label = formatEventDateRange('2026-10-11T17:00:00.000Z', '2026-10-11T21:00:00.000Z')
+    expect(label).toContain('14:00')
+    expect(label).toContain('18:00')
+    expect(formatEventDateRange('2026-10-12T01:30:00.000Z')).toMatch(/11 de outubro/)
+  })
+})

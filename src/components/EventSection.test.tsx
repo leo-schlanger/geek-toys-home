@@ -23,7 +23,7 @@ class NoopObserver {
 vi.stubGlobal('IntersectionObserver', NoopObserver)
 
 describe('EventSection — flyers and links', () => {
-  it('shows the banner, the extra flyers, and the buttons under them', () => {
+  it('opens with date, time, place and price, then the cover', () => {
     state.event = {
       ...FALLBACK_EVENT,
       bannerImageUrl: 'https://api.example/uploads/events/e/banner-1.jpg',
@@ -35,26 +35,37 @@ describe('EventSection — flyers and links', () => {
     }
     render(<EventSection />)
 
-    const art = screen.getByRole('region', { name: 'Divulgação' })
-    expect(within(art).getAllByRole('img').map((img) => img.getAttribute('src'))).toEqual([
-      'https://api.example/uploads/events/e/banner-1.jpg',
-      'https://api.example/uploads/events/e/flyer-1.jpg',
-    ])
-    expect(within(art).getByRole('link', { name: /Reservar ingresso/ })).toHaveAttribute(
+    const hero = screen.getByRole('region', { name: FALLBACK_EVENT.title })
+    expect(within(hero).getByText('Domingo, 20 de setembro de 2026')).toBeInTheDocument()
+    expect(within(hero).getByText('14h às 18h')).toBeInTheDocument()
+    expect(within(hero).getByText('R$ 20 por pessoa')).toBeInTheDocument()
+    expect(within(hero).getByText('Membros do Clube: R$ 10')).toBeInTheDocument()
+    expect(within(hero).getByRole('img')).toHaveAttribute(
+      'src',
+      'https://api.example/uploads/events/e/banner-1.jpg'
+    )
+    expect(within(hero).getByRole('link', { name: /Reservar ingresso/ })).toHaveAttribute(
       'href',
       '#ingressos'
     )
-    const signUp = within(art).getByRole('link', { name: /Inscrição da competição/ })
-    expect(signUp).toHaveAttribute('href', 'https://forms.gle/abc')
-    expect(signUp).toHaveAttribute('target', '_blank')
-    expect(within(art).queryByRole('link', { name: /Mal/ })).not.toBeInTheDocument()
+
+    // The competition poster, with its sign-up button, further down.
+    const images = screen.getAllByRole('img').map((img) => img.getAttribute('src'))
+    expect(images).toContain('https://api.example/uploads/events/e/flyer-1.jpg')
+    const signUps = screen.getAllByRole('link', { name: /Inscrição da competição/ })
+    expect(signUps.length).toBe(2)
+    for (const a of signUps) {
+      expect(a).toHaveAttribute('href', 'https://forms.gle/abc')
+      expect(a).toHaveAttribute('target', '_blank')
+    }
+    expect(screen.queryByRole('link', { name: /Mal/ })).not.toBeInTheDocument()
   })
 
-  it('draws no art block when the payload has neither (older API)', () => {
+  it('draws no art when the payload has neither (older API)', () => {
     const { flyers: _f, links: _l, ...older } = FALLBACK_EVENT
     state.event = { ...older, bannerImageUrl: null } as EventConfig
     render(<EventSection />)
-    expect(screen.queryByRole('region', { name: 'Divulgação' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('img')).not.toBeInTheDocument()
   })
 })
 

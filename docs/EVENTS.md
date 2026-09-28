@@ -1,8 +1,9 @@
 # Eventos no site institucional — operação
 
-> **Última atualização:** 23 de Agosto de 2026  
+> **Última atualização:** 28 de Setembro de 2026  
 > **Repo:** `geek-toys-home` (geeketoys.com.br / www)  
-> **Evento em cartaz:** 20/set 14h–18h, Mar Palace Copacabana Hotel, entrada R$ 20, WhatsApp loja, fotos na **galeria geral**  
+> **Evento em cartaz:** 11/out 14h–18h, Mar Palace Copacabana Hotel, entrada R$ 20 (membro R$ 10), WhatsApp loja, fotos na **galeria geral**  
+> **Pagamento:** PIX da Pagar.me, que **confirma sozinho** e libera os ingressos (desde 28/09/2026)  
 > **Quem edita:** a admin, na aba **Eventos** do painel da loja — **não** é mais um arquivo deste repo.
 
 ---
@@ -58,11 +59,17 @@ Fluxo:
    Falha de rede cai no `FALLBACK_EVENT` embutido — o site nunca fica sem evento
    por causa de um timeout.
 2. Cliente reserva → `POST /events/:id/reservations` com **um nome por
-   pessoa** (o ingresso é nominal). A API devolve o código da reserva, os
-   ingressos e o **PIX**; o site manda a pessoa para
-   `shop.geeketoys.com.br/ingressos/<código>`, onde o QR e o copia-e-cola já
-   são renderizados. O e-mail com o PIX sai junto, e a admin é notificada.
-   Se a API falhar, aí sim cai no `wa.me` com o pedido inteiro montado.
+   pessoa** (o ingresso é nominal) e o **CPF de quem paga** — a Pagar.me não
+   emite o PIX sem ele (`src/lib/cpf.ts` confere antes de enviar; reserva só de
+   isentos não pede). A API devolve o código da reserva, os ingressos e o
+   **PIX**; o site manda a pessoa para `shop.geeketoys.com.br/ingressos/<código>`,
+   onde o QR e o copia-e-cola já são renderizados e a página **espera o
+   pagamento**: quando o PIX cai, os ingressos aparecem ali e chegam por e-mail,
+   sem ninguém da loja confirmar. O código vale 24 h.
+   Se a API não responder, aí sim cai no `wa.me` com o pedido inteiro montado.
+   Se ela **recusar** (CPF inválido, reservas fechadas), o site mostra o erro e
+   a cliente corrige — mandar para o WhatsApp uma reserva que o servidor
+   recusou só empurrava o problema para a equipe.
 3. Fotos: arquivos em `public/eventos/kpop-night/` referenciados em `GallerySection` (padrão `evento-NN.jpg`).
 4. Sem seção `#fotos-evento` e sem botões de baixar.
 
@@ -72,7 +79,7 @@ Fluxo:
 
 ### Antes do evento
 
-- [x] Data/hora/local/preço na aba **Eventos** do painel da loja (20/set 14h–18h, Mar Palace, R$ 20)
+- [x] Data/hora/local/preço na aba **Eventos** do painel da loja (11/out 14h–18h, Mar Palace, R$ 20)
 - [x] WhatsApp `(11) 91466-2881`
 - [x] Status **Publicado** e reserva ativa
 - [x] Sem deploy: o site lê da API (cache de 1 min)

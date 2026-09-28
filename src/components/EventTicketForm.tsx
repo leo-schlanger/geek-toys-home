@@ -11,6 +11,7 @@ import {
   type TicketKind,
 } from "@/data/event";
 import { createReservation, type ReservationPix } from "@/lib/shop-api";
+import { isValidCPF, maskCPF } from "@/lib/cpf";
 
 type Props = {
   event?: EventConfig;
@@ -25,7 +26,8 @@ const FIELD_CLASS =
  * Reserva de ingresso.
  *
  * Um ingresso **por pessoa**, nominal. O formulário grava na API da loja e
- * devolve o código + o PIX; o WhatsApp virou fallback para quando a API não
+ * devolve o código + o PIX da Pagar.me; pago o PIX, os ingressos são liberados
+ * sozinhos na página da loja. O WhatsApp virou fallback para quando a API não
  * responde.
  *
  * Antes de 23/08/2026 este formulário só montava uma mensagem de WhatsApp:
@@ -34,7 +36,13 @@ const FIELD_CLASS =
  * havia como cobrar nem confirmar.
  */
 const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
-  const [buyer, setBuyer] = useState({ name: "", phone: "", email: "", notes: "" });
+  const [buyer, setBuyer] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    document: "",
+    notes: "",
+  });
   const [attendees, setAttendees] = useState<Attendee[]>([{ name: "", kind: "full" }]);
   const [submitting, setSubmitting] = useState(false);
   /** Enquanto o primeiro nome não for editado, ele segue quem está reservando. */
@@ -53,6 +61,8 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
     () => attendees.reduce((sum, a) => sum + ticketPriceBRL(event, a.kind), 0),
     [attendees, event],
   );
+  // A operadora exige o CPF de quem paga; reserva gratuita não cobra nada.
+  const needsDocument = total > 0;
 
   if (!event.ticketReservation.enabled) {
     return (
@@ -119,6 +129,11 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
       toast.error(`Informe o nome da pessoa ${missing + 1}.`);
       return;
     }
+    if (needsDocument && !isValidCPF(buyer.document)) {
+      toast.error("Informe um CPF válido — a operadora exige o documento de quem paga.");
+      document.getElementById("evt-document")?.focus();
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -126,6 +141,7 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
         buyerName: buyer.name.trim(),
         buyerEmail: buyer.email.trim(),
         buyerPhone: buyer.phone.trim(),
+        buyerDocument: needsDocument ? buyer.document.replace(/\D/g, "") : undefined,
         notes: buyer.notes.trim() || undefined,
         attendees: filled,
       });
@@ -146,11 +162,15 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
             ? "Reserva registrada! Pague o PIX para liberar os ingressos."
             : "Reserva registrada! Confirme o pagamento pelo WhatsApp.",
         );
-      } else {
-        // A reserva não gravou, mas a venda não pode morrer aqui: o WhatsApp
-        // ainda leva o pedido inteiro para a equipe lançar à mão.
+      } else if (created.retryable) {
+        // O servidor não respondeu, mas a venda não pode morrer aqui: o
+        // WhatsApp ainda leva o pedido inteiro para a equipe lançar à mão.
         openWhatsApp(null, null);
         toast.warning(`${created.error} Enviamos sua reserva pelo WhatsApp.`);
+      } else {
+        // O servidor recusou (CPF que a operadora não aceita, reservas
+        // fechadas): a cliente corrige e tenta de novo.
+        toast.error(created.error);
       }
     } finally {
       setSubmitting(false);
@@ -187,6 +207,14 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
             página abaixo: lá estão o QR Code e o código copia-e-cola. Também
             enviamos tudo para{" "}
             <strong className="text-foreground">{buyer.email.trim()}</strong>.
+            {result.pix.provider === "pagarme" && (
+              <>
+                {" "}
+                A confirmação é <strong>automática</strong>: assim que o PIX
+                cair, os ingressos aparecem na página e chegam por e-mail — não
+                precisa mandar comprovante.
+              </>
+            )}
           </div>
         ) : (
           <div className="rounded-xl border border-accent/40 bg-accent/10 p-4 text-sm leading-relaxed">
@@ -301,6 +329,27 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
           />
         </label>
 
+        {needsDocument && (
+          <label className="flex min-w-0 flex-col gap-1.5 sm:col-span-2">
+            <span className="text-sm font-medium">CPF de quem paga</span>
+            <input
+              id="evt-document"
+              type="text"
+              required
+              inputMode="numeric"
+              autoComplete="off"
+              maxLength={14}
+              value={buyer.document}
+              onChange={(e) => setBuyer({ ...buyer, document: maskCPF(e.target.value) })}
+              className={FIELD_CLASS}
+              placeholder="000.000.000-00"
+            />
+            <span className="text-xs text-muted-foreground">
+              Exigido pela operadora para emitir o PIX.
+            </span>
+          </label>
+        )}
+
         <label className="flex min-w-0 flex-col gap-1.5">
           <span className="text-sm font-medium">Quantas pessoas</span>
           <input
@@ -409,7 +458,11 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
             ) : (
               <Ticket className="h-5 w-5" />
             )}
-            {submitting ? "Registrando…" : "Reservar e pagar com PIX"}
+            {submitting
+              ? "Gerando o PIX…"
+              : needsDocument
+                ? "Reservar e pagar com PIX"
+                : "Reservar ingresso"}
           </button>
           {event.ticketReservation.notes && (
             <p className="text-xs text-muted-foreground leading-relaxed max-w-md">

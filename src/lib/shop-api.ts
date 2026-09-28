@@ -232,6 +232,8 @@ export type ReservationPix = {
   merchantName: string
   amount: number
   txId: string
+  /** 'pagarme' confirma sozinho quando o PIX cai; 'local' espera a equipe. */
+  provider?: "pagarme" | "local"
 }
 
 export type CreatedReservation = {
@@ -243,7 +245,11 @@ export type CreatedReservation = {
 
 export type CreateReservationResult =
   | { ok: true; reservation: CreatedReservation; ticketsUrl: string }
-  | { ok: false; error: string }
+  /**
+   * `retryable` separa "o servidor recusou" (CPF inválido: corrigir o campo)
+   * de "o servidor não respondeu" (o WhatsApp segura a venda).
+   */
+  | { ok: false; error: string; retryable: boolean }
 
 /** Página pública dos ingressos da compra — é onde o PIX é exibido. */
 export function reservationTicketsUrl(code: string): string {
@@ -266,6 +272,7 @@ export async function createReservation(
     buyerName: string
     buyerEmail: string
     buyerPhone: string
+    buyerDocument?: string
     notes?: string
     attendees: { name: string; kind: string }[]
   }
@@ -284,7 +291,11 @@ export async function createReservation(
       | null
 
     if (!res.ok || !data?.reservation) {
-      return { ok: false, error: data?.error || 'Não foi possível registrar a reserva.' }
+      return {
+        ok: false,
+        error: data?.error || 'Não foi possível registrar a reserva.',
+        retryable: res.status >= 500,
+      }
     }
     return {
       ok: true,
@@ -295,6 +306,6 @@ export async function createReservation(
       ticketsUrl: reservationTicketsUrl(data.reservation.code),
     }
   } catch {
-    return { ok: false, error: 'Não foi possível falar com o servidor.' }
+    return { ok: false, error: 'Não foi possível falar com o servidor.', retryable: true }
   }
 }

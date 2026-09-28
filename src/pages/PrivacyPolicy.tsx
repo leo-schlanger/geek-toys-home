@@ -15,7 +15,7 @@ const PrivacyPolicy = () => {
                 <div className="container max-w-4xl mx-auto glass p-8 md:p-12 rounded-2xl border border-border/50 shadow-2xl">
                     <h1 className="text-4xl font-heading font-bold mb-8 gradient-text">Política de Privacidade</h1>
                     <div className="prose max-w-none space-y-6 text-muted-foreground">
-                        <p className="text-sm"><strong>Última atualização:</strong> 17 de agosto de 2026</p>
+                        <p className="text-sm"><strong>Última atualização:</strong> 28 de setembro de 2026</p>
 
                         <section className="space-y-3 bg-muted/20 p-4 rounded-lg">
                             <h2 className="text-2xl font-semibold text-foreground">Controlador dos Dados</h2>
@@ -42,6 +42,7 @@ const PrivacyPolicy = () => {
                             <ul className="list-disc pl-5 space-y-2">
                                 <li><strong>Dados de Cadastro:</strong> Nome completo, e-mail, CPF, telefone e senha (criptografada).</li>
                                 <li><strong>Dados de Pagamento:</strong> Processados de forma segura por parceiros integrados (não armazenamos dados de cartão de crédito em nossos servidores).</li>
+                                <li><strong>Ingressos de eventos:</strong> Nome, e-mail, telefone e CPF de quem compra, e o nome de cada pessoa que vai entrar (impresso no ingresso). O CPF é exigido pela operadora para emitir o PIX; ingresso gratuito não pede CPF.</li>
                                 <li><strong>Dados de Navegação:</strong> Cookies e endereço IP para segurança e melhoria da experiência.</li>
                                 <li><strong>Imagens de eventos e da loja:</strong> Fotos publicadas na galeria do site podem conter pessoas identificáveis que estiveram em eventos abertos ou na loja física.</li>
                                 <li><strong>Perguntas sobre produtos:</strong> O texto da pergunta e o <strong>primeiro nome</strong> de quem perguntou ficam visíveis na página do produto, junto da nossa resposta.</li>
@@ -54,6 +55,7 @@ const PrivacyPolicy = () => {
                             <ul className="list-disc pl-5 space-y-2">
                                 <li>Gestão da assinatura do "Clube de Vantagens".</li>
                                 <li>Processamento de pagamentos.</li>
+                                <li>Emissão e validação na portaria dos ingressos de eventos.</li>
                                 <li>Comunicação sobre pedidos, novidades e suporte.</li>
                                 <li>Cumprimento de obrigações legais.</li>
                                 <li>Divulgação institucional da loja e dos eventos, por meio da galeria de fotos.</li>
@@ -106,7 +108,7 @@ const PrivacyPolicy = () => {
                             <h2 className="text-2xl font-semibold text-foreground">4. Compartilhamento de Dados</h2>
                             <p>Não vendemos seus dados. Compartilhamos apenas com:</p>
                             <ul className="list-disc pl-5 space-y-2">
-                                <li>Pagar.me (Stone) — processamento de pagamentos com cartão e PIX. Os dados do cartão vão do seu navegador direto para a operadora e não passam pelos nossos servidores.</li>
+                                <li>Pagar.me (Stone) — processamento de pagamentos com cartão e PIX, inclusive dos ingressos de eventos (recebe nome, e-mail, telefone e CPF de quem paga). Os dados do cartão vão do seu navegador direto para a operadora e não passam pelos nossos servidores.</li>
                                 <li>Serviços de hospedagem e infraestrutura de TI.</li>
                                 <li>Autoridades judiciais, se solicitado por lei.</li>
                             </ul>

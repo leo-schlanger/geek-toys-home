@@ -61,7 +61,10 @@ Fluxo:
 2. Cliente reserva → `POST /events/:id/reservations` com **um nome por
    pessoa** (o ingresso é nominal) e o **CPF de quem paga** — a Pagar.me não
    emite o PIX sem ele (`src/lib/cpf.ts` confere antes de enviar; reserva só de
-   isentos não pede). A API devolve o código da reserva, os ingressos e o
+   isentos não pede). Meia de membro pede, além disso, o **CPF do sócio** naquela
+   pessoa: a API só cobra a metade se o CPF for de sócio ativo e o nome for o da
+   carteirinha. Sem isso a reserva é recusada e nada é cobrado. A API devolve o
+   código da reserva, os ingressos e o
    **PIX**; o site manda a pessoa para `shop.geeketoys.com.br/ingressos/<código>`,
    onde o QR e o copia-e-cola já são renderizados e a página **espera o
    pagamento**: quando o PIX cai, os ingressos aparecem ali e chegam por e-mail,

@@ -274,7 +274,7 @@ export async function createReservation(
     buyerPhone: string
     buyerDocument?: string
     notes?: string
-    attendees: { name: string; kind: string }[]
+    attendees: { name: string; kind: string; document?: string }[]
   }
 ): Promise<CreateReservationResult> {
   try {

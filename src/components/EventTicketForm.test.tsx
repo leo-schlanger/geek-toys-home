@@ -151,6 +151,45 @@ describe("EventTicketForm", () => {
     expect(await screen.findByText(/automática/)).toBeInTheDocument();
   });
 
+  it("não envia meia sem o CPF de um sócio", () => {
+    render(<EventTicketForm />);
+    fillBuyer();
+    fireEvent.change(screen.getByLabelText("Tipo de ingresso da pessoa 1"), {
+      target: { value: "member" },
+    });
+    fireEvent.change(screen.getByLabelText("CPF do sócio da pessoa 1"), {
+      target: { value: "111.111.111-11" },
+    });
+    submit();
+
+    expect(createReservationMock).not.toHaveBeenCalled();
+    expect(toastMock.error).toHaveBeenCalledWith(expect.stringMatching(/sócio ativo/));
+  });
+
+  it("manda o CPF do sócio só no ingresso de meia", async () => {
+    createReservationMock.mockResolvedValue({
+      ok: true,
+      reservation: { code: "R-AAAA-BBBB", quantity: 1, totalCents: 1000, pix: PIX },
+      ticketsUrl: "https://shop.geeketoys.com.br/ingressos/R-AAAA-BBBB",
+    });
+    render(<EventTicketForm />);
+
+    fillBuyer();
+    fireEvent.change(screen.getByLabelText("Tipo de ingresso da pessoa 1"), {
+      target: { value: "member" },
+    });
+    fireEvent.change(screen.getByLabelText("CPF do sócio da pessoa 1"), {
+      target: { value: "529.982.247-25" },
+    });
+    submit();
+
+    await waitFor(() => expect(createReservationMock).toHaveBeenCalledTimes(1));
+    const [, payload] = createReservationMock.mock.calls[0];
+    expect(payload.attendees).toEqual([
+      { name: "Ana Souza", kind: "member", document: "52998224725" },
+    ]);
+  });
+
   it("recusa CPF inválido antes de chamar a API", () => {
     const { container } = render(<EventTicketForm />);
 

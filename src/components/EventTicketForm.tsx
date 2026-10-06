@@ -17,7 +17,7 @@ type Props = {
   event?: EventConfig;
 };
 
-type Attendee = { name: string; kind: TicketKind };
+type Attendee = { name: string; kind: TicketKind; document: string };
 
 const FIELD_CLASS =
   "bg-background border border-border rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40";
@@ -43,7 +43,9 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
     document: "",
     notes: "",
   });
-  const [attendees, setAttendees] = useState<Attendee[]>([{ name: "", kind: "full" }]);
+  const [attendees, setAttendees] = useState<Attendee[]>([
+    { name: "", kind: "full", document: "" },
+  ]);
   const [submitting, setSubmitting] = useState(false);
   /** Enquanto o primeiro nome não for editado, ele segue quem está reservando. */
   const [firstNameTouched, setFirstNameTouched] = useState(false);
@@ -90,6 +92,7 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
         ...Array.from({ length: target - current.length }, () => ({
           name: "",
           kind: "full" as TicketKind,
+          document: "",
         })),
       ];
     });
@@ -123,10 +126,21 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
     e.preventDefault();
     if (submitting) return;
 
-    const filled = attendees.map((a) => ({ name: a.name.trim(), kind: a.kind }));
+    const filled = attendees.map((a) => ({
+      name: a.name.trim(),
+      kind: a.kind,
+      document: a.document.replace(/\D/g, ""),
+    }));
     const missing = filled.findIndex((a) => a.name.length < 2);
     if (missing >= 0) {
       toast.error(`Informe o nome da pessoa ${missing + 1}.`);
+      return;
+    }
+    const unverified = filled.findIndex((a) => a.kind === "member" && !isValidCPF(a.document));
+    if (unverified >= 0) {
+      toast.error(
+        `A meia da pessoa ${unverified + 1} só vale com o CPF de um sócio ativo, no nome da carteirinha.`,
+      );
       return;
     }
     if (needsDocument && !isValidCPF(buyer.document)) {
@@ -143,7 +157,11 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
         buyerPhone: buyer.phone.trim(),
         buyerDocument: needsDocument ? buyer.document.replace(/\D/g, "") : undefined,
         notes: buyer.notes.trim() || undefined,
-        attendees: filled,
+        attendees: filled.map((a) => ({
+          name: a.name,
+          kind: a.kind,
+          ...(a.kind === "member" ? { document: a.document } : {}),
+        })),
       });
 
       if (created.ok) {
@@ -386,42 +404,66 @@ const EventTicketForm = ({ event = FALLBACK_EVENT }: Props) => {
           {attendees.map((attendee, index) => (
             <div
               key={index}
-              className="grid gap-2 rounded-xl border border-border bg-muted/30 p-3 sm:grid-cols-[1fr_auto_auto] sm:items-center"
+              className="space-y-2 rounded-xl border border-border bg-muted/30 p-3"
             >
-              <input
-                type="text"
-                required
-                aria-label={`Nome da pessoa ${index + 1}`}
-                value={attendee.name}
-                onChange={(e) => updateAttendee(index, { name: e.target.value })}
-                className={FIELD_CLASS}
-                placeholder={`Nome da pessoa ${index + 1}`}
-              />
-              <select
-                aria-label={`Tipo de ingresso da pessoa ${index + 1}`}
-                className={`${FIELD_CLASS} sm:w-56`}
-                value={attendee.kind}
-                onChange={(e) =>
-                  updateAttendee(index, { kind: e.target.value as TicketKind })
-                }
-              >
-                {(Object.keys(TICKET_KIND_LABEL) as TicketKind[]).map((kind) => (
-                  <option key={kind} value={kind}>
-                    {TICKET_KIND_LABEL[kind]}
-                  </option>
-                ))}
-              </select>
-              <button
-                type="button"
-                aria-label={`Remover pessoa ${index + 1}`}
-                disabled={attendees.length === 1}
-                onClick={() =>
-                  setAttendees((current) => current.filter((_, i) => i !== index))
-                }
-                className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:pointer-events-none"
-              >
-                <Trash2 className="h-4 w-4" />
-              </button>
+              <div className="grid gap-2 sm:grid-cols-[1fr_auto_auto] sm:items-center">
+                <input
+                  type="text"
+                  required
+                  aria-label={`Nome da pessoa ${index + 1}`}
+                  value={attendee.name}
+                  onChange={(e) => updateAttendee(index, { name: e.target.value })}
+                  className={FIELD_CLASS}
+                  placeholder={`Nome da pessoa ${index + 1}`}
+                />
+                <select
+                  aria-label={`Tipo de ingresso da pessoa ${index + 1}`}
+                  className={`${FIELD_CLASS} sm:w-56`}
+                  value={attendee.kind}
+                  onChange={(e) =>
+                    updateAttendee(index, { kind: e.target.value as TicketKind })
+                  }
+                >
+                  {(Object.keys(TICKET_KIND_LABEL) as TicketKind[]).map((kind) => (
+                    <option key={kind} value={kind}>
+                      {TICKET_KIND_LABEL[kind]}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  aria-label={`Remover pessoa ${index + 1}`}
+                  disabled={attendees.length === 1}
+                  onClick={() =>
+                    setAttendees((current) => current.filter((_, i) => i !== index))
+                  }
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted disabled:opacity-40 disabled:pointer-events-none"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+              {attendee.kind === "member" && (
+                <div className="space-y-1">
+                  <input
+                    type="text"
+                    required
+                    inputMode="numeric"
+                    autoComplete="off"
+                    maxLength={14}
+                    aria-label={`CPF do sócio da pessoa ${index + 1}`}
+                    value={attendee.document}
+                    onChange={(e) =>
+                      updateAttendee(index, { document: maskCPF(e.target.value) })
+                    }
+                    className={FIELD_CLASS}
+                    placeholder="CPF do sócio"
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    A meia só sai se esse CPF for de um sócio ativo e o nome for o da
+                    carteirinha. Cada sócio tem uma meia por evento.
+                  </p>
+                </div>
+              )}
             </div>
           ))}
 

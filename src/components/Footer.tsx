@@ -3,6 +3,7 @@ import PaymentMethods from "./PaymentMethods";
 import { useLocation } from "react-router-dom";
 import { primaryWhatsAppUrl, STORE_PHONES, waMeUrl } from "@/data/contacts";
 import { CreatorCredit } from "@/components/CreatorCredit";
+import { COMPANY } from "@/lib/company";
 
 interface FooterLink {
   label: string;
@@ -123,7 +124,11 @@ const Footer = () => {
           © 2026 GeekPop & Toys Collection — Todos os direitos reservados
         </p>
         <p className="text-xs text-muted-foreground/60 mt-1">
-          Copacabana, Rio de Janeiro - RJ
+          {COMPANY.legalName}
+          <br />
+          CNPJ {COMPANY.cnpj} · IE {COMPANY.ie}
+          <br />
+          Rua Barata Ribeiro, 181, Loja J — Copacabana, Rio de Janeiro - RJ
         </p>
         <CreatorCredit className="mt-4" />
       </div>

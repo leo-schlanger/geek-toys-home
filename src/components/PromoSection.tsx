@@ -11,6 +11,7 @@ import {
   isOnSale,
   productUrl,
 } from "@/lib/shop-api";
+import { CLUB_PLAN_LABEL } from "@/lib/company";
 import { useShopPromo } from "@/hooks/useShopPromo";
 import { formatEventDateRange } from "@/data/event";
 import { useActiveEvent } from "@/hooks/useActiveEvent";
@@ -83,7 +84,7 @@ const PromoSection = () => {
               10% OFF no Clube
             </h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Assine o Clube GeekPop por R$ 12,50/mês e ganhe 10% em qualquer
+              Assine o Clube GeekPop por {CLUB_PLAN_LABEL} e ganhe 10% em qualquer
               produto da loja online e física.
             </p>
             <span className="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:underline">

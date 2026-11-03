@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ShoppingBag, Sparkles, Ticket, ArrowRight } from "lucide-react";
 import { useActiveEvent } from "@/hooks/useActiveEvent";
+import { CLUB_PLAN_LABEL } from "@/lib/company";
 
 const SHOP_URL = "https://shop.geeketoys.com.br";
 const CLUB_URL = "https://club.geeketoys.com.br";
@@ -38,7 +39,7 @@ const ChannelsSection = () => {
       id: "clube",
       icon: Sparkles,
       title: "Clube GeekPop",
-      desc: "Plano mensal de R$ 12,50 com 10% em qualquer produto, 50% nos ingressos dos eventos e brinde na primeira compra.",
+      desc: `Plano anual de ${CLUB_PLAN_LABEL}, com 10% em qualquer produto, 50% nos ingressos dos eventos e brinde na primeira compra.`,
       cta: "Assinar o clube",
       href: `${CLUB_URL}/assinar`,
       external: true,

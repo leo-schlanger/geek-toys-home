@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
+import { SITE_URL as SITE } from '@/lib/seo'
 
-const SITE = 'https://geeketoys.com.br'
 const DEFAULT_IMAGE = `${SITE}/og-image.png`
 
 export interface SeoHeadProps {
@@ -16,10 +16,10 @@ export interface SeoHeadProps {
  * Per-page meta.
  *
  * Without it every route inherited the home's canonical, telling search engines
- * that /galeria and /privacidade are the same page as the root. Runs on the
- * Google executa JS, e os crawlers de rede social continuam lendo o HTML
- * static shell, which describes the home — acceptable, since what gets shared
- * from the institutional site is the root.
+ * that /galeria and /privacidade are the same page as the root. Google runs
+ * the JS; social crawlers still read the static shell, which describes the
+ * home — acceptable, since what gets shared from the institutional site is
+ * the root.
  */
 export function SeoHead({ title, description, path, image, noIndex = false }: SeoHeadProps) {
   useEffect(() => {

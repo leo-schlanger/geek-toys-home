@@ -10,6 +10,7 @@ import {
   type GalleryAlbum,
   type GalleryPhoto,
 } from '@/lib/shop-api'
+import { photoAlt } from '@/lib/seo'
 
 function formatEventDate(iso: string | null): string | null {
   if (!iso) return null
@@ -97,7 +98,7 @@ function AlbumList() {
                   {album.coverUrl ? (
                     <img
                       src={album.coverUrl}
-                      alt=""
+                      alt={`Capa do álbum ${album.name}`}
                       loading="lazy"
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
@@ -243,7 +244,7 @@ function AlbumView({ slug }: { slug: string }) {
             >
               <img
                 src={photo.url}
-                alt={photo.caption ?? ''}
+                alt={photoAlt(album.name, photo.caption, index)}
                 loading="lazy"
                 /* No download: the gallery is a showcase, not an archive. */
                 onContextMenu={(e) => e.preventDefault()}
@@ -302,7 +303,7 @@ function AlbumView({ slug }: { slug: string }) {
           <figure className="max-h-full" onClick={(e) => e.stopPropagation()}>
             <img
               src={photos[lightbox].url}
-              alt={photos[lightbox].caption ?? ''}
+              alt={photoAlt(album.name, photos[lightbox].caption, lightbox)}
               onContextMenu={(e) => e.preventDefault()}
               draggable={false}
               className="max-h-[85vh] max-w-full rounded-lg object-contain"

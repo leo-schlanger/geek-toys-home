@@ -106,7 +106,7 @@ Push em `main` dispara deploy automático na Vercel. O apex `geeketoys.com.br` r
 
 **GeekPop & Toys** — Rua Barata Ribeiro, 181, Loja J — Copacabana, Rio de Janeiro, RJ
 
-- Site: [geeketoys.com.br](https://geeketoys.com.br) · [links](https://geeketoys.com.br/links)
+- Site: [www.geeketoys.com.br](https://www.geeketoys.com.br/) · [links](https://www.geeketoys.com.br/links)
 - Instagram: [@geeketoys](https://instagram.com/geeketoys)
 - WhatsApp: [(11) 91466-2881](https://wa.me/5511914662881)
 

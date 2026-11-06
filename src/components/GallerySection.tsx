@@ -11,12 +11,12 @@ import gallery6 from "@/assets/gallery-6.jpg";
 
 /** Static store photos bundled with the app. */
 const STORE_IMAGES = [
-  { src: gallery1, alt: "GeekPop & Toys — loja 1" },
-  { src: gallery2, alt: "GeekPop & Toys — loja 2" },
-  { src: gallery3, alt: "GeekPop & Toys — loja 3" },
-  { src: gallery4, alt: "GeekPop & Toys — loja 4" },
-  { src: gallery5, alt: "GeekPop & Toys — loja 5" },
-  { src: gallery6, alt: "GeekPop & Toys — loja 6" },
+  { src: gallery1, alt: "Álbuns de K-pop e photocards holográficos expostos na GeekPop & Toys, em Copacabana" },
+  { src: gallery2, alt: "Estante com bonecos Funko Pop, action figures e colecionáveis na GeekPop & Toys" },
+  { src: gallery3, alt: "Prateleiras de brinquedos, bonecas e jogos na loja GeekPop & Toys" },
+  { src: gallery4, alt: "Capinhas de celular dos Minions, porta-retratos coloridos e pôsteres na GeekPop & Toys" },
+  { src: gallery5, alt: "Pelúcias de personagens do K-pop, entre elas a Chimmy do BT21, na GeekPop & Toys" },
+  { src: gallery6, alt: "Estátua do Gollum com cachecol da Sonserina na vitrine de colecionáveis da GeekPop & Toys" },
 ];
 
 /**
@@ -24,11 +24,12 @@ const STORE_IMAGES = [
  * static list stays as a safety net: if the API is unreachable, the section
  * shows the bundled photos instead of appearing empty.
  */
-const EVENT_GALLERY_IMAGES = Array.from({ length: 35 }, (_, i) => {
+const EVENT_PHOTO_COUNT = 35;
+const EVENT_GALLERY_IMAGES = Array.from({ length: EVENT_PHOTO_COUNT }, (_, i) => {
   const n = String(i + 1).padStart(2, "0");
   return {
     src: `/eventos/kpop-night/evento-${n}.jpg`,
-    alt: `GeekPop & Toys — foto ${i + 1}`,
+    alt: `K-pop Night na GeekPop & Toys, foto ${i + 1} de ${EVENT_PHOTO_COUNT}`,
   };
 });
 
@@ -102,7 +103,7 @@ const GallerySection = () => {
                     {album.coverUrl ? (
                       <img
                         src={album.coverUrl}
-                        alt=""
+                        alt={`Capa do álbum ${album.name}`}
                         loading="lazy"
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
@@ -168,7 +169,7 @@ const GallerySection = () => {
           </button>
           <img
             src={lightbox}
-            alt="Foto ampliada"
+            alt={images.find((img) => img.src === lightbox)?.alt ?? "Foto ampliada"}
             className="max-w-full max-h-[85vh] rounded-xl object-contain"
             onClick={(e) => e.stopPropagation()}
           />

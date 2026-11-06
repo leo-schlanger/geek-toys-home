@@ -33,15 +33,16 @@ transferirem o sinal. Muda no painel da Vercel: projeto **geek-toys-home** →
 ## JSON-LD
 
 Um bloco com `@graph`: `Organization` (`/#organization`, dados legais de
-`src/lib/company.ts`), `Store` (`/#store`, a loja física: telefone principal de
-`src/data/contacts.ts`, e-mail exibido no site, endereço, horário e geo) e
+`src/lib/company.ts`), `Store` (`/#store`, a loja física: telefone, geo e horário do Perfil da Empresa no
+Google, e-mail exibido no site e endereço) e
 `WebSite` (`/#website`). Store e WebSite apontam para a Organization pelo `@id`.
 O teste confere telefone, e-mail, CNPJ e razão social contra essas fontes —
 mudou um contato, mude o `index.html` junto.
 
-Geo: `-22.9635, -43.1778`, o trecho da Rua Barata Ribeiro do CEP 22011-001 no
-OpenStreetMap (Nominatim, 06/11/2026). O valor anterior (`-22.9711, -43.1822`)
-caía cerca de 900 m ao sul.
+Fonte da verdade do telefone, geo e horário: o **Perfil da Empresa no Google**
+(Leo, 06/11/2026) — telefone +55 21 98546-4666 (o (11) 91466-2881 segue como
+WhatsApp de atendimento no site), pino `-22.9652592, -43.1800191`, Seg–Sex
+09:00–19:00 e Sáb 09:00–16:00. O teste trava esses valores.
 
 ## Alt das imagens
 

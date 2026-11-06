@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { render } from '@testing-library/react'
 import { SITE_URL, photoAlt } from './seo'
 import { SeoHead } from '@/components/SeoHead'
-import { EMAIL, PRIMARY_WHATSAPP } from '@/data/contacts'
+import { EMAIL, STORE_PHONES } from '@/data/contacts'
 import { COMPANY } from './company'
 import indexHtml from '../../index.html?raw'
 import sitemapXml from '../../public/sitemap.xml?raw'
@@ -68,9 +68,17 @@ describe('JSON-LD', () => {
   it('matches the business data the site shows', () => {
     const store = byType('Store')
     const org = byType('Organization')
-    const phone = `+${PRIMARY_WHATSAPP.e164.slice(0, 2)}-${PRIMARY_WHATSAPP.e164.slice(2, 4)}-${PRIMARY_WHATSAPP.e164.slice(4, 9)}-${PRIMARY_WHATSAPP.e164.slice(9)}`
+    // Source of truth: the store's Google Business Profile (Leo, 06/11/2026).
+    const phone = '+55-21-98546-4666'
+    expect(STORE_PHONES.some((p) => p.e164 === '5521985464666')).toBe(true)
     expect(store.telephone).toBe(phone)
     expect(org.contactPoint[0].telephone).toBe(phone)
+    expect(store.geo).toEqual({ '@type': 'GeoCoordinates', latitude: -22.9652592, longitude: -43.1800191 })
+    expect(indexHtml).toContain('<meta name="geo.position" content="-22.9652592;-43.1800191" />')
+    expect(store.openingHoursSpecification).toEqual([
+      expect.objectContaining({ dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '19:00' }),
+      expect.objectContaining({ dayOfWeek: 'Saturday', opens: '09:00', closes: '16:00' }),
+    ])
     expect(org.legalName).toBe(COMPANY.legalName)
     expect(org.taxID).toBe(COMPANY.cnpj)
     expect(store.email).toBe(EMAIL)
@@ -78,7 +86,6 @@ describe('JSON-LD', () => {
     expect(store.address).toMatchObject({ postalCode: '22011-001', addressRegion: 'RJ' })
     expect(store.address.streetAddress).toContain('Barata Ribeiro, 181')
     expect(org.sameAs).toContain('https://www.instagram.com/geeketoys/')
-    expect(store.openingHoursSpecification).toHaveLength(2)
   })
 })
 

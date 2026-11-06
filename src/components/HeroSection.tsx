@@ -3,6 +3,7 @@ import heroBg from "@/assets/hero-bg.jpg";
 import { SocialIcon } from "./SocialIcon";
 import { useActiveEvent } from "@/hooks/useActiveEvent";
 import { primaryWhatsAppUrl } from "@/data/contacts";
+import { NONO_WAVE } from "@/lib/nono";
 
 const SHOP_URL = "https://shop.geeketoys.com.br";
 const CLUB_URL = "https://club.geeketoys.com.br";
@@ -38,11 +39,30 @@ const HeroSection = () => {
       <div className="container relative z-10 pt-20 pb-12">
         <div className="flex flex-col items-center text-center lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center lg:text-left">
           <div className="mb-8 lg:mb-0 animate-fade-up flex justify-center lg:justify-center">
-            <img
-              src="/logo3d.jpg"
-              alt="Logo da GeekPop & Toys"
-              className="w-full max-w-[280px] lg:max-w-[340px] h-auto drop-shadow-2xl rounded-2xl ring-4 ring-primary/15"
-            />
+            <div className="relative w-full max-w-[280px] lg:max-w-[340px]">
+              <img
+                src="/logo3d.jpg"
+                alt="Logo da GeekPop & Toys"
+                className="w-full h-auto drop-shadow-2xl rounded-2xl ring-4 ring-primary/15"
+              />
+              {/* Overlaps the logo corner so it never pushes the CTAs down. */}
+              <a
+                href="#nono"
+                aria-label="Conheça o Nono, o tigre mascote da GeekPop"
+                className="absolute -bottom-6 -right-4 sm:-right-8 w-24 lg:w-32 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <img
+                  src={NONO_WAVE.src}
+                  srcSet={NONO_WAVE.srcSet}
+                  sizes="(min-width: 1024px) 128px, 96px"
+                  width={NONO_WAVE.width}
+                  height={NONO_WAVE.height}
+                  alt={NONO_WAVE.alt}
+                  decoding="async"
+                  className="w-full h-auto drop-shadow-lg nono-wave"
+                />
+              </a>
+            </div>
           </div>
           <div className="flex flex-col items-center lg:items-start w-full">
             {/* The page's only <h1>: the home had none, and it is the phrase

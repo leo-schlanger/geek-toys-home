@@ -222,3 +222,29 @@
     display: none;
   }
 }
+
+/* Nono mascot: gentle idle motion, off for users who prefer less motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .nono-float {
+    animation: nono-float 4s ease-in-out infinite;
+  }
+  .nono-bob {
+    animation: nono-float 3s ease-in-out infinite;
+  }
+  .nono-wave {
+    transform-origin: 50% 90%;
+    animation: nono-wave 2.6s ease-in-out infinite;
+  }
+}
+
+@keyframes nono-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes nono-wave {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  70% { transform: rotate(-6deg); }
+  80% { transform: rotate(5deg); }
+  90% { transform: rotate(-3deg); }
+}

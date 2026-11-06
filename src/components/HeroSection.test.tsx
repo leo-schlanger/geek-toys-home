@@ -14,4 +14,9 @@ describe('HeroSection', () => {
     ).toBeInTheDocument()
     expect(screen.getByAltText('Logo da GeekPop & Toys')).toBeInTheDocument()
   })
+
+  it('links the small waving Nono to his section', () => {
+    render(<HeroSection />)
+    expect(screen.getByRole('link', { name: /Conheça o Nono/ })).toHaveAttribute('href', '#nono')
+  })
 })

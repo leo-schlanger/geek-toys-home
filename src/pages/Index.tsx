@@ -8,6 +8,7 @@ import EventSection from "@/components/EventSection";
 import PromoSection from "@/components/PromoSection";
 import ChannelsSection from "@/components/ChannelsSection";
 import AboutSection from "@/components/AboutSection";
+import NonoSection from "@/components/NonoSection";
 import GallerySection from "@/components/GallerySection";
 import RadioSection from "@/components/RadioSection";
 import SocialSection from "@/components/SocialSection";
@@ -39,6 +40,7 @@ const Index = () => {
         <PromoSection />
         <ChannelsSection />
         <AboutSection />
+        <NonoSection />
         <GallerySection />
         <RadioSection />
         <SocialSection />

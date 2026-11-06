@@ -112,7 +112,7 @@ Shopee e Mercado Livre **não** aparecem no site.
 
 ## 5. Deploy
 
-Sem GitHub Actions. Push em `main` → Vercel (`www.geeketoys.com.br`; apex redireciona).
+Sem GitHub Actions. Push em `main` → Vercel (`geekpoptoys.com.br`; `www.geekpoptoys`, `geeketoys.com.br` e `www.geeketoys` redirecionam com 308).
 
 ```bash
 npm run build   # local

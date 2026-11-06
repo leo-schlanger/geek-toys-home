@@ -8,24 +8,24 @@ import indexHtml from '../../index.html?raw'
 import sitemapXml from '../../public/sitemap.xml?raw'
 import robotsTxt from '../../public/robots.txt?raw'
 
-// The apex answers with a redirect to www; a canonical on the apex points
-// search engines at a URL that never serves the page.
-const APEX = /https?:\/\/geeketoys\.com\.br/
+// geeketoys.com.br is legacy and only redirects here; a canonical on a host
+// that redirects points search engines at a URL that never serves the page.
+const LEGACY = /https?:\/\/(www\.)?geeketoys\.com\.br|www\.geekpoptoys/
 
 describe('canonical domain', () => {
-  it('is www', () => {
-    expect(SITE_URL).toBe('https://www.geeketoys.com.br')
+  it('is geekpoptoys.com.br, without www', () => {
+    expect(SITE_URL).toBe('https://geekpoptoys.com.br')
   })
 
-  it('index.html: canonical, og and twitter use www', () => {
+  it('index.html: canonical, og and twitter use the main domain', () => {
     const html = indexHtml
-    expect(html).toContain('<link rel="canonical" href="https://www.geeketoys.com.br/" />')
-    expect(html).toContain('<meta property="og:url" content="https://www.geeketoys.com.br/" />')
-    expect(html).toContain('<meta property="og:image" content="https://www.geeketoys.com.br/og-image.png" />')
-    expect(html).not.toMatch(APEX)
+    expect(html).toContain('<link rel="canonical" href="https://geekpoptoys.com.br/" />')
+    expect(html).toContain('<meta property="og:url" content="https://geekpoptoys.com.br/" />')
+    expect(html).toContain('<meta property="og:image" content="https://geekpoptoys.com.br/og-image.png" />')
+    expect(html).not.toMatch(LEGACY)
   })
 
-  it('sitemap and robots use www', () => {
+  it('sitemap and robots use the main domain', () => {
     const sitemap = sitemapXml
     const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
     expect(locs).toEqual(
@@ -54,7 +54,7 @@ describe('JSON-LD', () => {
   const graph = blocks.flatMap((b) => b['@graph'] ?? [b])
   const byType = (t: string) => graph.find((n) => n['@type'] === t)
 
-  it('has Organization, Store and WebSite linked by @id on www', () => {
+  it('has Organization, Store and WebSite linked by @id on the main domain', () => {
     const org = byType('Organization')
     const store = byType('Store')
     const site = byType('WebSite')

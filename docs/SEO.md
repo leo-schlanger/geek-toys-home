@@ -1,11 +1,11 @@
 # SEO do site institucional
 
-## Domínio canônico: `https://www.geeketoys.com.br` (06/11/2026)
+## Domínio canônico: `https://geekpoptoys.com.br` (06/11/2026)
 
-O apex `geeketoys.com.br` não serve a página: a Vercel responde com redirect
-para `www`. Até 06/11/2026 o canonical, o `og:url`, o sitemap, o `Sitemap:` do
-robots e o JSON-LD apontavam para o apex — ou seja, para uma URL que só
-redireciona. Agora tudo usa `www`:
+O domínio principal é **geekpoptoys.com.br, sem www** (decisão do Leo,
+06/11/2026). `geeketoys.com.br` é legado **mas continua no ar e em uso**: não se
+redireciona para o novo. O SEO resolve-se só pelo canonical — todas as páginas,
+em qualquer host, declaram `https://geekpoptoys.com.br`:
 
 | Onde | Fonte |
 |---|---|
@@ -13,22 +13,30 @@ redireciona. Agora tudo usa `www`:
 | canonical / og por rota (`/links`, `/galeria`, `/termos`, `/privacidade`, álbuns) | `SeoHead` → `SITE_URL` em `src/lib/seo.ts` |
 | sitemap | `public/sitemap.xml` |
 | robots | `public/robots.txt` (`Sitemap:`) |
-| JSON-LD | `index.html` (`@graph`) |
+| JSON-LD (`@id`, `url`, `logo`, sameAs da loja) | `index.html` (`@graph`) |
 
-`src/lib/seo.test.tsx` trava isso: reprova se o `index.html` voltar a citar o
-apex, se o sitemap ou o robots mudarem de domínio, ou se o `SeoHead` gerar
-canonical fora de `www`.
+`src/lib/seo.test.tsx` trava isso: reprova se o `index.html` citar
+`geeketoys.com.br`/`www.geeketoys.com.br`/`www.geekpoptoys.com.br` como URL, se o
+sitemap ou o robots mudarem de domínio, ou se o `SeoHead` gerar canonical fora
+de `geekpoptoys.com.br`.
 
-`geekpoptoys.com.br` e `www.geekpoptoys.com.br` servem o mesmo build (200) e
-declaram o canonical para `www.geeketoys.com.br` — é espelho, não concorrente.
+**Só o SEO mudou de host.** Os links e chamadas do site (loja `shop.geeketoys`,
+clube, API, ingressos, rádio) ficam como estão: trocar o host de uma chamada
+pode quebrar sessão (o JWT da loja/clube vive no `localStorage`, que é por
+origem), CORS ou e-mail. O e-mail `contato@geeketoys.com.br` também fica.
 
-### Redirect do apex
+### Domínios na Vercel (projeto geek-toys-home, estado em 06/11/2026)
 
-Hoje é **307** (temporário). O certo é **308** (permanente), para os buscadores
-transferirem o sinal. Muda no painel da Vercel: projeto **geek-toys-home** →
-**Settings → Domains** → `geeketoys.com.br` → **Edit** → *Redirect to*
-`www.geeketoys.com.br` com **308 Permanent Redirect** → **Save**. Conferir:
-`curl -sI https://geeketoys.com.br/ | head -1` → `HTTP/2 308`.
+| Domínio | Configuração |
+|---|---|
+| `geekpoptoys.com.br` | serve o site (200) |
+| `www.geekpoptoys.com.br` | serve o site (200) — sem redirect, de propósito |
+| `geeketoys.com.br` | 307 → `www.geeketoys.com.br` (legado, não mexer) |
+| `www.geeketoys.com.br` | serve o site (200) (legado, não mexer) |
+
+Não crie redirect dos domínios legados para o novo: o Leo pediu para mantê-los
+(«vai ser usado»). Configuração gravada em
+`~/.cache/nono/vercel-domains-antes.json` (fora do repo).
 
 ## JSON-LD
 

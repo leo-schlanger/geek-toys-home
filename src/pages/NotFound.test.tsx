@@ -13,6 +13,7 @@ describe('NotFound', () => {
     )
     expect(screen.getByRole('heading', { level: 1, name: '404' })).toBeInTheDocument()
     expect(screen.getByAltText(/Nono.*óculos escuros/)).toBeInTheDocument()
+    expect(screen.getByText(/Essa página se perdeu/)).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Voltar para o início/ })).toHaveAttribute('href', '/')
     expect(document.querySelector('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow')
   })

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Heart, MapPin } from "lucide-react";
-import { NONO_COOL, NONO_HEART, NONO_WAVE } from "@/lib/nono";
+import { NONO_COOL, NONO_HEART, NONO_LINES, NONO_STANDING } from "@/lib/nono";
+import { NonoSpeech } from "./NonoSpeech";
 
 const extras = [
   { pose: NONO_HEART, caption: "Distribuindo amor" },
@@ -102,17 +103,20 @@ const NonoSection = () => {
             </a>
           </div>
 
-          <div className="min-w-0 order-1 md:order-2 flex justify-center">
+          <div className="min-w-0 order-1 md:order-2 flex flex-col items-center gap-5">
+            <NonoSpeech tail="bottom" className="max-w-[17rem] text-center">
+              {NONO_LINES.section}
+            </NonoSpeech>
             <img
-              src={NONO_WAVE.src}
-              srcSet={NONO_WAVE.srcSet}
-              sizes="(min-width: 1024px) 440px, (min-width: 768px) 40vw, 72vw"
-              width={NONO_WAVE.width}
-              height={NONO_WAVE.height}
-              alt={NONO_WAVE.alt}
+              src={NONO_STANDING.src}
+              srcSet={NONO_STANDING.srcSet}
+              sizes="(min-width: 1024px) 360px, (min-width: 768px) 34vw, 62vw"
+              width={NONO_STANDING.width}
+              height={NONO_STANDING.height}
+              alt={NONO_STANDING.alt}
               loading="lazy"
               decoding="async"
-              className="w-[72vw] max-w-[300px] md:w-full md:max-w-[440px] h-auto drop-shadow-xl nono-float"
+              className="w-[62vw] max-w-[260px] md:w-full md:max-w-[360px] h-auto drop-shadow-xl nono-float"
             />
           </div>
         </div>

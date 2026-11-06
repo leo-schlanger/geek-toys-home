@@ -3,7 +3,7 @@ import heroBg from "@/assets/hero-bg.jpg";
 import { SocialIcon } from "./SocialIcon";
 import { useActiveEvent } from "@/hooks/useActiveEvent";
 import { primaryWhatsAppUrl } from "@/data/contacts";
-import { NONO_WAVE } from "@/lib/nono";
+import { NONO_STANDING } from "@/lib/nono";
 
 const SHOP_URL = "https://shop.geeketoys.com.br";
 const CLUB_URL = "https://club.geeketoys.com.br";
@@ -49,15 +49,15 @@ const HeroSection = () => {
               <a
                 href="#nono"
                 aria-label="Conheça o Nono, o tigre mascote da GeekPop"
-                className="absolute -bottom-6 -right-4 sm:-right-8 w-24 lg:w-32 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="absolute -bottom-6 -right-4 sm:-right-8 w-20 lg:w-28 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <img
-                  src={NONO_WAVE.src}
-                  srcSet={NONO_WAVE.srcSet}
-                  sizes="(min-width: 1024px) 128px, 96px"
-                  width={NONO_WAVE.width}
-                  height={NONO_WAVE.height}
-                  alt={NONO_WAVE.alt}
+                  src={NONO_STANDING.src}
+                  srcSet={NONO_STANDING.srcSet}
+                  sizes="(min-width: 1024px) 112px, 80px"
+                  width={NONO_STANDING.width}
+                  height={NONO_STANDING.height}
+                  alt={NONO_STANDING.alt}
                   decoding="async"
                   className="w-full h-auto drop-shadow-lg nono-wave"
                 />

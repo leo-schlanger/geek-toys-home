@@ -2,7 +2,8 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Home } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
-import { NONO_COOL } from "@/lib/nono";
+import { NONO_COOL, NONO_LINES } from "@/lib/nono";
+import { NonoSpeech } from "@/components/NonoSpeech";
 
 const NotFound = () => {
   const location = useLocation();
@@ -20,6 +21,9 @@ const NotFound = () => {
         noIndex
       />
       <div className="text-center max-w-md">
+        <NonoSpeech tail="bottom" className="mx-auto mb-5 max-w-[16rem]">
+          {NONO_LINES.notFound}
+        </NonoSpeech>
         <img
           src={NONO_COOL.src}
           srcSet={NONO_COOL.srcSet}

@@ -26,6 +26,12 @@ describe('NonoSection', () => {
     }
   })
 
+  it('has Nono standing with his speech bubble', () => {
+    render(<NonoSection />)
+    expect(screen.getByAltText(/Nono.*de pé/)).toHaveAttribute('srcset', expect.stringMatching(/nono-de-pe-960/))
+    expect(screen.getByText('Oi! Eu sou o Nono. Vem me dar um oi na loja!')).toBeInTheDocument()
+  })
+
   it('sends the visitor to the store location', () => {
     render(<NonoSection />)
     expect(screen.getByRole('link', { name: /Vem conhecer o Nono de pertinho/ })).toHaveAttribute(

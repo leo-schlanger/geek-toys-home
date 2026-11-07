@@ -51,4 +51,5 @@ export const NONO_LINES = {
   section: "Oi! Eu sou o Nono. Vem me dar um oi na loja!",
   location: "Tô te esperando aqui em Copacabana!",
   notFound: "Ops! Essa página se perdeu… bora voltar?",
+  club: "Vem fazer parte do Clube comigo!",
 } as const;

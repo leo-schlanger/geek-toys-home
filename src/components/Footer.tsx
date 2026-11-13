@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { primaryWhatsAppUrl, STORE_PHONES, waMeUrl } from "@/data/contacts";
 import { CreatorCredit } from "@/components/CreatorCredit";
 import { COMPANY } from "@/lib/company";
+import { NatalFooterSlot } from "./seasonal";
 
 interface FooterLink {
   label: string;
@@ -38,8 +39,9 @@ const Footer = () => {
   const onHome = pathname === "/";
 
   return (
-    <footer className="bg-footer py-12 border-t border-border">
-      <div className="container text-center">
+    <footer className="relative overflow-hidden bg-footer py-12 border-t border-border">
+      <NatalFooterSlot />
+      <div className="container relative z-[1] text-center">
         <a
           href={onHome ? "#inicio" : "/#inicio"}
           className="inline-block hover:opacity-90 transition-opacity"

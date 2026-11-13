@@ -16,6 +16,7 @@ import LocationSection from "@/components/LocationSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import { NatalBannerSlot } from "@/components/seasonal";
 
 /**
  * Order: products and the event lead; about, gallery, radio and the rest
@@ -32,6 +33,7 @@ const Index = () => {
       />
       <EventAnnouncementBanner />
       <ShopPromoBanner />
+      <NatalBannerSlot />
       <Navbar />
       <main>
         <HeroSection />

@@ -81,7 +81,18 @@
      * saber: cada banner mede o seu pedaço, e quem se desloca soma os dois — se
      * ambos escrevessem a mesma variável, o segundo apagaria o primeiro.
      */
-    --top-banners-h: calc(var(--event-banner-h, 0px) + var(--promo-banner-h, 0px));
+    /* Faixa sazonal de Natal (0 fora da janela ou fechada). Ver components/seasonal/natal. */
+    --natal-banner-h: 0px;
+    --top-banners-h: calc(var(--event-banner-h, 0px) + var(--promo-banner-h, 0px) + var(--natal-banner-h, 0px));
+  }
+
+  /* Natal: room for the lights under the Navbar where the hero logo starts
+     right below it (md+). The attribute is set before the first render, so
+     this applies without a layout shift. Remove with the seasonal folder. */
+  @media (min-width: 768px) {
+    html[data-season="natal"] {
+      --natal-hero-gap: 16px;
+    }
   }
 
   /* Tema escuro: mesma paleta, papéis invertidos. O rosa da marca clareia um

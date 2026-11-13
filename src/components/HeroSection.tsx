@@ -5,6 +5,7 @@ import { useActiveEvent } from "@/hooks/useActiveEvent";
 import { primaryWhatsAppUrl } from "@/data/contacts";
 import { NONO_LINES, NONO_STANDING } from "@/lib/nono";
 import { NonoSpeech } from "./NonoSpeech";
+import { NatalHeroSlot } from "./seasonal";
 
 import { CLUB_URL, SHOP_URL } from "@/lib/shop-api";
 
@@ -31,7 +32,7 @@ const HeroSection = () => {
     <section
       id="inicio"
       className="relative min-h-[85vh] md:min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ paddingTop: "var(--top-banners-h, 0px)" }}
+      style={{ paddingTop: "calc(var(--top-banners-h, 0px) + var(--natal-hero-gap, 0px))" }}
     >
       <div className="absolute inset-0">
         <img
@@ -43,6 +44,7 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-accent/10" />
       </div>
+      <NatalHeroSlot />
 
       <div className="container relative z-10 pt-20 pb-10 md:pb-12">
         <div className="flex flex-col items-center text-center lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center lg:text-left">

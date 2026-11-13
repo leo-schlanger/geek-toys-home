@@ -5,6 +5,7 @@ import { useActiveEvent } from "@/hooks/useActiveEvent";
 import { ThemeToggle } from "./ThemeToggle";
 import { ProductSearch } from "./ProductSearch";
 import { ProfileMenu } from "./ProfileMenu";
+import { NatalHeaderSlot } from "./seasonal";
 
 interface NavLink {
   label: string;
@@ -118,6 +119,7 @@ const Navbar = () => {
       }`}
       style={{ top: "var(--top-banners-h, 0px)" }}
     >
+      <NatalHeaderSlot />
       <div className="container flex items-center justify-between gap-4 h-16 md:h-20">
         <a href="#inicio" className="flex shrink-0 items-center">
           <img

@@ -2,10 +2,12 @@ import { useEffect, useRef } from "react";
 import { Heart, MapPin } from "lucide-react";
 import { NONO_COOL, NONO_HEART, NONO_LINES, NONO_STANDING } from "@/lib/nono";
 import { NonoSpeech } from "./NonoSpeech";
+import { NonoFigure } from "./NonoFigure";
+import type { NonoHatPose } from "./seasonal";
 
-const extras = [
-  { pose: NONO_HEART, caption: "Distribuindo amor" },
-  { pose: NONO_COOL, caption: "Estilo K-pop" },
+const extras: { pose: typeof NONO_HEART; hat: NonoHatPose; caption: string }[] = [
+  { pose: NONO_HEART, hat: "heart", caption: "Distribuindo amor" },
+  { pose: NONO_COOL, hat: "cool", caption: "Estilo K-pop" },
 ];
 
 const NonoSection = () => {
@@ -70,21 +72,20 @@ const NonoSection = () => {
             </p>
 
             <ul className="mb-8 grid grid-cols-2 gap-4 max-w-sm">
-              {extras.map(({ pose, caption }) => (
+              {extras.map(({ pose, hat, caption }) => (
                 <li
                   key={caption}
                   className="min-w-0 flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-3 shadow-sm"
                 >
-                  <img
-                    src={pose.src}
-                    srcSet={pose.srcSet}
+                  <NonoFigure
+                    pose={pose}
+                    hat={hat}
                     sizes="(min-width: 768px) 140px, 40vw"
-                    width={pose.width}
-                    height={pose.height}
-                    alt={pose.alt}
                     loading="lazy"
                     decoding="async"
                     className="h-24 w-auto md:h-28 nono-bob"
+                    seasonClassName="inline-block h-24 md:h-28 nono-bob"
+                    seasonImgClassName="block h-full w-auto"
                   />
                   <span className="text-xs font-semibold text-foreground/80 text-center">
                     {caption}
@@ -107,16 +108,15 @@ const NonoSection = () => {
             <NonoSpeech tail="bottom" className="max-w-[17rem] text-center">
               {NONO_LINES.section}
             </NonoSpeech>
-            <img
-              src={NONO_STANDING.src}
-              srcSet={NONO_STANDING.srcSet}
+            <NonoFigure
+              pose={NONO_STANDING}
+              hat="standing"
+              hatRoom
               sizes="(min-width: 1024px) 360px, (min-width: 768px) 34vw, 62vw"
-              width={NONO_STANDING.width}
-              height={NONO_STANDING.height}
-              alt={NONO_STANDING.alt}
               loading="lazy"
               decoding="async"
               className="w-[62vw] max-w-[260px] md:w-full md:max-w-[360px] h-auto drop-shadow-xl nono-float"
+              seasonClassName="block w-[62vw] max-w-[260px] md:w-full md:max-w-[360px] drop-shadow-xl nono-float"
             />
           </div>
         </div>

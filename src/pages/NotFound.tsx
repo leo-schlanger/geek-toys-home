@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Home } from "lucide-react";
 import { SeoHead } from "@/components/SeoHead";
 import { NONO_COOL, NONO_LINES } from "@/lib/nono";
+import { NonoFigure } from "@/components/NonoFigure";
 import { NonoSpeech } from "@/components/NonoSpeech";
 
 const NotFound = () => {
@@ -24,14 +25,13 @@ const NotFound = () => {
         <NonoSpeech tail="bottom" className="mx-auto mb-5 max-w-[16rem]">
           {NONO_LINES.notFound}
         </NonoSpeech>
-        <img
-          src={NONO_COOL.src}
-          srcSet={NONO_COOL.srcSet}
+        <NonoFigure
+          pose={NONO_COOL}
+          hat="cool"
+          hatRoom
           sizes="200px"
-          width={NONO_COOL.width}
-          height={NONO_COOL.height}
-          alt={NONO_COOL.alt}
           className="mx-auto mb-6 w-48 h-auto drop-shadow-xl nono-bob"
+          seasonClassName="block mx-auto mb-6 w-48 drop-shadow-xl nono-bob"
         />
         <h1 className="font-heading mb-2 text-5xl font-bold text-primary">404</h1>
         <p className="mb-2 text-xl font-semibold text-foreground">Página não encontrada</p>

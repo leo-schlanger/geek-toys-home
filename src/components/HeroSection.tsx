@@ -5,6 +5,7 @@ import { useActiveEvent } from "@/hooks/useActiveEvent";
 import { primaryWhatsAppUrl } from "@/data/contacts";
 import { NONO_LINES, NONO_STANDING } from "@/lib/nono";
 import { NonoSpeech } from "./NonoSpeech";
+import { NonoFigure } from "./NonoFigure";
 import { NatalHeroSlot } from "./seasonal";
 
 import { CLUB_URL, SHOP_URL } from "@/lib/shop-api";
@@ -92,15 +93,13 @@ const HeroSection = () => {
                   aria-label="Conheça o Nono, o tigre mascote da GeekPop"
                   className="shrink-0 w-[60px] md:w-24 rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  <img
-                    src={NONO_STANDING.src}
-                    srcSet={NONO_STANDING.srcSet}
+                  <NonoFigure
+                    pose={NONO_STANDING}
+                    hat="standing"
                     sizes="(min-width: 768px) 96px, 60px"
-                    width={NONO_STANDING.width}
-                    height={NONO_STANDING.height}
-                    alt={NONO_STANDING.alt}
                     decoding="async"
                     className="w-full h-auto drop-shadow-lg nono-wave"
+                    seasonClassName="block w-full drop-shadow-lg nono-wave"
                   />
                 </a>
                 <NonoSpeech tail="left" className="mb-3 ml-2 min-w-0">

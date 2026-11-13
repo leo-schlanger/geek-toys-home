@@ -119,7 +119,6 @@ const Navbar = () => {
       }`}
       style={{ top: "var(--top-banners-h, 0px)" }}
     >
-      <NatalHeaderSlot />
       <div className="container flex items-center justify-between gap-4 h-16 md:h-20">
         <a href="#inicio" className="flex shrink-0 items-center">
           <img
@@ -174,13 +173,14 @@ const Navbar = () => {
           {open ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
+      <NatalHeaderSlot />
 
       {/* Mobile menu */}
       {open && (
         // The panel scrolls: banner plus bar take ~156px of an 844px screen and
         // the full list exceeds that. Without `overflow-y-auto` the last item is
         // cut off at the bottom edge with no way to reach it.
-        <div className="xl:hidden glass max-h-[calc(100vh-var(--top-banners-h,0px)-4rem)] overflow-y-auto overscroll-contain border-t border-border">
+        <div className="xl:hidden glass max-h-[calc(100vh-var(--top-banners-h,0px)-4rem-var(--natal-hero-gap,0px))] overflow-y-auto overscroll-contain border-t border-border">
           <div className="px-4 pt-4">
             <ProductSearch />
           </div>

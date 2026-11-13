@@ -1,7 +1,9 @@
 import { X } from "lucide-react";
-import { SHOP_URL } from "@/lib/shop-api";
 import { StarShape } from "./art";
 import "./natal.css";
+
+// Canonical shop domain for this strip (the global SHOP_URL stays on the legacy host).
+const NATAL_SHOP_URL = "https://shop.geekpoptoys.com.br/";
 
 /**
  * Christmas strip below the other top notices. Fixed height (h-10, one line at
@@ -18,7 +20,7 @@ const NatalBanner = ({ onClose }: { onClose: () => void }) => (
         <span className="font-heading font-bold text-[#FF7AB8]">Feliz Natal geek! 🎄</span>
         <span className="hidden truncate md:inline">Presentes de K-pop e colecionáveis na loja online</span>
         <a
-          href={SHOP_URL}
+          href={NATAL_SHOP_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="shrink-0 font-semibold text-[#FFCC00] underline underline-offset-2 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FFCC00] rounded-sm"

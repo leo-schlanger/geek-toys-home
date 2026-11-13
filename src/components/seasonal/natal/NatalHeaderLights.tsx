@@ -1,6 +1,13 @@
 import "./natal.css";
 
-/** String of lights hanging under the fixed Navbar. Decorative only. */
-const NatalHeaderLights = () => <div className="gp-natal-lights top-full" data-natal-deco="lights" aria-hidden="true" />;
+/**
+ * String of lights along the bottom of the fixed Navbar, inside its box and
+ * background: content scrolling under the bar never shows through the bulbs.
+ */
+const NatalHeaderLights = () => (
+  <div className="relative h-4" aria-hidden="true">
+    <div className="gp-natal-lights top-0" data-natal-deco="lights" />
+  </div>
+);
 
 export default NatalHeaderLights;

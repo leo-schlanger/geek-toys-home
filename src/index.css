@@ -86,13 +86,11 @@
     --top-banners-h: calc(var(--event-banner-h, 0px) + var(--promo-banner-h, 0px) + var(--natal-banner-h, 0px));
   }
 
-  /* Natal: room for the lights under the Navbar where the hero logo starts
-     right below it (md+). The attribute is set before the first render, so
+  /* Natal: the Navbar is 16px taller (lights row inside it); the hero moves
+     down by the same amount. The attribute is set before the first render, so
      this applies without a layout shift. Remove with the seasonal folder. */
-  @media (min-width: 768px) {
-    html[data-season="natal"] {
-      --natal-hero-gap: 16px;
-    }
+  html[data-season="natal"] {
+    --natal-hero-gap: 16px;
   }
 
   /* Tema escuro: mesma paleta, papéis invertidos. O rosa da marca clareia um

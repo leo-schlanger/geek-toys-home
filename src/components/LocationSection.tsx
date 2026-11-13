@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { EMAIL, STORE_PHONES, waMeUrl } from "@/data/contacts";
 import { NONO_LINES, NONO_STANDING } from "@/lib/nono";
+import { NonoFigure } from "./NonoFigure";
 import { NonoSpeech } from "./NonoSpeech";
 
 const LocationSection = () => {
@@ -101,16 +102,14 @@ const LocationSection = () => {
             </div>
 
             <div className="flex items-end gap-3 border-t border-border pt-5">
-              <img
-                src={NONO_STANDING.src}
-                srcSet={NONO_STANDING.srcSet}
+              <NonoFigure
+                pose={NONO_STANDING}
+                hat="standing"
                 sizes="80px"
-                width={NONO_STANDING.width}
-                height={NONO_STANDING.height}
-                alt={NONO_STANDING.alt}
                 loading="lazy"
                 decoding="async"
                 className="w-16 md:w-20 h-auto shrink-0 drop-shadow-md"
+                seasonClassName="block w-16 md:w-20 shrink-0 drop-shadow-md"
               />
               <NonoSpeech tail="left" className="mb-6 ml-2 min-w-0">
                 {NONO_LINES.location}

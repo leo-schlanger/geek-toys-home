@@ -8,11 +8,15 @@
  */
 import { lazy, Suspense, useLayoutEffect, useState } from "react";
 import { NATAL_BANNER_DISMISS_KEY, NATAL_WINDOW, resolveNatal } from "./isNatalActive";
+import type { NonoHatPose } from "./nonoHat";
+
+export { NONO_HAT_ROOM, type NonoHatPose } from "./nonoHat";
 
 const Banner = lazy(() => import("./NatalBanner"));
 const HeaderLights = lazy(() => import("./NatalHeaderLights"));
 const HeroScene = lazy(() => import("./NatalHeroScene"));
 const FooterScene = lazy(() => import("./NatalFooterScene"));
+const NonoHat = lazy(() => import("./NatalNonoHat"));
 
 function readActive(): boolean {
   if (typeof window === "undefined") return false;
@@ -107,9 +111,28 @@ function lazySlot(Component: React.ComponentType) {
   };
 }
 
-/** Lights under the Navbar. The Navbar is `fixed`, so it is the anchor. */
-export const NatalHeaderSlot = lazySlot(HeaderLights);
+/** Lights row (h-4, reserved by the fallback before the chunk loads) at the bottom of the Navbar (inside its box and background). */
+export function NatalHeaderSlot() {
+  const active = useNatalActive();
+  if (!active) return null;
+  return (
+    <Suspense fallback={<div className="h-4" aria-hidden="true" />}>
+      <HeaderLights />
+    </Suspense>
+  );
+}
 /** Scene behind the home hero. Parent must be `relative`. */
 export const NatalHeroSlot = lazySlot(HeroScene);
 /** Scene in the Footer. Parent must be `relative`. */
 export const NatalFooterSlot = lazySlot(FooterScene);
+
+/** Santa hat over a Nono artwork. Parent must be `relative` and sized like the image. */
+export function NatalNonoHatSlot({ pose }: { pose: NonoHatPose }) {
+  const active = useNatalActive();
+  if (!active) return null;
+  return (
+    <Suspense fallback={null}>
+      <NonoHat pose={pose} />
+    </Suspense>
+  );
+}

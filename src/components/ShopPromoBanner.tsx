@@ -23,7 +23,7 @@ function isDismissed(percent: number): boolean {
  * strip keeps its room, invisible, so it does not push the hero down when it
  * lands (CLS 0.09). Never shown, never read by prices.
  */
-export function readPromoHint(): ShopPromo | null {
+function readPromoHint(): ShopPromo | null {
   try {
     const raw = document.getElementById("promo-hint")?.textContent;
     if (!raw) return null;

@@ -25,7 +25,7 @@ const PrivacyPolicy = () => {
                             <p>Encarregado de Dados (DPO): <a href={`mailto:${COMPANY.email}`} className="text-primary hover:underline">{COMPANY.email}</a></p>
                             <p>
                                 Desde {COMPANY.constitutedOnLabel}, o controlador dos dados desta operação é esta empresa. O texto completo, inclusive o que vale para a loja e o clube, está na{" "}
-                                <a href="https://club.geeketoys.com.br/privacidade" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                                <a href="https://club.geekpoptoys.com.br/privacidade" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
                                     política da plataforma
                                 </a>.
                             </p>
@@ -36,7 +36,7 @@ const PrivacyPolicy = () => {
                         <p className="text-sm bg-muted/20 p-4 rounded-lg">
                             Este site não faz o cadastro do clube nem o checkout da loja. Ingressos reservados por aqui, o cadastro do clube e a loja
                             online seguem o tratamento descrito na íntegra na{' '}
-                            <a href="https://club.geeketoys.com.br/privacidade" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
+                            <a href="https://club.geekpoptoys.com.br/privacidade" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">
                                 política completa da plataforma
                             </a>, que prevalece em caso de divergência.
                         </p>

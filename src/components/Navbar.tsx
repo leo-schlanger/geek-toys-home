@@ -7,6 +7,7 @@ import { ProductSearch } from "./ProductSearch";
 import { ProfileMenu } from "./ProfileMenu";
 import { NatalHeaderSlot } from "./seasonal";
 import logo192 from "@/assets/logo-192.webp";
+import { CLUB_URL, SHOP_URL } from "@/lib/shop-api";
 
 interface NavLink {
   label: string;
@@ -25,8 +26,8 @@ const baseLinks: NavLink[] = [
   { label: "Rádio", href: "#radio" },
   { label: "Localização", href: "#localizacao" },
   { label: "Contato", href: "#contato" },
-  { label: "Loja", href: "https://shop.geeketoys.com.br", external: true },
-  { label: "Clube", href: "https://club.geeketoys.com.br/assinar", external: true },
+  { label: "Loja", href: SHOP_URL, external: true },
+  { label: "Clube", href: `${CLUB_URL}/assinar`, external: true },
 ];
 
 function buildNavLinks(eventOn: boolean): NavLink[] {

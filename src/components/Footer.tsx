@@ -6,6 +6,7 @@ import { CreatorCredit } from "@/components/CreatorCredit";
 import { COMPANY } from "@/lib/company";
 import { NatalFooterSlot } from "./seasonal";
 import logo192 from "@/assets/logo-192.webp";
+import { CLUB_URL, SHOP_URL } from "@/lib/shop-api";
 
 interface FooterLink {
   label: string;
@@ -16,12 +17,12 @@ interface FooterLink {
 const footerLinks: FooterLink[] = [
   {
     label: "Loja Online",
-    href: "https://shop.geeketoys.com.br",
+    href: SHOP_URL,
     external: true,
   },
   {
     label: "Clube GeekPop",
-    href: "https://club.geeketoys.com.br/assinar",
+    href: `${CLUB_URL}/assinar`,
     external: true,
   },
   { label: "Produtos", href: "#produtos" },

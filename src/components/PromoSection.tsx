@@ -141,7 +141,7 @@ const PromoSection = () => {
               ) : (
                 <>
                   Photocards, Funko, pelúcias e mais — compre direto em
-                  shop.geeketoys.com.br.
+                  shop.geekpoptoys.com.br.
                 </>
               )}
             </p>

@@ -22,10 +22,13 @@ em qualquer host, declaram `https://geekpoptoys.com.br`:
 sitemap ou o robots mudarem de domínio, ou se o `SeoHead` gerar canonical fora
 de `geekpoptoys.com.br`.
 
-**Só o SEO mudou de host.** Os links e chamadas do site (loja `shop.geeketoys`,
-clube, API, ingressos, rádio) ficam como estão: trocar o host de uma chamada
-pode quebrar sessão (o JWT da loja/clube vive no `localStorage`, que é por
-origem), CORS ou e-mail. O e-mail `contato@geeketoys.com.br` também fica.
+**Links de navegação (21/11/2026, decisão do Leo):** loja e clube abrem em
+`shop.geekpoptoys.com.br` e `club.geekpoptoys.com.br` (`SHOP_URL`/`CLUB_URL` em
+`src/lib/shop-api.ts`; `src/lib/nav-hosts.test.ts` reprova URL `*.geeketoys` fora de
+`api.*`/`radio.*`). Quem estava logado ou tinha carrinho no host antigo entra uma vez
+deslogado e com o carrinho vazio: sessão e carrinho vivem no `localStorage`, que é por
+origem. As chamadas da API, a rádio e o e-mail `contato@geeketoys.com.br` continuam no
+legado.
 
 ### Domínios na Vercel (projeto geek-toys-home, estado em 06/11/2026)
 

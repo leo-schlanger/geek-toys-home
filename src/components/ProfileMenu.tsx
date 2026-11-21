@@ -16,8 +16,8 @@ import { cn } from '@/lib/utils'
  *
  * | Audience      | Where the profile lives                     |
  * | ------------- | ------------------------------------------- |
- * | Club member   | `club.geeketoys.com.br/membro`              |
- * | Shop customer | `shop.geeketoys.com.br/minhas-compras`      |
+ * | Club member   | `club.geekpoptoys.com.br/membro`            |
+ * | Shop customer | `shop.geekpoptoys.com.br/minhas-compras`    |
  *
  * A single link would force picking one audience and leaving the other without
  * a route. Signed-out visitors do not hit a dead end: each destination

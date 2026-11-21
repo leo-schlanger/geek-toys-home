@@ -39,7 +39,7 @@ describe('HeroSection', () => {
   it('sends "Quero ser membro" to the club sign-up page', () => {
     render(<HeroSection />)
     const cta = within(callout()).getByRole('link', { name: 'Quero ser membro' })
-    expect(cta).toHaveAttribute('href', 'https://club.geeketoys.com.br/assinar')
+    expect(cta).toHaveAttribute('href', 'https://club.geekpoptoys.com.br/assinar')
     expect(cta).toHaveAttribute('target', '_blank')
   })
 
@@ -48,7 +48,7 @@ describe('HeroSection', () => {
     expect(screen.getByRole('link', { name: 'Ver produtos' })).toHaveAttribute('href', '#produtos')
     expect(screen.getByRole('link', { name: 'Abrir loja online' })).toHaveAttribute(
       'href',
-      'https://shop.geeketoys.com.br'
+      'https://shop.geekpoptoys.com.br'
     )
     expect(screen.queryByRole('link', { name: /Assinar o Clube/ })).not.toBeInTheDocument()
   })

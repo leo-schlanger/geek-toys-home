@@ -7,8 +7,12 @@ import { FALLBACK_EVENT, type EventConfig } from '@/data/event'
 import { takeBootRequest } from './boot-data'
 
 const API_BASE = 'https://api.geeketoys.com.br'
-export const SHOP_URL = 'https://shop.geeketoys.com.br'
-export const CLUB_URL = 'https://club.geeketoys.com.br'
+/**
+ * Navigation hosts (Leo, 21/11/2026): links go to the geekpoptoys hosts. API
+ * calls stay on api.geeketoys (CORS, same as always).
+ */
+export const SHOP_URL = 'https://shop.geekpoptoys.com.br'
+export const CLUB_URL = 'https://club.geekpoptoys.com.br'
 
 export type ShopProduct = {
   id: string
@@ -307,9 +311,7 @@ export async function createReservation(
     return {
       ok: true,
       reservation: data.reservation,
-      // A API monta o link no domínio espelho (`shop.geekpoptoys.com.br`, ver
-      // SHOP_CANONICAL_URL). Os dois atendem, mas trocar de marca no meio do
-      // pagamento assusta — quem saiu de geeketoys.com.br continua nele.
+      // Same host as the rest of the site's shop links (SHOP_URL).
       ticketsUrl: reservationTicketsUrl(data.reservation.code),
     }
   } catch {

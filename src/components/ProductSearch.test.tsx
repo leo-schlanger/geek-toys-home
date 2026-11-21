@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { ProductSearch } from './ProductSearch'
 
 vi.mock('@/lib/shop-api', () => ({
-  SHOP_URL: 'https://shop.geeketoys.com.br',
+  SHOP_URL: 'https://shop.geekpoptoys.com.br',
   fetchProducts: vi.fn(),
 }))
 
@@ -50,7 +50,7 @@ describe('ProductSearch', () => {
     // O link leva direto para o produto na loja.
     expect(screen.getByRole('link', { name: /Álbum BTS Proof/ })).toHaveAttribute(
       'href',
-      'https://shop.geeketoys.com.br/produto/album-bts-proof'
+      'https://shop.geekpoptoys.com.br/produto/album-bts-proof'
     )
   })
 

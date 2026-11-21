@@ -25,7 +25,7 @@ const TermsOfUse = () => {
                             <p>E-mail: <a href={`mailto:${COMPANY.email}`} className="text-primary hover:underline">{COMPANY.email}</a></p>
                         </section>
 
-                        <p>Ao utilizar os sites da <strong>GeekPop & Toys</strong> e o <strong>Clube de Vantagens</strong>, você concorda com os seguintes termos. O texto completo da loja e do clube está em <a href="https://shop.geekpoptoys.com.br/termos" className="text-primary hover:underline">shop.geekpoptoys.com.br/termos</a> e <a href="https://club.geeketoys.com.br/termos" className="text-primary hover:underline">club.geeketoys.com.br/termos</a>.</p>
+                        <p>Ao utilizar os sites da <strong>GeekPop & Toys</strong> e o <strong>Clube de Vantagens</strong>, você concorda com os seguintes termos. O texto completo da loja online e do clube está em <a href="https://club.geekpoptoys.com.br/termos" className="text-primary hover:underline">club.geekpoptoys.com.br/termos</a>.</p>
 
                         <section className="space-y-3">
                             <h2 className="text-2xl font-semibold text-foreground">1. O Clube de Vantagens</h2>

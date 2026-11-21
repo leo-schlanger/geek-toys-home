@@ -11,8 +11,8 @@ import { ProfileMenu } from './ProfileMenu'
  * subdomains.
  */
 
-const MEMBRO = 'https://club.geeketoys.com.br/membro'
-const COMPRAS = 'https://shop.geeketoys.com.br/minhas-compras'
+const MEMBRO = 'https://club.geekpoptoys.com.br/membro'
+const COMPRAS = 'https://shop.geekpoptoys.com.br/minhas-compras'
 
 describe('ProfileMenu — button and dropdown', () => {
   it('starts closed', () => {

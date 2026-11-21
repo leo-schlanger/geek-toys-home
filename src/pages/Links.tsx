@@ -100,7 +100,7 @@ export default function Links() {
 
         <footer className="mt-auto pt-10 text-center text-xs text-muted-foreground">
           <Link to="/" className="underline underline-offset-2 hover:text-foreground">
-            geeketoys.com.br
+            geekpoptoys.com.br
           </Link>
           <span className="mx-2">·</span>
           <Link to="/privacidade" className="underline underline-offset-2 hover:text-foreground">

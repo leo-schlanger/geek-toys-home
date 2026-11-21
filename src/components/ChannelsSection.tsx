@@ -2,9 +2,8 @@ import { useEffect, useRef } from "react";
 import { ShoppingBag, Sparkles, Ticket, ArrowRight } from "lucide-react";
 import { useActiveEvent } from "@/hooks/useActiveEvent";
 import { CLUB_PLAN_LABEL } from "@/lib/company";
+import { CLUB_URL, SHOP_URL } from "@/lib/shop-api";
 
-const SHOP_URL = "https://shop.geeketoys.com.br";
-const CLUB_URL = "https://club.geeketoys.com.br";
 
 /**
  * Cross-promote Clube, Loja online e Evento — pilares do ecossistema GeekPop.

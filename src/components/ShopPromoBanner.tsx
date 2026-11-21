@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { Tag, X } from "lucide-react";
 import { useShopPromo } from "@/hooks/useShopPromo";
-import { SHOP_URL } from "@/lib/shop-api";
+import { SHOP_URL, type ShopPromo } from "@/lib/shop-api";
 
 const STORAGE_PREFIX = "shop-promo-banner-dismissed:";
 
@@ -15,6 +15,33 @@ function isDismissed(percent: number): boolean {
   } catch {
     return false;
   }
+}
+
+/**
+ * The promo as the API had it when the site was built (`#promo-hint`, written
+ * by vite.config.ts). Layout only: while the live answer is on its way the
+ * strip keeps its room, invisible, so it does not push the hero down when it
+ * lands (CLS 0.09). Never shown, never read by prices.
+ */
+export function readPromoHint(): ShopPromo | null {
+  try {
+    const raw = document.getElementById("promo-hint")?.textContent;
+    if (!raw) return null;
+    const h = JSON.parse(raw) as ShopPromo;
+    return typeof h.bannerText === "string" && typeof h.percent === "number" ? h : null;
+  } catch {
+    return null;
+  }
+}
+
+function wantsStrip(p: ShopPromo, dismissedPercent: number | null): boolean {
+  return (
+    p.enabled &&
+    p.bannerEnabled &&
+    p.bannerText.trim().length > 0 &&
+    dismissedPercent !== p.percent &&
+    !isDismissed(p.percent)
+  );
 }
 
 /**
@@ -35,18 +62,18 @@ function isDismissed(percent: number): boolean {
  * mas os domínios são distintos, então cada um guarda a sua.
  */
 const ShopPromoBanner = () => {
-  const { promo } = useShopPromo();
+  const { promo, isPlaceholder } = useShopPromo();
   const [dismissedPercent, setDismissedPercent] = useState<number | null>(null);
+  const [hint] = useState(readPromoHint);
   const ref = useRef<HTMLDivElement>(null);
 
-  const visible =
-    promo.enabled &&
-    promo.bannerEnabled &&
-    promo.bannerText.trim().length > 0 &&
-    dismissedPercent !== promo.percent &&
-    !isDismissed(promo.percent);
+  // Before the API answers: hold the hint's room (invisible), never its offer.
+  const reserving = isPlaceholder && hint != null && wantsStrip(hint, dismissedPercent);
+  const visible = reserving || (!isPlaceholder && wantsStrip(promo, dismissedPercent));
+  const text = reserving && hint ? hint.bannerText : promo.bannerText;
 
-  useEffect(() => {
+  // Layout effect: the height is published before the browser paints.
+  useLayoutEffect(() => {
     const root = document.documentElement;
     if (!visible) {
       root.style.setProperty("--promo-banner-h", "0px");
@@ -69,7 +96,7 @@ const ShopPromoBanner = () => {
       ro.disconnect();
       root.style.setProperty("--promo-banner-h", "0px");
     };
-  }, [visible, promo.bannerText]);
+  }, [visible, text]);
 
   if (!visible) return null;
 
@@ -81,6 +108,24 @@ const ShopPromoBanner = () => {
     }
     setDismissedPercent(promo.percent);
   };
+
+  if (reserving) {
+    return (
+      <div
+        ref={ref}
+        aria-hidden="true"
+        data-promo-reserve
+        className="invisible fixed left-0 right-0 z-[59] border-b"
+        style={{ top: "var(--event-banner-h, 0px)" }}
+      >
+        <div className="container relative flex flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 pr-10 text-center md:pr-12">
+          <span className="hidden h-4 w-4 shrink-0 sm:inline" />
+          <p className="text-sm font-medium leading-snug">{text}</p>
+          <span className="text-xs font-semibold md:text-sm">Ir para a loja</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

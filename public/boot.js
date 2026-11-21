@@ -1,9 +1,8 @@
 /*
- * Runs before the bundle (plain script in index.html). On the home, asks the
- * API for what sits above the hero (promo strip, event strip) while the bundle
- * downloads; main.tsx waits a moment for the answers and paints with them.
- * Answers that arrived after first paint pushed the hero down (CLS ~0.09).
- * Read by src/lib/boot-data.ts; the app falls back to its own calls.
+ * Runs before the bundle (plain script in index.html). On the home, starts
+ * the API calls for the strips above the hero (promo, event) while the bundle
+ * downloads, so they answer sooner. The app reuses these requests
+ * (src/lib/boot-data.ts) and never waits for them before painting.
  */
 (function () {
   try {

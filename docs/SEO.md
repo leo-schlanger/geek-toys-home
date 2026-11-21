@@ -83,9 +83,12 @@ SPA. A Vercel serve o ficheiro antes do rewrite (`vercel.json` não mudou).
 
 - Fontes self-hosted (`src/assets/fonts/`, OFL) com preload das latin: o CSS do Google
   bloqueava a pintura (~480 ms) e a troca de fonte dava ~0,009 de CLS.
-- Faixas acima do hero (promo `/promo`, evento `/events/active`): `public/boot.js` pede-as
-  na home antes do bundle e o `main.tsx` (`primeFirstScreen`) espera até 400 ms para pintar
-  já com elas. Antes a faixa de promo entrava ~1,3 s depois e empurrava o hero (CLS 0,09).
+- Faixa de promo acima do hero: entrava ~1,3 s depois e empurrava o hero (CLS 0,09). O
+  build grava `/promo` como pista (`#promo-hint`) e o `ShopPromoBanner` reserva a altura,
+  invisível, até a API responder; a pista não é oferta nem entra nos preços. `public/boot.js`
+  adianta `/promo` e `/events/active`, e a app reutiliza esses pedidos sem esperar por eles.
+  Não segurar o primeiro render à espera da API (tentativa de 21/11: LCP 2,66 → 4,16 s).
+  A faixa de evento ainda pode empurrar o hero na primeira visita quando houver evento ativo.
 - Hero em WebP 768/1280/1920 com `fetchpriority=high` e preload (mesmo `srcset`) só no
   `index.html` da raiz; logo 3D em `<picture media>` (o telemóvel não o descarrega);
   logo da navbar/rodapé em WebP 192 px com dimensões.

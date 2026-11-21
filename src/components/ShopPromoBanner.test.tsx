@@ -139,3 +139,73 @@ describe('ShopPromoBanner', () => {
     await waitFor(() => expect(varAtual()).toBe('0px'))
   })
 })
+
+/**
+ * Build-time hint (#promo-hint): before /promo answers, the strip keeps its
+ * room invisible so the hero does not jump when it lands (CLS 0.09 at 390 px),
+ * without ever showing an offer the API has not confirmed.
+ */
+describe('ShopPromoBanner — reserva pela pista do build', () => {
+  let release: (p: ShopPromo) => void
+  function setHint(h: ShopPromo | null) {
+    document.getElementById('promo-hint')?.remove()
+    if (!h) return
+    const el = document.createElement('script')
+    el.type = 'application/json'
+    el.id = 'promo-hint'
+    el.textContent = JSON.stringify(h)
+    document.head.appendChild(el)
+  }
+  async function pendingFetch() {
+    const api = await import('@/lib/shop-api')
+    vi.mocked(api.fetchShopPromo).mockImplementationOnce(
+      () => new Promise<ShopPromo>((r) => (release = r))
+    )
+  }
+  afterEach(() => setHint(null))
+
+  it('reserva a altura antes da resposta, invisível e sem link nem oferta acessível', async () => {
+    setHint(PROMO_ON)
+    await pendingFetch()
+    comAlturaDe(76)
+    const { container } = render(<ShopPromoBanner />)
+    const reserve = container.querySelector('[data-promo-reserve]')
+    expect(reserve).toHaveAttribute('aria-hidden', 'true')
+    expect(reserve).toHaveClass('invisible')
+    expect(reserve?.querySelector('a, button')).toBeNull()
+    expect(screen.queryByRole('region')).toBeNull()
+    expect(varAtual()).toBe('76px')
+
+    release(PROMO_ON)
+    expect(await screen.findByRole('region')).toBeInTheDocument()
+    expect(container.querySelector('[data-promo-reserve]')).toBeNull()
+    expect(varAtual()).toBe('76px')
+  })
+
+  it('a API manda: promo desligada depois da pista some a faixa', async () => {
+    setHint(PROMO_ON)
+    await pendingFetch()
+    comAlturaDe(76)
+    render(<ShopPromoBanner />)
+    release({ enabled: false, percent: 0, bannerEnabled: false, bannerText: '' })
+    await waitFor(() => expect(varAtual()).toBe('0px'))
+    expect(screen.queryByText(PROMO_ON.bannerText)).toBeNull()
+  })
+
+  it('quem fechou o aviso daquele percentual não recebe reserva', async () => {
+    localStorage.setItem('shop-promo-banner-dismissed:5', '1')
+    setHint(PROMO_ON)
+    await pendingFetch()
+    comAlturaDe(76)
+    const { container } = render(<ShopPromoBanner />)
+    expect(container.querySelector('[data-promo-reserve]')).toBeNull()
+    expect(varAtual()).toBe('0px')
+  })
+
+  it('sem pista (build não alcançou a API): nada reservado', async () => {
+    await pendingFetch()
+    comAlturaDe(76)
+    const { container } = render(<ShopPromoBanner />)
+    expect(container.querySelector('[data-promo-reserve]')).toBeNull()
+  })
+})

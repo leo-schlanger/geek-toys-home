@@ -12,13 +12,13 @@ export const SHOP_PROMO_QUERY_KEY = ['shop', 'promo'] as const
  * honra, enquanto não anunciar por um instante só deixa de valorizar. A loja
  * refaz a conta do pedido de qualquer jeito.
  */
-export function useShopPromo(): { promo: ShopPromo; loading: boolean } {
-  const { data, isLoading } = useQuery<ShopPromo>({
+export function useShopPromo(): { promo: ShopPromo; loading: boolean; isPlaceholder: boolean } {
+  const { data, isLoading, isPlaceholderData } = useQuery<ShopPromo>({
     queryKey: SHOP_PROMO_QUERY_KEY,
     queryFn: fetchShopPromo,
     placeholderData: PROMO_OFF,
     staleTime: 1000 * 60 * 5,
   })
 
-  return { promo: data ?? PROMO_OFF, loading: isLoading }
+  return { promo: data ?? PROMO_OFF, loading: isLoading, isPlaceholder: isPlaceholderData }
 }

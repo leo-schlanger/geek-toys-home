@@ -22,6 +22,30 @@ function gitLastmod(files: string[]): string | undefined {
   }
 }
 
+const API_BASE = "https://api.geeketoys.com.br";
+
+/**
+ * Promo strip as the API has it at build time. Only a layout hint for the
+ * first paint (ShopPromoBanner reserves the strip's room, invisible); it is
+ * never shown as an offer nor fed to prices. No answer in 3 s → no hint.
+ */
+async function promoHint(): Promise<string> {
+  try {
+    const r = await fetch(`${API_BASE}/promo`, { signal: AbortSignal.timeout(3000) });
+    if (!r.ok) return "";
+    const p = (await r.json()) as Record<string, unknown>;
+    const hint = {
+      enabled: p.enabled === true,
+      bannerEnabled: p.bannerEnabled === true,
+      percent: typeof p.percent === "number" ? p.percent : 0,
+      bannerText: typeof p.bannerText === "string" ? p.bannerText : "",
+    };
+    return `<script type="application/json" id="promo-hint">${JSON.stringify(hint).replace(/</g, "\\u003c")}</script>`;
+  } catch {
+    return "";
+  }
+}
+
 type BundleAsset = { type: string; fileName: string; names?: string[]; name?: string };
 
 /** Build output URL of the asset whose source file is `name` (e.g. "inter-latin.woff2"). */
@@ -35,14 +59,14 @@ function assetUrl(bundle: Record<string, BundleAsset>, name: string): string {
  * Per-route static head (the body is still the SPA): writes <route>/index.html
  * with its own title, description, canonical and breadcrumb, plus sitemap.xml.
  * Vercel serves these files before the SPA rewrite. Also preloads the latin
- * fonts and, in the root index.html, the hero image.
+ * fonts and, in the root index.html, the hero image and the promo hint.
  */
 function seoShells(): Plugin {
   return {
     name: "seo-shells",
     apply: "build",
     enforce: "post",
-    generateBundle(_, bundle) {
+    async generateBundle(_, bundle) {
       const index = bundle["index.html"];
       if (!index || index.type !== "asset") throw new Error("seoShells: index.html missing");
       const assets = bundle as unknown as Record<string, BundleAsset>;
@@ -53,7 +77,9 @@ function seoShells(): Plugin {
       const heroPreload = `<link rel="preload" as="image" imagesrcset="${hero}" imagesizes="100vw" fetchpriority="high" />`;
 
       const base = String(index.source).replace("</title>", () => `</title>\n    ${fonts}`);
-      index.source = base.replace("</head>", () => `  ${heroPreload}\n  </head>`);
+      const hint = await promoHint();
+      if (!hint) this.warn("promo hint unavailable: the promo strip may shift the hero on first paint");
+      index.source = base.replace("</head>", () => `  ${heroPreload}\n    ${hint}\n  </head>`);
 
       for (const route of ROUTES_SEO) {
         if (route.path === "/") continue;

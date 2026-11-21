@@ -36,6 +36,12 @@ function writeCachedEvent(event: EventConfig | null) {
   }
 }
 
+export async function activeEventQueryFn(): Promise<EventConfig | null> {
+  const event = await fetchActiveEvent()
+  writeCachedEvent(event)
+  return event
+}
+
 /**
  * O evento em cartaz, vindo da API da loja.
  *
@@ -49,11 +55,7 @@ export function useActiveEvent(): {
 } {
   const { data, isPlaceholderData } = useQuery<EventConfig | null>({
     queryKey: ACTIVE_EVENT_QUERY_KEY,
-    queryFn: async () => {
-      const event = await fetchActiveEvent()
-      writeCachedEvent(event)
-      return event
-    },
+    queryFn: activeEventQueryFn,
     placeholderData: () => readCachedEvent() ?? FALLBACK_EVENT,
     staleTime: 1000 * 60 * 5,
   })

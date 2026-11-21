@@ -62,7 +62,7 @@ describe('per-route head (family: every fixed route of App.tsx)', () => {
     expect(new Set(titles).size).toBe(titles.length)
     expect(new Set(descs).size).toBe(descs.length)
     for (const r of ROUTES_SEO) {
-      expect(r.title.length, r.title).toBeLessThanOrEqual(70)
+      expect(r.title.length, r.title).toBeLessThanOrEqual(60)
       expect(r.title).toContain('GeekPop & Toys')
       expect(r.description.length, r.description).toBeGreaterThanOrEqual(70)
       expect(r.description.length, r.description).toBeLessThanOrEqual(160)

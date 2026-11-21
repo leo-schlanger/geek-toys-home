@@ -81,9 +81,11 @@ SPA. A Vercel serve o ficheiro antes do rewrite (`vercel.json` não mudou).
 
 ## Desempenho (21/11/2026)
 
-- Fontes self-hosted (`src/assets/fonts/`, OFL) com preload das latin: a troca de fonte
-  era a causa medida do CLS (0,09 no container do hero, Lighthouse) e o CSS do Google
-  bloqueava a pintura (~480 ms).
+- Fontes self-hosted (`src/assets/fonts/`, OFL) com preload das latin: o CSS do Google
+  bloqueava a pintura (~480 ms) e a troca de fonte dava ~0,009 de CLS.
+- Faixas acima do hero (promo `/promo`, evento `/events/active`): `public/boot.js` pede-as
+  na home antes do bundle e o `main.tsx` (`primeFirstScreen`) espera até 400 ms para pintar
+  já com elas. Antes a faixa de promo entrava ~1,3 s depois e empurrava o hero (CLS 0,09).
 - Hero em WebP 768/1280/1920 com `fetchpriority=high` e preload (mesmo `srcset`) só no
   `index.html` da raiz; logo 3D em `<picture media>` (o telemóvel não o descarrega);
   logo da navbar/rodapé em WebP 192 px com dimensões.

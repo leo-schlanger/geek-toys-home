@@ -4,6 +4,7 @@
  */
 
 import { FALLBACK_EVENT, type EventConfig } from '@/data/event'
+import { takeBootData } from './boot-data'
 
 const API_BASE = 'https://api.geeketoys.com.br'
 export const SHOP_URL = 'https://shop.geeketoys.com.br'
@@ -43,6 +44,9 @@ type ProductListResponse = {
 }
 
 async function getJson<T>(path: string): Promise<T> {
+  // Answer already fetched by public/boot.js (first screen of the home).
+  const early = takeBootData<T>(path)
+  if (early !== undefined) return early
   const res = await fetch(`${API_BASE}${path}`, {
     headers: { Accept: 'application/json' },
   })

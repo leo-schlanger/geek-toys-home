@@ -41,7 +41,7 @@ export const LINKS_SEO: RouteSeo = {
 
 export const GALLERY_SEO: RouteSeo = {
   path: '/galeria',
-  title: 'Galeria: eventos de K-pop e a loja em Copacabana | GeekPop & Toys',
+  title: 'Galeria: eventos de K-pop em Copacabana | GeekPop & Toys',
   description:
     'Fotos dos eventos de K-pop e da loja física da GeekPop & Toys em Copacabana, Rio de Janeiro. Veja os álbuns e baixe as suas fotos.',
   crumb: 'Galeria',

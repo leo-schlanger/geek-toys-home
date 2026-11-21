@@ -6,6 +6,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { ProductSearch } from "./ProductSearch";
 import { ProfileMenu } from "./ProfileMenu";
 import { NatalHeaderSlot } from "./seasonal";
+import logo192 from "@/assets/logo-192.webp";
 
 interface NavLink {
   label: string;
@@ -122,9 +123,11 @@ const Navbar = () => {
       <div className="container flex items-center justify-between gap-4 h-16 md:h-20">
         <a href="#inicio" className="flex shrink-0 items-center">
           <img
-            src="/logo.jpg"
+            src={logo192}
             alt="GeekPop & Toys"
-            className="h-14 md:h-16 rounded-lg shadow-sm ring-1 ring-border"
+            width={192}
+            height={192}
+            className="h-14 md:h-16 w-auto rounded-lg shadow-sm ring-1 ring-border"
           />
         </a>
 

@@ -1,5 +1,9 @@
 import { Crown, MessageCircle, ShoppingBag, Tag, Ticket, CalendarCheck } from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
+import hero768 from "@/assets/hero-bg-768.webp";
+import hero1280 from "@/assets/hero-bg-1280.webp";
+import hero1920 from "@/assets/hero-bg-1920.webp";
+import logo3d300 from "@/assets/logo3d-300.webp";
+import logo3d600 from "@/assets/logo3d-600.webp";
 import { SocialIcon } from "./SocialIcon";
 import { useActiveEvent } from "@/hooks/useActiveEvent";
 import { primaryWhatsAppUrl } from "@/data/contacts";
@@ -36,11 +40,18 @@ const HeroSection = () => {
       style={{ paddingTop: "calc(var(--top-banners-h, 0px) + var(--natal-hero-gap, 0px))" }}
     >
       <div className="absolute inset-0">
+        {/* LCP candidate: same srcset/sizes as the preload in vite.config.ts. */}
         <img
-          src={heroBg}
+          src={hero1280}
+          srcSet={`${hero768} 768w, ${hero1280} 1280w, ${hero1920} 1920w`}
+          sizes="100vw"
+          width={1920}
+          height={1088}
           alt=""
           className="w-full h-full object-cover opacity-25"
           loading="eager"
+          // Lowercase: React 18 does not know fetchPriority and warns.
+          {...{ fetchpriority: "high" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
         <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-transparent to-accent/10" />
@@ -53,13 +64,22 @@ const HeroSection = () => {
             {/* Hidden on phones: the navbar already shows the logo, and the club
                 call-out has to fit the first screen. */}
             <div className="hidden sm:block mb-6 lg:mb-8 animate-fade-up w-full sm:max-w-[180px] lg:max-w-[300px]">
-              <img
-                src="/logo3d.jpg"
-                alt="Logo da GeekPop & Toys"
-                width={1080}
-                height={1080}
-                className="w-full h-auto drop-shadow-2xl rounded-2xl ring-4 ring-primary/15"
-              />
+              {/* <picture> with a media query: phones hide this block and must not
+                  download it (an <img> under display:none still loads). */}
+              <picture>
+                <source
+                  media="(min-width: 640px)"
+                  srcSet={`${logo3d300} 300w, ${logo3d600} 600w`}
+                  sizes="(min-width: 1024px) 300px, 180px"
+                />
+                <img
+                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  alt="Logo da GeekPop & Toys"
+                  width={600}
+                  height={600}
+                  className="w-full h-auto drop-shadow-2xl rounded-2xl ring-4 ring-primary/15"
+                />
+              </picture>
             </div>
             {/* The page's only <h1>: the home had none, and it is the phrase
                 people search for. */}

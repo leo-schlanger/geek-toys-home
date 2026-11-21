@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { MapPin, Phone, Clock } from "lucide-react";
-import storePhoto from "@/assets/store-photo.jpg";
+import storePhoto640 from "@/assets/store-photo-640.webp";
+import storePhoto1200 from "@/assets/store-photo-1200.webp";
 
 const AboutSection = () => {
   const ref = useRef<HTMLElement>(null);
@@ -52,7 +53,11 @@ const AboutSection = () => {
 
           <div className="rounded-xl overflow-hidden border border-border hover-glow-primary">
             <img
-              src={storePhoto}
+              src={storePhoto1200}
+              srcSet={`${storePhoto640} 640w, ${storePhoto1200} 1200w`}
+              sizes="(min-width: 1400px) 676px, (min-width: 768px) 50vw, 100vw"
+              width={1200}
+              height={903}
               alt="Loja GeekPop & Toys em Copacabana"
               className="w-full h-80 object-cover"
               loading="lazy"

@@ -13,8 +13,10 @@ import {
 import { getBioLinks, type BioLink, type LinkIcon } from '@/data/links'
 import { useActiveEvent } from '@/hooks/useActiveEvent'
 import { SeoHead } from '@/components/SeoHead'
+import { LINKS_SEO, seoProps } from '@/lib/seo-routes'
 import { CreatorCredit } from '@/components/CreatorCredit'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import logo192 from '@/assets/logo-192.webp'
 
 /**
  * Bio-link page for social profiles, Instagram above all.
@@ -49,11 +51,7 @@ export default function Links() {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background">
-      <SeoHead
-        title="Links | GeekPop & Toys"
-        description="Todos os links da GeekPop & Toys: grupo do WhatsApp, loja online, clube com 10% de desconto e redes sociais."
-        path="/links"
-      />
+      <SeoHead {...seoProps(LINKS_SEO)} />
 
       {/* Two soft blobs instead of a busy background: they carry the brand
           colours without competing with the cards for attention. */}
@@ -73,10 +71,10 @@ export default function Links() {
       <main className="relative mx-auto flex min-h-screen w-full max-w-md flex-col px-5 py-10">
         <header className="animate-fade-up text-center opacity-0" style={{ animationDelay: '0ms' }}>
           <img
-            src="/logo.jpg"
+            src={logo192}
             alt="GeekPop & Toys"
-            width={96}
-            height={96}
+            width={192}
+            height={192}
             className="mx-auto h-24 w-24 rounded-2xl object-cover shadow-lg ring-2 ring-primary/30"
           />
           <h1 className="mt-4 font-heading text-2xl font-bold tracking-tight">

@@ -5,8 +5,9 @@ import { SeoHead } from '@/components/SeoHead'
 import { EMAIL, STORE_PHONES } from '@/data/contacts'
 import { COMPANY } from './company'
 import indexHtml from '../../index.html?raw'
-import sitemapXml from '../../public/sitemap.xml?raw'
 import robotsTxt from '../../public/robots.txt?raw'
+import appTsx from '../App.tsx?raw'
+import { ROUTES_SEO, HOME_SEO, buildSitemap, renderRouteHead, routeUrl, breadcrumbJsonLd } from './seo-routes'
 
 // geeketoys.com.br is legacy and only redirects here; a canonical on a host
 // that redirects points search engines at a URL that never serves the page.
@@ -26,11 +27,8 @@ describe('canonical domain', () => {
   })
 
   it('sitemap and robots use the main domain', () => {
-    const sitemap = sitemapXml
-    const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
-    expect(locs).toEqual(
-      ['/', '/links', '/galeria', '/termos', '/privacidade'].map((p) => `${SITE_URL}${p}`)
-    )
+    const locs = [...buildSitemap({}).matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
+    expect(locs).toEqual(['/', '/links', '/galeria', '/termos', '/privacidade'].map(routeUrl))
     expect(robotsTxt).toContain(`Sitemap: ${SITE_URL}/sitemap.xml`)
   })
 
@@ -43,6 +41,77 @@ describe('canonical domain', () => {
       'content',
       `${SITE_URL}/og-image.png`
     )
+  })
+})
+
+// Every fixed <Route path> of App.tsx (dynamic and catch-all excluded): a new
+// route that is not in ROUTES_SEO would ship with the home's head and canonical.
+const appRoutes = [...appTsx.replace(/\{\/\*[\s\S]*?\*\/\}/g, '').matchAll(/<Route path="([^"]+)"/g)]
+  .map((m) => m[1])
+  .filter((p) => p !== '*' && !p.includes(':'))
+
+describe('per-route head (family: every fixed route of App.tsx)', () => {
+  it('ROUTES_SEO lists exactly the fixed routes of App.tsx', () => {
+    expect(appRoutes.length).toBeGreaterThanOrEqual(5)
+    expect(ROUTES_SEO.map((r) => r.path).sort()).toEqual([...appRoutes].sort())
+  })
+
+  it('titles and descriptions are unique and within search-snippet length', () => {
+    const titles = ROUTES_SEO.map((r) => r.title)
+    const descs = ROUTES_SEO.map((r) => r.description)
+    expect(new Set(titles).size).toBe(titles.length)
+    expect(new Set(descs).size).toBe(descs.length)
+    for (const r of ROUTES_SEO) {
+      expect(r.title.length, r.title).toBeLessThanOrEqual(70)
+      expect(r.title).toContain('GeekPop & Toys')
+      expect(r.description.length, r.description).toBeGreaterThanOrEqual(70)
+      expect(r.description.length, r.description).toBeLessThanOrEqual(160)
+    }
+  })
+
+  it('index.html carries the home head from ROUTES_SEO', () => {
+    const amp = (t: string) => t.replace(/&/g, '&amp;')
+    expect(indexHtml).toContain(`<title>${amp(HOME_SEO.title)}</title>`)
+    expect(indexHtml).toContain(`<meta name="description" content="${HOME_SEO.description}" />`)
+    expect(indexHtml).toContain(`<meta property="og:title" content="${amp(HOME_SEO.title)}" />`)
+    expect(indexHtml).not.toContain('fonts.googleapis.com')
+  })
+
+  it.each(ROUTES_SEO.filter((r) => r.path !== '/'))('shell of $path has its own head and breadcrumb', (route) => {
+    const html = renderRouteHead(indexHtml, route)
+    const url = routeUrl(route.path)
+    const doc = new DOMParser().parseFromString(html, 'text/html')
+    expect(doc.title).toBe(route.title)
+    expect(doc.querySelectorAll('link[rel="canonical"]')).toHaveLength(1)
+    expect(doc.querySelector('link[rel="canonical"]')?.getAttribute('href')).toBe(url)
+    expect(doc.querySelector('meta[name="description"]')?.getAttribute('content')).toBe(route.description)
+    expect(doc.querySelector('meta[property="og:url"]')?.getAttribute('content')).toBe(url)
+    expect(doc.querySelector('meta[property="og:title"]')?.getAttribute('content')).toBe(route.title)
+    expect(doc.querySelector('meta[name="twitter:description"]')?.getAttribute('content')).toBe(route.description)
+    const ld = JSON.parse(doc.querySelector('script[data-seo="breadcrumb"]')!.textContent!)
+    expect(ld.itemListElement.map((i: { item: string }) => i.item)).toEqual([`${SITE_URL}/`, url])
+    // The org/store graph stays in every shell.
+    expect(html).toContain('"@id": "https://geekpoptoys.com.br/#store"')
+  })
+
+  it('renderRouteHead fails loudly when index.html loses a tag', () => {
+    expect(() => renderRouteHead(indexHtml.replace(/<link rel="canonical"[^>]*>/, ''), ROUTES_SEO[1])).toThrow(/canonical/)
+  })
+
+  it('sitemap: lastmod only when known', () => {
+    const xml = buildSitemap({ '/links': '2026-11-21T10:00:00-03:00' })
+    expect(xml).toContain('<loc>https://geekpoptoys.com.br/links</loc>\n    <lastmod>2026-11-21T10:00:00-03:00</lastmod>')
+    expect(xml.match(/<lastmod>/g)).toHaveLength(1)
+  })
+
+  it('SeoHead writes the breadcrumb, and removes it on a route without one', () => {
+    const crumbs = [{ name: 'Galeria', path: '/galeria' }]
+    const { rerender } = render(<SeoHead title="t" description="d" path="/galeria" crumbs={crumbs} />)
+    const el = () => document.head.querySelectorAll('script[data-seo="breadcrumb"]')
+    expect(el()).toHaveLength(1)
+    expect(JSON.parse(el()[0].textContent!)).toEqual(breadcrumbJsonLd(crumbs))
+    rerender(<SeoHead title="t" description="d" path="/" />)
+    expect(el()).toHaveLength(0)
   })
 })
 

@@ -15,6 +15,7 @@ import { CLUB_PLAN_LABEL } from "@/lib/company";
 import { useShopPromo } from "@/hooks/useShopPromo";
 import { formatEventDateRange } from "@/data/event";
 import { useActiveEvent } from "@/hooks/useActiveEvent";
+import { productCardSrcSet, retryWithOriginal } from "@/lib/product-thumb";
 
 /**
  * Sale, promotions and club benefits.
@@ -170,9 +171,12 @@ const PromoSection = () => {
                     {p.images?.[0] ? (
                       <img
                         src={p.images[0]}
+                        srcSet={productCardSrcSet(p.images[0])}
+                        sizes="(min-width: 1400px) 330px, (min-width: 768px) 25vw, 50vw"
                         alt={p.name}
                         className="h-full w-full object-cover"
                         loading="lazy"
+                        onError={(e) => retryWithOriginal(e, p.images[0])}
                       />
                     ) : (
                       <div className="flex h-full items-center justify-center text-muted-foreground">

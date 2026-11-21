@@ -24,6 +24,10 @@ import {
   productUrl,
   type ShopProduct,
 } from "@/lib/shop-api";
+import { productCardSrcSet, retryWithOriginal } from "@/lib/product-thumb";
+
+/** Card width per breakpoint: grid of 2 / 3 / 4 columns in a 1400 px container. */
+const PRODUCT_GRID_SIZES = "(min-width: 1400px) 330px, (min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw";
 
 /** Categorias visuais (atalhos) — complementam as da API. */
 const FALLBACK_CATEGORIES = [
@@ -61,10 +65,13 @@ function ProductTile({ product }: { product: ShopProduct }) {
         {image ? (
           <img
             src={image}
+            srcSet={productCardSrcSet(image)}
+            sizes={PRODUCT_GRID_SIZES}
             alt={product.name}
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             onError={(e) => {
+              if (retryWithOriginal(e, image)) return;
               e.currentTarget.style.display = "none";
               const fb = e.currentTarget.nextElementSibling as HTMLElement | null;
               if (fb) fb.classList.remove("hidden");

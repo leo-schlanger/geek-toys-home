@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { SITE_URL as SITE } from '@/lib/seo'
+import { breadcrumbJsonLd, type Crumb } from '@/lib/seo-routes'
 
 const DEFAULT_IMAGE = `${SITE}/og-image.png`
 
@@ -10,6 +11,8 @@ export interface SeoHeadProps {
   path: string
   image?: string
   noIndex?: boolean
+  /** Trail after «Início» (BreadcrumbList); empty or absent = none, as on the home. */
+  crumbs?: Crumb[]
 }
 
 /**
@@ -17,11 +20,12 @@ export interface SeoHeadProps {
  *
  * Without it every route inherited the home's canonical, telling search engines
  * that /galeria and /privacidade are the same page as the root. Google runs
- * the JS; social crawlers still read the static shell, which describes the
- * home — acceptable, since what gets shared from the institutional site is
- * the root.
+ * the JS; the static shells written at build time (vite.config.ts) carry the
+ * same head for the fixed routes, so crawlers that do not run JS agree.
  */
-export function SeoHead({ title, description, path, image, noIndex = false }: SeoHeadProps) {
+export function SeoHead({ title, description, path, image, noIndex = false, crumbs }: SeoHeadProps) {
+  const crumbsKey = JSON.stringify(crumbs ?? [])
+
   useEffect(() => {
     const url = `${SITE}${path.startsWith('/') ? path : `/${path}`}`
     const img = image || DEFAULT_IMAGE
@@ -39,7 +43,8 @@ export function SeoHead({ title, description, path, image, noIndex = false }: Se
     setMeta('name', 'twitter:title', title)
     setMeta('name', 'twitter:description', description)
     setMeta('name', 'twitter:image', img)
-  }, [title, description, path, image, noIndex])
+    setBreadcrumb(JSON.parse(crumbsKey) as Crumb[])
+  }, [title, description, path, image, noIndex, crumbsKey])
 
   return null
 }
@@ -62,4 +67,20 @@ function setLink(rel: string, href: string) {
     document.head.appendChild(el)
   }
   el.setAttribute('href', href)
+}
+
+/** The shells ship the same script (data-seo="breadcrumb"); keep it in step on client navigation. */
+function setBreadcrumb(crumbs: Crumb[]) {
+  let el = document.head.querySelector<HTMLScriptElement>('script[data-seo="breadcrumb"]')
+  if (!crumbs.length) {
+    el?.remove()
+    return
+  }
+  if (!el) {
+    el = document.createElement('script')
+    el.type = 'application/ld+json'
+    el.dataset.seo = 'breadcrumb'
+    document.head.appendChild(el)
+  }
+  el.textContent = JSON.stringify(breadcrumbJsonLd(crumbs))
 }

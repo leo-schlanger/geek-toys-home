@@ -5,6 +5,7 @@ import { primaryWhatsAppUrl, STORE_PHONES, waMeUrl } from "@/data/contacts";
 import { CreatorCredit } from "@/components/CreatorCredit";
 import { COMPANY } from "@/lib/company";
 import { NatalFooterSlot } from "./seasonal";
+import logo192 from "@/assets/logo-192.webp";
 
 interface FooterLink {
   label: string;
@@ -47,9 +48,11 @@ const Footer = () => {
           className="inline-block hover:opacity-90 transition-opacity"
         >
           <img
-            src="/logo.jpg"
+            src={logo192}
             alt="GeekPop & Toys"
-            className="h-24 mx-auto rounded-lg shadow-md shadow-primary/15 ring-2 ring-primary/10"
+            width={192}
+            height={192}
+            className="h-24 w-auto mx-auto rounded-lg shadow-md shadow-primary/15 ring-2 ring-primary/10"
           />
         </a>
 

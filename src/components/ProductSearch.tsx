@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Search, X, Loader2 } from 'lucide-react'
 import { fetchProducts, SHOP_URL, type ShopProduct } from '@/lib/shop-api'
 import { cn } from '@/lib/utils'
+import { productThumbUrl, retryWithOriginal } from '@/lib/product-thumb'
 
 /**
  * Busca de produtos no site institucional.
@@ -171,7 +172,8 @@ export function ProductSearch({
                       <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md bg-muted">
                         {product.images[0] ? (
                           <img
-                            src={product.images[0]}
+                            src={productThumbUrl(product.images[0]) ?? product.images[0]}
+                            onError={(e) => retryWithOriginal(e, product.images[0])}
                             alt=""
                             className="h-full w-full object-cover"
                             loading="lazy"

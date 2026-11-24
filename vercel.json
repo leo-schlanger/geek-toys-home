@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
-    { "source": "/galeria/:slug", "destination": "/galeria/index.html" },
-    { "source": "/galeria/:slug/", "destination": "/galeria/index.html" }
+    { "source": "/galeria/:slug", "destination": "/galeria/_album.html" },
+    { "source": "/galeria/:slug/", "destination": "/galeria/_album.html" }
   ]
 }

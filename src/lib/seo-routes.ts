@@ -111,7 +111,7 @@ const jsonForScript = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c')
  * canonical, og/twitter and the breadcrumb. Throws when a tag is missing, so
  * a change to index.html cannot silently ship shells with the home's head.
  */
-export function renderRouteHead(html: string, route: RouteSeo): string {
+export function renderRouteHead(html: string, route: RouteSeo, crumbs: Crumb[] = routeCrumbs(route)): string {
   const url = routeUrl(route.path)
   const swaps: [RegExp, string][] = [
     [/<title>[^<]*<\/title>/, `<title>${esc(route.title)}</title>`],
@@ -129,10 +129,53 @@ export function renderRouteHead(html: string, route: RouteSeo): string {
     // Function replacer: "$" in the text is not a pattern.
     out = out.replace(re, () => tag)
   }
-  const crumbs = routeCrumbs(route)
   if (crumbs.length) {
     const ld = `<script type="application/ld+json" data-seo="breadcrumb">${jsonForScript(breadcrumbJsonLd(crumbs))}</script>`
     out = out.replace('</head>', () => `    ${ld}\n  </head>`)
+  }
+  return out
+}
+
+/** Gallery album as the page and the build describe it (Gallery.tsx, vite.config.ts). */
+export interface AlbumLike {
+  slug: string
+  name: string
+  description?: string | null
+}
+
+export function albumSeo(album: AlbumLike): RouteSeo {
+  return {
+    path: `/galeria/${album.slug}`,
+    title: `${album.name} — Galeria GeekPop & Toys`,
+    description: album.description || `Fotos de ${album.name} na GeekPop & Toys, loja de K-pop em Copacabana.`,
+    sources: [],
+    changefreq: 'weekly',
+    priority: '0.6',
+  }
+}
+
+export function albumCrumbs(album: AlbumLike): Crumb[] {
+  return [
+    { name: 'Galeria', path: '/galeria' },
+    { name: album.name, path: `/galeria/${album.slug}` },
+  ]
+}
+
+/**
+ * Generic album shell (albums created after the build): the gallery's head
+ * without canonical nor og:url, which would claim /galeria; the page sets
+ * them once the album loads.
+ */
+export function renderAlbumFallbackHead(html: string): string {
+  const swaps: [RegExp, string][] = [
+    [/\s*<link rel="canonical" href="[^"]*" \/>/, ''],
+    [/\s*<meta property="og:url" content="[^"]*" \/>/, ''],
+    [/\s*<script type="application\/ld\+json" data-seo="breadcrumb">[\s\S]*?<\/script>/, ''],
+  ]
+  let out = html
+  for (const [re, tag] of swaps) {
+    if (!re.test(out)) throw new Error(`renderAlbumFallbackHead: missing ${re}`)
+    out = out.replace(re, () => tag)
   }
   return out
 }
@@ -166,8 +209,9 @@ export function injectBody(html: string, route: string, body: string): string {
 }
 
 /** Sitemap of the fixed routes; a route without a known date has no lastmod. */
-export function buildSitemap(lastmod: Record<string, string | undefined>): string {
-  const urls = ROUTES_SEO.map((r) => {
+export function buildSitemap(lastmod: Record<string, string | undefined>, extraPaths: string[] = []): string {
+  const extra = extraPaths.map((path) => ({ path, changefreq: 'monthly', priority: '0.5' }))
+  const urls = [...ROUTES_SEO, ...extra].map((r) => {
     const mod = lastmod[r.path]
     return [
       '  <url>',

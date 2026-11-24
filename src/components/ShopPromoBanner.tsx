@@ -2,8 +2,10 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { Tag, X } from "lucide-react";
 import { useShopPromo } from "@/hooks/useShopPromo";
 import { SHOP_URL, type ShopPromo } from "@/lib/shop-api";
+import { readPageData } from "@/lib/page-data";
+import { PROMO_DISMISS_PREFIX } from "@/lib/first-paint";
 
-const STORAGE_PREFIX = "shop-promo-banner-dismissed:";
+const STORAGE_PREFIX = PROMO_DISMISS_PREFIX;
 
 function storageKey(percent: number) {
   return `${STORAGE_PREFIX}${percent}`;
@@ -24,14 +26,8 @@ function isDismissed(percent: number): boolean {
  * lands (CLS 0.09). Never shown, never read by prices.
  */
 function readPromoHint(): ShopPromo | null {
-  try {
-    const raw = document.getElementById("promo-hint")?.textContent;
-    if (!raw) return null;
-    const h = JSON.parse(raw) as ShopPromo;
-    return typeof h.bannerText === "string" && typeof h.percent === "number" ? h : null;
-  } catch {
-    return null;
-  }
+  const h = readPageData<ShopPromo>("promo-hint");
+  return h && typeof h.bannerText === "string" && typeof h.percent === "number" ? h : null;
 }
 
 function wantsStrip(p: ShopPromo, dismissedPercent: number | null): boolean {
@@ -115,6 +111,7 @@ const ShopPromoBanner = () => {
         ref={ref}
         aria-hidden="true"
         data-promo-reserve
+        data-percent={hint?.percent}
         className="invisible fixed left-0 right-0 z-[59] border-b"
         style={{ top: "var(--event-banner-h, 0px)" }}
       >

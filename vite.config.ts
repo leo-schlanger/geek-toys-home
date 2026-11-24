@@ -4,7 +4,18 @@ import path from "path";
 import fs from "fs";
 import { execFileSync } from "child_process";
 import { pathToFileURL } from "url";
-import { ROUTES_SEO, buildSitemap, injectBody, renderNotFoundHead, renderRouteHead } from "./src/lib/seo-routes";
+import {
+  ROUTES_SEO,
+  albumCrumbs,
+  albumSeo,
+  buildSitemap,
+  injectBody,
+  renderAlbumFallbackHead,
+  renderNotFoundHead,
+  renderRouteHead,
+} from "./src/lib/seo-routes";
+import { pageDataScript } from "./src/lib/page-data";
+import { firstPaintScript } from "./src/lib/first-paint";
 
 /** Last commit date of `files`, or undefined (no git, or only the shallow-clone boundary). */
 function gitLastmod(files: string[]): string | undefined {
@@ -30,20 +41,46 @@ const API_BASE = "https://api.geeketoys.com.br";
  * first paint (ShopPromoBanner reserves the strip's room, invisible); it is
  * never shown as an offer nor fed to prices. No answer in 3 s → no hint.
  */
-async function promoHint(): Promise<string> {
+type PromoHint = { enabled: boolean; bannerEnabled: boolean; percent: number; bannerText: string };
+
+async function promoHint(): Promise<PromoHint | null> {
   try {
     const r = await fetch(`${API_BASE}/promo`, { signal: AbortSignal.timeout(3000) });
-    if (!r.ok) return "";
+    if (!r.ok) return null;
     const p = (await r.json()) as Record<string, unknown>;
-    const hint = {
+    return {
       enabled: p.enabled === true,
       bannerEnabled: p.bannerEnabled === true,
       percent: typeof p.percent === "number" ? p.percent : 0,
       bannerText: typeof p.bannerText === "string" ? p.bannerText : "",
     };
-    return `<script type="application/json" id="promo-hint">${JSON.stringify(hint).replace(/</g, "\\u003c")}</script>`;
   } catch {
-    return "";
+    return null;
+  }
+}
+
+type Album = { slug: string; name: string; description?: string | null; coverUrl?: string | null };
+
+/**
+ * Gallery albums with their photos, as the API has them at build time: each
+ * one gets its own page (head, canonical, body). An album created later is
+ * served by the generic album shell until the next deploy. No answer → none.
+ */
+async function galleryAlbums(): Promise<Album[]> {
+  try {
+    const r = await fetch(`${API_BASE}/gallery`, { signal: AbortSignal.timeout(3000) });
+    if (!r.ok) return [];
+    const list = ((await r.json()) as { albums?: Album[] }).albums ?? [];
+    const full = await Promise.all(
+      list.map(async (a) => {
+        if (!/^[a-z0-9-]+$/.test(a.slug)) return null;
+        const d = await fetch(`${API_BASE}/gallery/${a.slug}`, { signal: AbortSignal.timeout(3000) });
+        return d.ok ? ((await d.json()) as Album) : null;
+      })
+    );
+    return full.filter((a): a is Album => a != null && a.slug != null);
+  } catch {
+    return [];
   }
 }
 
@@ -64,6 +101,8 @@ function assetUrl(bundle: Record<string, BundleAsset>, name: string): string {
  */
 function seoShells(): Plugin {
   let outDir = "dist";
+  let hint: PromoHint | null = null;
+  let albums: Album[] = [];
   return {
     name: "seo-shells",
     apply: "build",
@@ -72,7 +111,7 @@ function seoShells(): Plugin {
       outDir = path.resolve(config.root, config.build.outDir);
     },
     async closeBundle() {
-      await prerenderBodies(outDir);
+      await prerenderBodies(outDir, hint, albums);
     },
     async generateBundle(_, bundle) {
       const index = bundle["index.html"];
@@ -85,9 +124,11 @@ function seoShells(): Plugin {
       const heroPreload = `<link rel="preload" as="image" imagesrcset="${hero}" imagesizes="100vw" fetchpriority="high" />`;
 
       const base = String(index.source).replace("</title>", () => `</title>\n    ${fonts}`);
-      const hint = await promoHint();
+      [hint, albums] = await Promise.all([promoHint(), galleryAlbums()]);
       if (!hint) this.warn("promo hint unavailable: the promo strip may shift the hero on first paint");
-      index.source = base.replace("</head>", () => `  ${heroPreload}\n    ${hint}\n  </head>`);
+      if (!albums.length) this.warn("gallery unavailable: album pages fall back to the generic shell");
+      const hintTag = hint ? pageDataScript("promo-hint", hint) : "";
+      index.source = base.replace("</head>", () => `  ${heroPreload}\n    ${hintTag}\n  </head>`);
 
       for (const route of ROUTES_SEO) {
         if (route.path === "/") continue;
@@ -97,7 +138,8 @@ function seoShells(): Plugin {
       const lastmod = Object.fromEntries(
         ROUTES_SEO.map((r) => [r.path, gitLastmod([...r.sources, "src/lib/seo-routes.ts"])])
       );
-      this.emitFile({ type: "asset", fileName: "sitemap.xml", source: buildSitemap(lastmod) });
+      const albumPaths = albums.map((a) => `/galeria/${a.slug}`);
+      this.emitFile({ type: "asset", fileName: "sitemap.xml", source: buildSitemap(lastmod, albumPaths) });
     },
   };
 }
@@ -110,7 +152,7 @@ const ALIAS = { "@": path.resolve(__dirname, "./src") };
  * #root. Also writes dist/404.html, which Vercel serves with status 404 for
  * any unknown path (vercel.json has no SPA catch-all).
  */
-async function prerenderBodies(outDir: string) {
+async function prerenderBodies(outDir: string, hint: PromoHint | null, albums: Album[]) {
   const ssrDir = path.resolve(__dirname, "node_modules/.cache/ssr-prerender");
   await build({
     configFile: false,
@@ -121,18 +163,39 @@ async function prerenderBodies(outDir: string) {
     build: { ssr: "src/entry-server.tsx", outDir: ssrDir, emptyOutDir: true, copyPublicDir: false, minify: false },
   });
   const { render } = (await import(pathToFileURL(path.join(ssrDir, "entry-server.js")).href)) as {
-    render: (url: string) => Promise<string>;
+    render: (url: string, data?: Record<string, unknown>) => Promise<string>;
   };
   const shell = (p: string) => path.join(outDir, p === "/" ? "index.html" : `${p.slice(1)}/index.html`);
-  // Home shell before its body goes in: the 404 page starts from it.
+  // Shells before their body goes in: the 404 and album pages start from them.
   const base = fs.readFileSync(shell("/"), "utf8");
+  const galleryShell = fs.readFileSync(shell("/galeria"), "utf8");
 
   for (const route of ROUTES_SEO) {
-    const body = await render(route.path);
+    // The home renders the promo strip's reserve from the same hint as the browser.
+    const body = await render(route.path, route.path === "/" && hint ? { "promo-hint": hint } : {});
     if (!body.includes("<h1")) throw new Error(`prerender: ${route.path} has no <h1>`);
     const file = shell(route.path);
-    fs.writeFileSync(file, injectBody(fs.readFileSync(file, "utf8"), route.path, body));
+    let html = injectBody(fs.readFileSync(file, "utf8"), route.path, body);
+    if (route.path === "/") html = html.replace("</div>\n  </body>", () => `</div>\n    ${firstPaintScript()}\n  </body>`);
+    if (route.path === "/" && !html.includes("--promo-banner-h")) throw new Error("prerender: home without first-paint script");
+    fs.writeFileSync(file, html);
   }
+
+  for (const album of albums) {
+    const p = `/galeria/${album.slug}`;
+    const body = await render(p, { "album-data": album });
+    if (!body.includes("<h1")) throw new Error(`prerender: ${p} has no <h1>`);
+    const html = renderRouteHead(galleryShell, albumSeo(album), albumCrumbs(album)).replace(
+      "</head>",
+      () => `  ${pageDataScript("album-data", album)}\n  </head>`
+    );
+    fs.mkdirSync(path.dirname(shell(p)), { recursive: true });
+    fs.writeFileSync(shell(p), injectBody(html, p, body));
+  }
+
+  // Albums created after the build (vercel.json rewrite): loading state, no canonical.
+  const albumBody = await render("/galeria/__album__");
+  fs.writeFileSync(path.join(outDir, "galeria/_album.html"), injectBody(renderAlbumFallbackHead(galleryShell), "/galeria/:slug", albumBody));
 
   const notFound = await render("/__pagina-inexistente__");
   if (!notFound.includes("Página não encontrada")) throw new Error("prerender: 404 without NotFound");

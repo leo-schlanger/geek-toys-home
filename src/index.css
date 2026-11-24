@@ -292,3 +292,10 @@
   80% { transform: rotate(5deg); }
   90% { transform: rotate(-3deg); }
 }
+
+/* Prerendered first paint (main.tsx): the entrance animation ran on the
+   server HTML; the nodes React mounts over it start in their final state. */
+html[data-prerendered] .animate-fade-up {
+  animation: none;
+  opacity: 1;
+}

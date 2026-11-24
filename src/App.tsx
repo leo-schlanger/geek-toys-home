@@ -20,7 +20,17 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
   </QueryClientProvider>
 );
 
-export const AppRoutes = () => (
+/**
+ * `notFound`: the server answered 404 for this URL (dist/404.html). The page
+ * stays NotFound even when the router would match it case-insensitively
+ * (/Termos), so the body agrees with the status.
+ */
+export const AppRoutes = ({ notFound = false }: { notFound?: boolean }) =>
+  notFound ? (
+    <Suspense fallback={null}>
+      <NotFound />
+    </Suspense>
+  ) : (
   <Suspense fallback={null}>
     <Routes>
       <Route path="/" element={<Index />} />
@@ -34,12 +44,12 @@ export const AppRoutes = () => (
       <Route path="*" element={<NotFound />} />
     </Routes>
   </Suspense>
-);
+  );
 
-const App = () => (
+const App = ({ notFound = false }: { notFound?: boolean }) => (
   <AppProviders>
     <BrowserRouter>
-      <AppRoutes />
+      <AppRoutes notFound={notFound} />
     </BrowserRouter>
   </AppProviders>
 );

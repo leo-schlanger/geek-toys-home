@@ -95,6 +95,20 @@ SPA. A Vercel serve o ficheiro antes do rewrite (`vercel.json` não mudou).
 - `vercel.json` já não tem o rewrite SPA: a Vercel serve o ficheiro da rota e o resto
   cai no `dist/404.html` com **status 404** (noindex, sem canonical nem og:url, corpo
   = `NotFound`). Só `/galeria/:slug` tem rewrite para `/galeria/index.html`.
+- **Primeira pintura = posição final** (qa 24/11): o build renderiza a reserva da faixa de
+  promo a partir da mesma pista (`#promo-hint`, `src/lib/page-data.ts`) e põe depois do
+  corpo da home um script inline (`src/lib/first-paint.ts`) que, antes de pintar, publica
+  `--promo-banner-h` (medida) e `--natal-banner-h` (janela, `?season=` e dispensa iguais
+  aos componentes). Com o JS atrasado 1,5 s o `<h1>` nasce em 212 px (390) e 567 px
+  (1440) e não se mexe na montagem; antes nascia em 80/520 e descia. A animação de entrada
+  não se repete na montagem (`html[data-prerendered]` em `index.css`).
+- **Álbuns**: o build lê `/gallery` e escreve `dist/galeria/<slug>/index.html` com head
+  próprio (title, canonical, breadcrumb), corpo do álbum e `#album-data` (1.º render do
+  cliente = o álbum). Álbum criado depois do build cai no `galeria/_album.html` (rewrite
+  do `vercel.json`): estado de carregamento, sem canonical. Os álbuns entram no sitemap.
+  Álbum inexistente: «Álbum não encontrado» com noindex (status 200, a API decide).
+- **404 manda**: no `dist/404.html` (`data-route="/404"`) o cliente mostra sempre o
+  `NotFound`, mesmo que o router case-insensitive case a URL (`/Termos`).
 - Rota nova no `App.tsx`: também em `src/routes.ts` (`pageFor`) e, se for dinâmica,
   rewrite no `vercel.json`. `src/entry-server.test.tsx` lê os `<Route path>` e reprova
   rota sem corpo, rota dinâmica sem rewrite e qualquer catch-all no `vercel.json`.

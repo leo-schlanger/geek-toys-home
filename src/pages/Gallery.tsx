@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Images, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import Navbar from '@/components/Navbar'
 import { SeoHead } from '@/components/SeoHead'
-import { GALLERY_SEO, seoProps } from '@/lib/seo-routes'
+import { GALLERY_SEO, albumCrumbs, albumSeo, seoProps } from '@/lib/seo-routes'
 import Footer from '@/components/Footer'
 import {
   fetchGalleryAlbums,
@@ -12,6 +12,7 @@ import {
   type GalleryPhoto,
 } from '@/lib/shop-api'
 import { photoAlt } from '@/lib/seo'
+import { readPageData } from '@/lib/page-data'
 
 function formatEventDate(iso: string | null): string | null {
   if (!iso) return null
@@ -121,19 +122,25 @@ function AlbumList() {
 
 function AlbumView({ slug }: { slug: string }) {
   const navigate = useNavigate()
-  const [album, setAlbum] = useState<GalleryAlbum | null>(null)
-  const [loading, setLoading] = useState(true)
+  // The build writes known albums into their page (#album-data): first paint
+  // is the album itself, then the live answer replaces it.
+  const [album, setAlbum] = useState<GalleryAlbum | null>(() => {
+    const built = readPageData<GalleryAlbum>('album-data')
+    return built?.slug === slug ? built : null
+  })
+  const [loadedSlug, setLoadedSlug] = useState<string | null>(null)
+  const loading = loadedSlug !== slug && album?.slug !== slug
   const [lightbox, setLightbox] = useState<number | null>(null)
 
   useEffect(() => {
     let active = true
-    setLoading(true)
     fetchGalleryAlbum(slug)
       .then((data) => {
-        if (active) setAlbum(data)
+        // No answer keeps the built copy of this album, if any.
+        if (active) setAlbum((cur) => data ?? (cur?.slug === slug ? cur : null))
       })
       .finally(() => {
-        if (active) setLoading(false)
+        if (active) setLoadedSlug(slug)
       })
     return () => {
       active = false
@@ -179,6 +186,12 @@ function AlbumView({ slug }: { slug: string }) {
   if (!album) {
     return (
       <PageShell>
+        <SeoHead
+          title="Álbum não encontrado | GeekPop & Toys"
+          description="Este álbum não existe. Veja os outros álbuns da galeria da GeekPop & Toys."
+          path={`/galeria/${slug}`}
+          noIndex
+        />
         <div className="py-20 text-center">
           <p className="mb-4 font-medium text-muted-foreground">Álbum não encontrado.</p>
           <button
@@ -198,17 +211,11 @@ function AlbumView({ slug }: { slug: string }) {
   return (
     <PageShell>
       <SeoHead
-        title={`${album.name} — Galeria GeekPop & Toys`}
-        description={
-          album.description ||
-          `Fotos de ${album.name} na GeekPop & Toys, loja de K-pop em Copacabana.`
-        }
-        path={`/galeria/${album.slug}`}
+        title={albumSeo(album).title}
+        description={albumSeo(album).description}
+        path={albumSeo(album).path}
         image={album.coverUrl ?? undefined}
-        crumbs={[
-          { name: 'Galeria', path: '/galeria' },
-          { name: album.name, path: `/galeria/${album.slug}` },
-        ]}
+        crumbs={albumCrumbs(album)}
       />
       <Link
         to="/galeria"

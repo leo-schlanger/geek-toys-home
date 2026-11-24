@@ -22,7 +22,7 @@ function pageFor(pathname: string) {
  * Loads the chunk of the page at `pathname` before the first render, so the
  * prerendered HTML stays on screen instead of a blank Suspense fallback.
  */
-export function preloadRoute(pathname: string): Promise<void> {
-  const page = pageFor(pathname);
+export function preloadRoute(pathname: string, notFound = false): Promise<void> {
+  const page = notFound ? NotFound : pageFor(pathname);
   return page ? preloadPage(page) : Promise.resolve();
 }

@@ -13,6 +13,7 @@ em qualquer host, declaram `https://geekpoptoys.com.br`:
 | canonical / og por rota (`/links`, `/galeria`, `/termos`, `/privacidade`, álbuns) | `SeoHead` → `SITE_URL` em `src/lib/seo.ts` |
 | title/description de cada rota fixa (fonte única) | `src/lib/seo-routes.ts` (`ROUTES_SEO`) |
 | head estático por rota (`dist/<rota>/index.html`) | plugin `seoShells` em `vite.config.ts` |
+| corpo pré-renderizado por rota + `dist/404.html` | `prerenderBodies` em `vite.config.ts` (renderiza `src/entry-server.tsx`) |
 | sitemap (com `lastmod` por `git log`) | gerado no build pelo mesmo plugin (`buildSitemap`) |
 | robots | `public/robots.txt` (`Sitemap:`) |
 | JSON-LD (`@id`, `url`, `logo`, sameAs da loja) | `index.html` (`@graph`) |
@@ -65,7 +66,7 @@ Fotos da API usam a legenda; sem legenda, `photoAlt()` monta
 
 ## Head estático por rota (21/11/2026)
 
-O site é SPA sem prerender. Até 21/11 o HTML bruto de **todas** as rotas, em todos
+Até 21/11 o HTML bruto de **todas** as rotas, em todos
 os hosts, trazia title, description e canonical da home; só o JS (`SeoHead`) os
 trocava. O plugin `seoShells` (`vite.config.ts`) agora escreve no build um
 `dist/<rota>/index.html` para cada rota fixa de `ROUTES_SEO`, com o head próprio
@@ -78,9 +79,25 @@ SPA. A Vercel serve o ficheiro antes do rewrite (`vercel.json` não mudou).
 - `lastmod`: último commit dos ficheiros da rota (`sources`); num clone raso a data do
   commit de fronteira é descartada e a rota fica sem `lastmod` (nunca a data do build).
 - BreadcrumbList só nas sub-rotas e nos álbuns (`SeoHead` com `crumbs`), nunca no `index.html`.
-- Rota inexistente continua a responder 200 com o head da home (soft-404; o `NotFound` põe
-  `noindex` via JS). Corrigir exige mexer no `vercel.json`: decisão do Leo.
 - Álbuns `/galeria/:slug` não estão no sitemap (vêm da API).
+
+## Corpo pré-renderizado e 404 real (24/11/2026)
+
+- O build renderiza o corpo de cada rota de `ROUTES_SEO` (`renderToString` de
+  `src/entry-server.tsx`, num build SSR dentro do plugin) para o `<div id="root"
+  data-route>` de cada shell: robôs sem JS leem o `<h1>` e o texto. Dados da API
+  (produtos, evento, galeria, rádio) não entram: saem no estado de carregamento.
+- **Sem hidratação**: o 1.º render do cliente depende do browser (evento em
+  `localStorage`, pista da promo, Natal, `?season=`), por isso o `main.tsx` usa
+  `createRoot`, que troca esse HTML num só commit. Antes carrega o chunk da página
+  (`preloadRoute`, `src/routes.ts` + `src/lib/lazy-page.tsx`) para não pintar o
+  fallback vazio do `Suspense`. CLS medido igual ao anterior (390/1280/1440).
+- `vercel.json` já não tem o rewrite SPA: a Vercel serve o ficheiro da rota e o resto
+  cai no `dist/404.html` com **status 404** (noindex, sem canonical nem og:url, corpo
+  = `NotFound`). Só `/galeria/:slug` tem rewrite para `/galeria/index.html`.
+- Rota nova no `App.tsx`: também em `src/routes.ts` (`pageFor`) e, se for dinâmica,
+  rewrite no `vercel.json`. `src/entry-server.test.tsx` lê os `<Route path>` e reprova
+  rota sem corpo, rota dinâmica sem rewrite e qualquer catch-all no `vercel.json`.
 
 ## Desempenho (21/11/2026)
 

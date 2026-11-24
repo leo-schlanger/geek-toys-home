@@ -24,7 +24,7 @@ const ContactSection = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const text = [
-      `Olá! Contato pelo site geeketoys.com.br`,
+      `Olá! Contato pelo site geekpoptoys.com.br`,
       ``,
       `Nome: ${form.name}`,
       `E-mail: ${form.email}`,

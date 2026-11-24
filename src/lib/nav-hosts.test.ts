@@ -4,7 +4,8 @@ import indexHtml from '../../index.html?raw'
 
 // Leo, 21/11/2026: navigation goes to the geekpoptoys hosts. The legacy
 // geeketoys.com.br stays only for API calls (api.*), the radio (radio.*),
-// e-mail addresses and free text such as WhatsApp greetings.
+// and e-mail addresses. Text that names the site (WhatsApp greetings and
+// reservations) says geekpoptoys.com.br (24/11/2026).
 const sources = import.meta.glob(['../**/*.{ts,tsx}', '!../**/*.test.{ts,tsx}'], {
   query: '?raw',
   import: 'default',
@@ -27,6 +28,14 @@ describe('navigation hosts (family: every source file + index.html)', () => {
   it('no link to a legacy geeketoys host outside api.* and radio.*', () => {
     const hits = Object.entries({ ...sources, 'index.html': indexHtml }).flatMap(([file, src]) =>
       [...src.matchAll(LEGACY_NAV)].map((m) => `${file}: ${m[0]}`)
+    )
+    expect(hits).toEqual([])
+  })
+
+  it('no text names the bare legacy domain (WhatsApp greetings, reservations)', () => {
+    const BARE = /(?<![.@\w/-])geeketoys\.com\.br/g
+    const hits = Object.entries(sources).flatMap(([file, src]) =>
+      [...src.matchAll(BARE)].map((m) => `${file}: ${m[0]}`)
     )
     expect(hits).toEqual([])
   })

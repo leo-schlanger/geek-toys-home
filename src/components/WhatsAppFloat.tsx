@@ -11,7 +11,7 @@ import { primaryWhatsAppUrl, PRIMARY_WHATSAPP } from "@/data/contacts";
 const WhatsAppFloat = () => (
   <a
     data-floating-whatsapp
-    href={primaryWhatsAppUrl("Olá! Vim pelo site geeketoys.com.br 👋")}
+    href={primaryWhatsAppUrl("Olá! Vim pelo site geekpoptoys.com.br 👋")}
     target="_blank"
     rel="noopener noreferrer"
     className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-black/20 hover:scale-105 hover:brightness-110 transition-all md:bottom-6 md:right-6"

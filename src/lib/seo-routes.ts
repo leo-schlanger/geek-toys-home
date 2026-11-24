@@ -137,6 +137,34 @@ export function renderRouteHead(html: string, route: RouteSeo): string {
   return out
 }
 
+export const NOT_FOUND_TITLE = 'Página não encontrada | GeekPop & Toys'
+
+/**
+ * Head of dist/404.html (served with status 404): noindex, and no canonical
+ * nor og:url, which would claim the home's address for every unknown path.
+ */
+export function renderNotFoundHead(html: string): string {
+  const swaps: [RegExp, string][] = [
+    [/<title>[^<]*<\/title>/, `<title>${esc(NOT_FOUND_TITLE)}</title>`],
+    [/<meta name="robots" content="[^"]*" \/>/, '<meta name="robots" content="noindex, nofollow" />'],
+    [/\s*<link rel="canonical" href="[^"]*" \/>/, ''],
+    [/\s*<meta property="og:url" content="[^"]*" \/>/, ''],
+  ]
+  let out = html
+  for (const [re, tag] of swaps) {
+    if (!re.test(out)) throw new Error(`renderNotFoundHead: missing ${re}`)
+    out = out.replace(re, () => tag)
+  }
+  return out
+}
+
+/** Puts the prerendered body of `route` into the shell's empty #root. */
+export function injectBody(html: string, route: string, body: string): string {
+  const empty = '<div id="root"></div>'
+  if (!html.includes(empty)) throw new Error(`injectBody(${route}): no empty #root`)
+  return html.replace(empty, () => `<div id="root" data-route="${esc(route)}">${body}</div>`)
+}
+
 /** Sitemap of the fixed routes; a route without a known date has no lastmod. */
 export function buildSitemap(lastmod: Record<string, string | undefined>): string {
   const urls = ROUTES_SEO.map((r) => {

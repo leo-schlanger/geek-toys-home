@@ -243,7 +243,7 @@ export function buildReservationWhatsAppUrl(params: {
     lines.push(`🔗 Meus ingressos: ${ticketsUrl}`)
   }
 
-  lines.push(``, `_Reserva via site (geeketoys.com.br)_`)
+  lines.push(``, `_Reserva via site (geekpoptoys.com.br)_`)
   if (notes?.trim()) {
     lines.push(``, `📝 Observações: ${notes.trim()}`)
   }

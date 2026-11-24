@@ -34,7 +34,7 @@ const socials = [
   },
   {
     name: "WhatsApp",
-    href: primaryWhatsAppUrl("Olá! Vim pelo site geeketoys.com.br 👋"),
+    href: primaryWhatsAppUrl("Olá! Vim pelo site geekpoptoys.com.br 👋"),
     color: "hover:border-[#25D366] hover:shadow-[0_0_20px_rgba(37,211,102,0.4)]",
     icon: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">

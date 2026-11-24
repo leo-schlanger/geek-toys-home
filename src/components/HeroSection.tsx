@@ -184,7 +184,7 @@ const HeroSection = () => {
             </div>
 
             <a
-              href={primaryWhatsAppUrl("Olá! Vim pelo site geeketoys.com.br 👋")}
+              href={primaryWhatsAppUrl("Olá! Vim pelo site geekpoptoys.com.br 👋")}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-2 inline-flex min-h-[44px] items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors animate-fade-up"

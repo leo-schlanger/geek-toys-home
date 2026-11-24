@@ -1,9 +1,10 @@
-import { defineConfig, type Plugin } from "vite";
+import { build, defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import fs from "fs";
 import { execFileSync } from "child_process";
-import { ROUTES_SEO, buildSitemap, renderRouteHead } from "./src/lib/seo-routes";
+import { pathToFileURL } from "url";
+import { ROUTES_SEO, buildSitemap, injectBody, renderNotFoundHead, renderRouteHead } from "./src/lib/seo-routes";
 
 /** Last commit date of `files`, or undefined (no git, or only the shallow-clone boundary). */
 function gitLastmod(files: string[]): string | undefined {
@@ -62,10 +63,17 @@ function assetUrl(bundle: Record<string, BundleAsset>, name: string): string {
  * fonts and, in the root index.html, the hero image and the promo hint.
  */
 function seoShells(): Plugin {
+  let outDir = "dist";
   return {
     name: "seo-shells",
     apply: "build",
     enforce: "post",
+    configResolved(config) {
+      outDir = path.resolve(config.root, config.build.outDir);
+    },
+    async closeBundle() {
+      await prerenderBodies(outDir);
+    },
     async generateBundle(_, bundle) {
       const index = bundle["index.html"];
       if (!index || index.type !== "asset") throw new Error("seoShells: index.html missing");
@@ -94,6 +102,44 @@ function seoShells(): Plugin {
   };
 }
 
+const ALIAS = { "@": path.resolve(__dirname, "./src") };
+
+/**
+ * Body of every fixed route rendered at build time (src/entry-server.tsx in an
+ * SSR build), so crawlers that do not run JS read the page, not an empty
+ * #root. Also writes dist/404.html, which Vercel serves with status 404 for
+ * any unknown path (vercel.json has no SPA catch-all).
+ */
+async function prerenderBodies(outDir: string) {
+  const ssrDir = path.resolve(__dirname, "node_modules/.cache/ssr-prerender");
+  await build({
+    configFile: false,
+    logLevel: "warn",
+    mode: "production",
+    plugins: [react()],
+    resolve: { alias: ALIAS },
+    build: { ssr: "src/entry-server.tsx", outDir: ssrDir, emptyOutDir: true, copyPublicDir: false, minify: false },
+  });
+  const { render } = (await import(pathToFileURL(path.join(ssrDir, "entry-server.js")).href)) as {
+    render: (url: string) => Promise<string>;
+  };
+  const shell = (p: string) => path.join(outDir, p === "/" ? "index.html" : `${p.slice(1)}/index.html`);
+  // Home shell before its body goes in: the 404 page starts from it.
+  const base = fs.readFileSync(shell("/"), "utf8");
+
+  for (const route of ROUTES_SEO) {
+    const body = await render(route.path);
+    if (!body.includes("<h1")) throw new Error(`prerender: ${route.path} has no <h1>`);
+    const file = shell(route.path);
+    fs.writeFileSync(file, injectBody(fs.readFileSync(file, "utf8"), route.path, body));
+  }
+
+  const notFound = await render("/__pagina-inexistente__");
+  if (!notFound.includes("Página não encontrada")) throw new Error("prerender: 404 without NotFound");
+  fs.writeFileSync(path.join(outDir, "404.html"), injectBody(renderNotFoundHead(base), "/404", notFound));
+  fs.rmSync(ssrDir, { recursive: true, force: true });
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
@@ -105,8 +151,6 @@ export default defineConfig({
   },
   plugins: [react(), seoShells()],
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+    alias: ALIAS,
   },
 });

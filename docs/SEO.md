@@ -36,7 +36,7 @@ legado.
 | Domínio | Configuração |
 |---|---|
 | `geekpoptoys.com.br` | serve o site (200) |
-| `www.geekpoptoys.com.br` | serve o site (200) — sem redirect, de propósito |
+| `www.geekpoptoys.com.br` | 308 → `https://geekpoptoys.com.br` (desde 27/11/2026, domínio na Vercel) |
 | `geeketoys.com.br` | 307 → `www.geeketoys.com.br` (legado, não mexer) |
 | `www.geeketoys.com.br` | serve o site (200) (legado, não mexer) |
 

@@ -107,6 +107,11 @@ SPA. A Vercel serve o ficheiro antes do rewrite (`vercel.json` não mudou).
   cliente = o álbum). Álbum criado depois do build cai no `galeria/_album.html` (rewrite
   do `vercel.json`): estado de carregamento, sem canonical. Os álbuns entram no sitemap.
   Álbum inexistente: «Álbum não encontrado» com noindex (status 200, a API decide).
+- **Uma só meta de robôs** (27/11/2026): o `index.html` tinha também `<meta name="googlebot"
+  content="index, follow">`, fixa; o `SeoHead` só troca a `robots`, por isso o 404 e o álbum
+  inexistente diziam `noindex` e `index` ao mesmo tempo. Saiu (o omissão já é index);
+  `seo.test.tsx` reprova se voltar. Álbum inexistente continua 200 + noindex: o rewrite
+  `/galeria/:slug` → `_album.html` existe para álbuns criados depois do build (decisão em aberto).
 - **404 manda**: no `dist/404.html` (`data-route="/404"`) o cliente mostra sempre o
   `NotFound`, mesmo que o router case-insensitive case a URL (`/Termos`).
 - Rota nova no `App.tsx`: também em `src/routes.ts` (`pageFor`) e, se for dinâmica,

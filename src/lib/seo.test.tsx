@@ -26,6 +26,13 @@ describe('canonical domain', () => {
     expect(html).not.toMatch(LEGACY)
   })
 
+  // SeoHead only toggles meta robots: a second, fixed googlebot tag said
+  // «index» on the noindex pages (404, unknown album).
+  it('index.html has one robots meta and no googlebot override', () => {
+    expect(indexHtml.match(/<meta name="robots"/g)).toHaveLength(1)
+    expect(indexHtml).not.toMatch(/name="googlebot"/i)
+  })
+
   it('sitemap and robots use the main domain', () => {
     const locs = [...buildSitemap({}).matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
     expect(locs).toEqual(['/', '/links', '/galeria', '/termos', '/privacidade'].map(routeUrl))
